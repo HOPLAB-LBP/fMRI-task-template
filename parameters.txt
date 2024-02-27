@@ -1,0 +1,24 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Parameters for a MATLAB script
+% This file contains the parameters to be used in another matlab script.
+% It will be parsed according to these rules:
+% - all lines beginning with '%' will be ignored, use them to comment
+% - all empty lines will be ignored
+% - all other lines will be read as matlab code
+% 
+% Enter your parameters in this format: "name = value".
+%
+% Write whatever you want in this file. As long as it is preceded by a '%' sign at the beginning of the line, it won't be read by MatLab.
+% Write all your parameters in uncommented lines, and they will be read as code.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Trial Duration (in seconds)
+trial_duration = 10
+
+% Image Size (width x height)
+image_size = 1024 x 768
+
+% Other Parameter
+% This parameter represents some other aspect of the simulation
+other_parameter = some_value
+
