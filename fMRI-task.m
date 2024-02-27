@@ -1,29 +1,44 @@
 
 
 
-%% CLEANUP AND SETUP
+%% CLEANUP & SET MODES
 
 % Clean up the environment
 clc; % Clear the Command Window.
 close all; % Close all figures (except those of imtool.)
 clear; % Clear all variables from the workspace.
 
-% Initialise psychtoolbox (PTB)
-initialisePTB();
-
 % Decide on the debug and PC mode
 debug = true; % Debug mode flag. Set to false for actual experiment runs.
 fmriPC = false; % Computer mode flag. Set to true whenrunning on the fMRI scanner computer.
 
 %% CHECK AND SET WORKING DIRECTORY
-% Prompt the user to confirm if the current directory and PATH settings are correct.
-response = input('Did you set the current directory to the fMRI folder (i.e., fMRI_pilot), AND added the "src" and "utils" folders to PATH? (y/n) ', 's');
 
-% Check that the source and utilities paths have been added
-checkWD()
+% Declare default directories for the source and utilities
+default_utils_dir = './utils';
+default_src_dir = './src';
 
-% Check the user's response. If 'n', remind the user to set the directory and PATH.
-if strcmp(response, 'n')
-    disp('Please, set the current directory to the fMRI folder (i.e., fMRI_pilot), AND add the "src" and "utils" folders to PATH (right-click -> add to path).');
-    return; % Exit the script if the setup is incorrect.
-elseif strcmp(response, 'y')
+% Check if the default utility directory exists
+while ~exist(default_utils_dir, 'dir')
+    disp(['Utility directory "', default_utils_dir, '" does not exist.']);
+    % Prompt the user to input the utility directory
+    utils_dir = input('Please provide the path to the utility directory: ', 's');
+    default_utils_dir = utils_dir;
+end
+
+% Check if the default source directory exists
+while ~exist(default_src_dir, 'dir')
+    disp(['Source directory "', default_src_dir, '" does not exist.']);
+    % Prompt the user to input the source directory
+    src_dir = input('Please provide the path to the source directory: ', 's');
+    default_src_dir = src_dir;
+end
+
+% Add both directories to the MATLAB path once we're sure they exist
+addpath({default_utils_dir, default_src_dir});
+disp('Directories have been added to the MATLAB path.');
+
+
+%% INITIALISE PSYCHTOOLBOX
+% Initialise psychtoolbox (PTB)
+initialisePTB();
