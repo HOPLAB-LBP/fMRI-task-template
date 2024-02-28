@@ -1,5 +1,9 @@
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% fMRI EXPERIMENTAL TASK
+%
+% some documentation here 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% CLEANUP & SET MODES
 
@@ -38,7 +42,45 @@ end
 addpath({default_utils_dir, default_src_dir});
 disp('Directories have been added to the MATLAB path.');
 
+%% IMPORT EXTERNAL PARAMETERS & INITIALISE PTB
 
-%% INITIALISE PSYCHTOOLBOX
+% Use the parse parameter function to import all parameters from file
+params = parseParameterFile('parameters.txt');
+
 % Initialise psychtoolbox (PTB)
 initialisePTB();
+
+%% BEGIN THE EXPERIMENT
+
+% Ensure that the screen gets closed when the script terminates.
+cleanObj = onCleanup(@()sca);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

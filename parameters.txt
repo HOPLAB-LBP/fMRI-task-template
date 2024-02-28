@@ -12,13 +12,20 @@
 % Write all your parameters in uncommented lines, and they will be read as code.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% Trial Duration (in seconds)
-trial_duration = 10
 
-% Image Size (width x height)
-image_size = 1024 x 768
+% Define parameters related to stimuli presentation and trial structure
 
-% Other Parameter
-% This parameter represents some other aspect of the simulation
-other_parameter = some_value
+fixSize = [.6 .5 .1]; % Fixation cross size
+stimDur = 2.5; % Duration each stimulus is displayed, in seconds
+fixDur = 1; % Duration of the fixation cross display (ISI/response window), in seconds
+prePost = 10; % Duration before the first stimulus and after the last stimulus, in seconds
+trialDur = p.stimDur + p.fixDur; % Total duration of each trial, in seconds
+imSize = round(convertVisualUnits(8, 'deg', 'px')); % Convert stimulus size from visual degrees to pixels
 
+% Define parameters for the stimuli and experimental conditions
+numStim = 40; % Total number of stimuli
+% Number of stimuli per condition. Adjust these as per your stimuli set
+numStimC1 = 3; p.numStimC2 = 4; p.numStimC3 = 7; p.numStimC4 = 3; p.numStimC5 = 3;
+stimCat = {'C1','C2','C3','C4','C5','NC1','NC2','NC3','NC4','NC5'}; % Categories of stimuli
+numCon = 10; % Number of conditions
+numTrials = p.numStim * 2; % Total number of trials (each stimulus presented twice)

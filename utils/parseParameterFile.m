@@ -10,6 +10,11 @@ function params = parseParameterFile(filename)
 %   OUTPUT:
 %   params: A MATLAB structure containing the extracted parameters.
 
+% Check if the file exists
+if exist(filename, 'file') ~= 2
+    error(['Your parameter file "', filename, '" does not exist.']);
+end
+
 % Read the text file in a file identifier
 fid = fopen(filename, 'r');
 % Check if the file was found and read
@@ -59,4 +64,9 @@ end
 % Close the file
 fclose(fid);
 
+% Give a 
+disp(['Parameters imported from "', filename, '".']);
+
+
 end
+
