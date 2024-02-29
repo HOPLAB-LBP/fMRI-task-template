@@ -42,16 +42,10 @@ while ischar(tline)
     param_value = strtrim(parts{2});
     
     % Convert value to appropriate type if necessary
-    if contains(param_value, 'x')
-        % Split dimensions
-        dimensions = str2double(strsplit(param_value, 'x'));
-        param_value = dimensions;
-    elseif isstrprop(param_value(1), 'digit')
+    % Check if the value is numeric
+    if ~isnan(str2double(param_value))
         % Convert to number
         param_value = str2double(param_value);
-    else
-        % Trim leading and trailing whitespace
-        param_value = strtrim(param_value);
     end
     
     % Assign parameter to structure
@@ -60,6 +54,22 @@ while ischar(tline)
     % Read next line
     tline = fgetl(fid);
 end
+
+% Extra step: create a varargin parameter for stimulus resizing
+varargin = {};
+if isfield(params, 'outHeight')
+    % outHeight is specified in params
+    varargin{end+1} = 'height';
+    varargin{end+1} = params.outHeight;
+end
+if isfield(params, 'outWidth')
+    % outWidth is specified in params
+    varargin{end+1} = 'width';
+    varargin{end+1} = params.outWidth;
+end
+
+% Add it to the output parameters
+params.('resizeStimVarargin') = varargin;
 
 % Close the file
 fclose(fid);

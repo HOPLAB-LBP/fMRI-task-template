@@ -61,8 +61,9 @@ cleanObj = onCleanup(@()sca);
 
 
 
-
-
+% where we'll resize the stimuli
+% considering 'im' is the input stimulus:
+resized_im = resizeStim(im, params.resizeMode, params.resizeStimVarargin{:})
 
 
 
