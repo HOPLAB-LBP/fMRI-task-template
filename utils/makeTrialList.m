@@ -1,73 +1,65 @@
 function trialList = makeTrialList(params)
-% MAKESTIMLIST Creates a stimulus list based on the parameters provided.
-%   This function fetches files from the stimulus directory specified in
-%   the parameters and generates a stimulus list for the experiment.
+% MAKETRIALLIST Creates a stimulus list based on the parameters provided.
+%   This function fetches image filenames from the external file
+%   specified in the parameters, and reads it line by line to make
+%   a list of trials, accompanied by run numbers according to the
+%   run number of the parameters.
+%
+%   Input:
+%       - params: A struct containing parameters including:
+%           * stimDir: The directory containing stimulus files.
+%           * stimListFile: The file containing a list of stimuli.
+%           * numRuns: The number of runs.
+%
+%   Output:
+%       - trialList: A struct array containing the list of trials with
+%         run numbers and filenames.
 
 % Fetch the files from the stimulus directory
 files = dir(params.stimDir);
 
-% Count the number of files
-numStim = length(files);
+% Fetch the stimulus list file and read it
+fid = fopen(params.stimListFile, 'r');
 
-% First possibility: a file with a list of stimuli has been provided
-% Check if params.stimListFile exists
-if isfield(params, 'stimListFile') && exist(params.stimListFile, 'file') == 2
-    % Read the stimulus list file
-    fid = fopen(params.stimListFile, 'r');
-    if fid == -1
-        error(['Could not open stimulus list file: ', params.stimListFile]);
-    end
-    
-    % Read lines from the file
-    stimList = textscan(fid, '%s %s');
-    
-    % Close the file
-    fclose(fid);
-
-    % Make a design list based on the input stim list & number of runs
-    % Calculate how many trials per run
-    trialsPerRun = floor(length(stim_list) / params.numRuns);
-    % Make a list of runs corresponding to the trials
-    runColumn = repelem(1:params.numRuns, trialsPerRun)';
-    % Create the output trial list
-    trialList = struct();
-    % Assign values to each field
-    for i = 1:stimList
-        trialList(i).run = runColumn(i);
-        trialList(i).filename = stimList(i);
-    end
-
-
-% Second possibility: no list has been provided
-else
-    % Fetch the desired total number of trials
-    totalNumTrials = params.numRuns * params.trialsPerRun;
-
-    % Check if the length of stim_list matches total_num_trials
-    if numStim ~= totalNumTrials
-        error('Number of trials in stimListFile does not match the input total number of trials.');
-    end
-
-    % Check the ratio between total num trials and stim list
-    ratio = totalNumTrials / numStim;
-    % If necessary, duplicate the elements from the stimulus list
-    duplicatedFiles = files
-    if ratio > 1
-        for i = 2:ratio
-            duplicatedFiles = [files; files];
-        end
-    end
-
-    % Make a list of runs corresponding to the trials
-    runColumn = repelem(1:params.numRuns, params.trialsPerRun)';
-    % Create the output trial list
-    trialList = struct();
-    % Assign values to each field
-    for i = 1:totalNumTrials
-        trialList(i).run = runColumn(i);
-        trialList(i).filename = fullfile(duplicatedFiles(i).folder, duplicatedFiles(i).name);
-    end
-
+% Give an error if the file can't be read
+if fid == -1
+    error(['Could not open stimulus list file: ', params.stimListFile]);
 end
 
+% Read the data from the lines ofthe file
+stimListData = textscan(fid, '%s %s');
+
+% Extract the list of stimuli from the data
+stimList = stimListData{1};
+
+% Close the file
+fclose(fid);
+
+% If we have different numbers of files and trials, give a warning
+if length(files) > length(stimList)
+   warning('You have %d trials and %d files. Not all files will be used.', length(stimList), length(files));
+elseif length(files) < length(stimList)
+    warning('You have %d trials and %d files. Some files will be used several times.', ...
+        length(stimList), length(files));
 end
+
+% Problems would arise if the number of trials defined in the external
+% file is not divisible by the number of runs
+if ~ mod(length(stimList), params.numRuns) == 0
+    error(['Your list of %d trials cannot be divided into %d runs of equal length.', ...
+        length(stimList), params.numRuns]);
+end
+
+% Make a design list based on the input stim list & number of runs
+% Calculate how many trials per run
+trialsPerRun = floor(length(stimList) / params.numRuns);
+% Make a list of runs corresponding to the trials
+runColumn = repelem(1:params.numRuns, trialsPerRun)';
+% Create the output trial list
+trialList = struct();
+% Assign values to each field
+for i = 1:length(stimList)
+    trialList(i).run = runColumn(i);
+    trialList(i).filename = stimList(i);
+end
+

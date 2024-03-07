@@ -1,5 +1,4 @@
 function params = parseParameterFile(filename)
-
 % PARSEPARAMETERFILE Parses a custom text file containing MATLAB parameters.
 %   This function reads the specified text file and extracts MATLAB parameters
 %   while ignoring commented-out text.
@@ -41,11 +40,35 @@ while ischar(tline)
     param_name = strtrim(parts{1});
     param_value = strtrim(parts{2});
     
-    % Convert value to appropriate type if necessary
-    % Check if the value is numeric
-    if ~isnan(str2double(param_value))
-        % Convert to number
-        param_value = str2double(param_value);
+    % Check if the value is a string
+    if startsWith(param_value, '''') && endsWith(param_value, '''')
+        % Remove single quotes
+        param_value = strtrim(param_value(2:end-1));
+    else
+        % Check if the value is a list enclosed in square brackets or curly brackets
+        if (startsWith(param_value, '[') && endsWith(param_value, ']')) || ...
+           (startsWith(param_value, '{') && endsWith(param_value, '}'))
+            % Remove brackets
+            param_value = strtrim(param_value(2:end-1));
+            % Split the list and handle string elements
+            list_values = strsplit(param_value, ',');
+            for i = 1:numel(list_values)
+                % Remove single quotes if present
+                if startsWith(list_values{i}, '''') && endsWith(list_values{i}, '''')
+                    list_values{i} = strtrim(list_values{i}(2:end-1));
+                end
+            end
+            % Assign parameter to structure as a cell array
+            params.(param_name) = list_values;
+            % Continue to the next line
+            tline = fgetl(fid);
+            continue;
+        end
+        % Check if the value is numeric
+        if ~isnan(str2double(param_value))
+            % Convert to number
+            param_value = str2double(param_value);
+        end
     end
     
     % Assign parameter to structure
@@ -55,28 +78,10 @@ while ischar(tline)
     tline = fgetl(fid);
 end
 
-% Extra step: create a varargin parameter for stimulus resizing
-varargin = {};
-if isfield(params, 'outHeight')
-    % outHeight is specified in params
-    varargin{end+1} = 'height';
-    varargin{end+1} = params.outHeight;
-end
-if isfield(params, 'outWidth')
-    % outWidth is specified in params
-    varargin{end+1} = 'width';
-    varargin{end+1} = params.outWidth;
-end
-
-% Add it to the output parameters
-params.('resizeStimVarargin') = varargin;
-
 % Close the file
 fclose(fid);
 
-% Give a 
+% Display a message
 disp(['Parameters imported from "', filename, '".']);
 
-
 end
-

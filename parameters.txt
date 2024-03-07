@@ -8,7 +8,8 @@
 % 
 % Enter your parameters in this format: "name = value".
 %
-% Avoid using quotation marks for strings as they will be read as strings regardless (avoid double-quotation marks).
+% Use quotation marks for strings, brackets for lists, etc. as you would in matlab.
+% Mind the use of cell arrays {'string1' 'string2'} and strings arrays ["string1" "string2]
 %
 % Write whatever you want in this file. As long as it is preceded by a '%' sign at the beginning of the line, it won't be read by MatLab.
 % Write all your parameters in uncommented lines, and they will be read as code.
@@ -44,7 +45,7 @@ resize = true
 %  - pixelSize: resize your image to the desired pixel size. Give your input in pixels.
 
 % resizeMode = pixelSize
-resizeMode = visualUnits
+resizeMode = 'visualUnits'
 
 
 outWidth = 8
@@ -56,38 +57,62 @@ outHeight = 8
 % Give your stimulus folder directory, along with any wildcard selection you would need.
 % Giving a wild card could help not selecting unwanted (invisible) files (e.g. DS_store, ., .., etc.).
 
-stimDir = ./src/stimuli/*.jpg
+stimDir = './src/stimuli/*.jpg'
 
-% Give inputs to determine the number, repetitions, randomisation, etc. of your stimuli
-% Start by declaring how many runs you have
+% Declare how many runs you have
 
-numRuns = 8
+numRuns = 2
 
-% Then, declare whether you have a stimulus list already made, or not. If you do, give its path as input here below in the 'stimListFile' parameter. If you don't, comment the line out.
+% Give the path to your trials stimulus list file here, where you made a sequential list of all the stimuli you will present for each trial you will have across the whole experiment
 
-stimListFile = /Users/tim/Desktop/list_of_trials.txt
-
-% If you don't have a stimulus list prepared, the following parameters need to be adjusted. Start by declaring the number of trials you have per run.
-
-trialsPerRun = 20
-
-% The total number of trials will be calculated as numRuns * trialsPerRun. A stimulus list will then be created by randomising the stimulus files and sharing them evenly across runs.
-% Repetitions: if your total number of trials is higher than your number of input stimulus files, the latter will be multiplied to fill in the total number of trials. Make sure your total number of trials is a multiple of your total number of files (e.g. 8 runs of 20 trials = 160 trials in total, should correspond to 80/40/20/10/… number of input images).
+stimListFile = './list_of_trials.txt'
 
 
+% Your stimulus list will be divided into runs based on the number you gave above. The order is kept intact by default. Decide below if you want to randomise it.
+% Decide on the randomisation of this list: 
+% - comment 'stimRandomisation' out to keep the order intact;
+% - set 'stimRandomisation' to 'run' to randomise trials within run
+% - set 'stimRandomisation' to 'all' to randomise trials across the whole experiment
 
-% Define parameters for the stimuli and experimental conditions
-numStim = 40; % Total number of stimuli
-% Number of stimuli per condition. Adjust these as per your stimuli set
-numStimC1 = 3; p.numStimC2 = 4; p.numStimC3 = 7; p.numStimC4 = 3; p.numStimC5 = 3;
-stimCat = {'C1','C2','C3','C4','C5','NC1','NC2','NC3','NC4','NC5'}; % Categories of stimuli
-numCon = 10; % Number of conditions
-numTrials = p.numStim * 2; % Total number of trials (each stimulus presented twice)
+stimRandomisation = 'run'
 
 
 %% FIXATION CROSS
 
 % Fixation cross size
-fixSize = [.6 .5 .1];
+fixSize = [.6 .5 .1]
+
 % Fixation cross color: each triplet corresponds to one element of the cross
-fixCol = [0 0 0;  255 255 255; 0 0 0]';
+fixCol = [0 0 0;  255 255 255; 0 0 0]
+
+
+
+%% SCREEN DISTANCE AND WIDTH
+
+% Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC)
+% The MRI values have distance of 630 and width of 340 at default. 
+scrDistMRI = 630
+scrWidthMRI = 340
+
+% Decide on the PC values
+scrDistPC = 520
+scrWidthPC = 510
+
+
+%% RESPONSE KEYS
+
+% Define the response key codes at the scanner (MRI) and in debug mode (PC), as well as the trigger values to expect
+% Keep the values below at default, except if you e.g. change buttons
+respKeyMRI = [51 52]
+triggerKeyMRI = 53
+
+% Decide on the keyboard responses to give in debugging mode
+respKeyPC = {'q' 'w'}
+triggerKeyPC = 'a'
+
+% Give names to the response keys for instruction purposes
+resKeyInstructions = {'left/green' 'right/red'}
+escapeKey = 'ESCAPE'
+
+
+

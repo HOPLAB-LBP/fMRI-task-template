@@ -54,15 +54,8 @@ initialisePTB();
 
 % If fmri mode is selected
 if fmriPC == true
-    scrDist = params.scrDistMRI; % screen distance
-    scrWidth = params.scrWidthMRI; % screen width
-    respKey = params.respKeyMRI; % response keys
-    triggerKey = params.triggerKeyMRI; % trigger key
-elseif fmriPC == false
-    scrDist = params.scrDistPC; % screen distance
-    scrWidth = params.scrWidthPC; % screen width
-    respKey = kbName(params.respKeyPC); % response keys
-    triggerKey = kbName(params.triggerKeyPC); % trigger key
+    scrDist = params.scrDistMRI % screen distance
+    scrWidth = params.scrWidthMRI % screen width
 end
 
 %% BEGIN THE EXPERIMENT
