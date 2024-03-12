@@ -13,7 +13,7 @@ close all; % Close all figures (except those of imtool.)
 clear; % Clear all variables from the workspace.
 
 % Decide on the debug and PC mode
-debug = true; % Debug mode flag. Set to false for actual experiment runs.
+debug = false; % Debug mode flag. Set to false for actual experiment runs.
 fmriPC = false; % Computer mode flag. Set to true whenrunning on the fMRI scanner computer.
 
 %% CHECK AND SET WORKING DIRECTORY
@@ -54,16 +54,64 @@ initialisePTB();
 
 % If fmri mode is selected
 if fmriPC == true
-    scrDist = params.scrDistMRI; % screen distance
-    scrWidth = params.scrWidthMRI; % screen width
-    respKey = params.respKeyMRI; % response keys
-    triggerKey = params.triggerKeyMRI; % trigger key
+    params.scrDist = params.scrDistMRI; % screen distance
+    params.scrWidth = params.scrWidthMRI; % screen width
+    params.respKey = params.respKeyMRI; % response keys
+    params.triggerKey = params.triggerKeyMRI; % trigger key
 elseif fmriPC == false
-    scrDist = params.scrDistPC; % screen distance
-    scrWidth = params.scrWidthPC; % screen width
-    respKey = kbName(params.respKeyPC); % response keys
-    triggerKey = kbName(params.triggerKeyPC); % trigger key
+    params.scrDist = params.scrDistPC; % screen distance
+    params.scrWidth = params.scrWidthPC; % screen width
+    params.respKey = kbName(params.respKeyPC); % response keys
+    params.triggerKey = kbName(params.triggerKeyPC); % trigger key
 end
+
+%% SUBJECT NUMBER AND RUN NUMBER
+
+% Declare subject number and decide on the run to start from
+if debug == true
+    answer = {'99','9'}; % Default values for subject and run numbers in debug mode
+    % in.butMap = 1; % Default button mapping in debug mode
+else
+    % Else if in actual experiment mode
+    prompt = {'subject number','run number'};
+    def = {'', ''};
+    answer = inputdlg(prompt,'',1,def);
+end
+
+% Store subject number and run number
+in.subNum = str2double(answer{1});
+in.runNum = str2double(answer{2});
+
+% Save a timestamp in the input parameters
+in.timestamp = string(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
+
+%% SETUP RESULTS DIRECTORY
+
+% Prepares a subject-specific results directory to store outputs
+
+% Construct the path to the results directory for the current subject.
+% The directory name includes the subject identifier (e.g., 'sub-1') to separate data by subject.
+resDir = fullfile(dr, 'data', ['sub-' answer{1}]);
+in.resDir = resDir; % Store the constructed path in the 'in' structure for later use.
+
+% Check if the results directory exists & if we're not in debug mode
+if exist(resDir, 'dir') == 0 && debug == false
+    mkdir(resDir);
+end
+
+%% TRIALS LIST
+
+% Create a list of trials based on the input parameters
+trialList = makeTrialList(params);
+
+% Make a file name with subject number and time stamp
+trialListFilename = sprintf('./trialList_subj%d_%s.tsv', in.subNum, in.timestamp);
+trialListDir = fullfile(resDir, trialListFilename);
+
+% Save the list as a tsv file
+tsvTable = struct2table(trialList);
+writetable(tsvTable, trialListDir, 'FileType','text', ...
+    'Delimiter', '\t');
 
 %% BEGIN THE EXPERIMENT
 
@@ -71,6 +119,15 @@ end
 cleanObj = onCleanup(@()sca);
 
 
+
+% BUTTON MAPPING
+
+% at the start of each run, determine a button mapping
+% based on the input parameters and the global parameters
+% we could set a default butmap if debug is set to true
+
+% Determine button mapping based on parameters, subject & run number
+butMap = determineButtonMapping(in, params);
 
 
 

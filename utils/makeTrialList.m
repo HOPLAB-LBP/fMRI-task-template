@@ -29,8 +29,17 @@ end
 % Read the data from the lines ofthe file
 stimListData = textscan(fid, '%s %s');
 
-% Extract the list of stimuli from the data
-stimList = stimListData{1};
+% Create an empty list to hold onto the file values
+stimList = cell(1, length(stimListData{1}));
+
+% Add the elements of the lines data to the list as strings
+for i = 1:numel(stimList)
+    % Remove potential quotation marks
+    stimListData{1}{i} = strrep(stimListData{1}{i}, '"', '');
+    stimListData{1}{i}= strrep(stimListData{1}{i}, '''', '');
+    % Add the filename to the list
+    stimList{i} = stimListData{1}{i};
+end 
 
 % Close the file
 fclose(fid);
@@ -60,6 +69,10 @@ trialList = struct();
 % Assign values to each field
 for i = 1:length(stimList)
     trialList(i).run = runColumn(i);
+    % Remove the unnecessary quotation marks
+    stimList(i) = strrep(stimList(i), '"', '');
+    stimList(i) = strrep(stimList(i), '''', '');
     trialList(i).filename = stimList(i);
 end
 
+end

@@ -21,11 +21,13 @@ if fid == -1
     error('Could not open file');
 end
 
-% Initialize parameters structure
+% Initialize an empty parameters structure
 params = struct();
 
 % Read lines from the file
 tline = fgetl(fid);
+
+% Extract the information from the line
 while ischar(tline)
     % Ignore lines that start with '%'
     if isempty(tline) || tline(1) == '%'
@@ -40,45 +42,71 @@ while ischar(tline)
     param_name = strtrim(parts{1});
     param_value = strtrim(parts{2});
     
-    % Check if the value is a string
-    if startsWith(param_value, '''') && endsWith(param_value, '''')
-        % Remove single quotes
+    % Check for the type of the value and save it accordingly
+    
+    % Check if the value is a string (single or double quote)
+    if startsWith(param_value, '''') || startsWith(param_value, '"') ...
+            && endsWith(param_value, '''') || endsWith(param_value, '"')
+        % Remove single quotes and assign the value
         param_value = strtrim(param_value(2:end-1));
-    else
-        % Check if the value is a list enclosed in square brackets or curly brackets
-        if (startsWith(param_value, '[') && endsWith(param_value, ']')) || ...
-           (startsWith(param_value, '{') && endsWith(param_value, '}'))
-            % Remove brackets
-            param_value = strtrim(param_value(2:end-1));
-            % Split the list and handle string elements
-            list_values = strsplit(param_value, ',');
-            for i = 1:numel(list_values)
-                % Remove single quotes if present
-                if startsWith(list_values{i}, '''') && endsWith(list_values{i}, '''')
-                    list_values{i} = strtrim(list_values{i}(2:end-1));
-                end
-            end
-            % Assign parameter to structure as a cell array
-            params.(param_name) = list_values;
-            % Continue to the next line
-            tline = fgetl(fid);
-            continue;
+    
+    % Check if the value is a boolean
+    elseif param_value == "true"
+        param_value = true;
+    elseif param_value == "false"
+        param_value = false;
+    
+    % Check if the value is an array of numbers
+    elseif (startsWith(param_value, '[') && endsWith(param_value, ']'))
+        % Remove brackets
+        param_value = strtrim(param_value(2:end-1));
+        % Split the list and handle string elements
+        list_values = strsplit(param_value, ' ');
+        % Create an empty array to store the values
+        array = zeros(1, length(list_values));
+        % Loop through the values of the list
+        for i = 1:numel(list_values)
+            % Add the elements in the array as numbers
+            array(i) = str2double(list_values{i});
         end
-        % Check if the value is numeric
-        if ~isnan(str2double(param_value))
-            % Convert to number
-            param_value = str2double(param_value);
+        % Save the resulting array in the parameter value
+        param_value = array;
+
+    % Check if the value is a list of strings
+    elseif (startsWith(param_value, '{') && endsWith(param_value, '}'))
+        % Remove curly brackets
+        param_value = strtrim(param_value(2:end-1));
+        % Split the list and handle string elements
+        list_values = strsplit(param_value, ' ');
+        % Create an empty array to store the values
+        string_list = cell(1, length(list_values));
+        % Loop through the values of the list
+        for i = 1:numel(list_values)
+            % Remove unneccessary quotation marks
+            list_values{i} = strrep(list_values{i}, '"', '');
+            list_values{i} = strrep(list_values{i}, '''', '');
+            % Add the elements in the array as numbers
+            string_list{i} = list_values{i};
         end
+        % Save the resulting array in the parameter value
+        param_value = string_list;
+
+    % Check if the value is numeric
+    elseif ~isnan(str2double(param_value))
+        % Convert to number
+        param_value = str2double(param_value);
+
     end
     
     % Assign parameter to structure
     params.(param_name) = param_value;
     
-    % Read next line
+    % Read next line and continue in the while loop
     tline = fgetl(fid);
+
 end
 
-% Close the file
+% When done, close the file
 fclose(fid);
 
 % Display a message

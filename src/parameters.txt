@@ -9,7 +9,8 @@
 % Enter your parameters in this format: "name = value".
 %
 % Use quotation marks for strings, brackets for lists, etc. as you would in matlab.
-% Mind the use of cell arrays {'string1' 'string2'} and strings arrays ["string1" "string2]
+% Give you strings arrays with curly brackets {'string1' 'string2'}
+% Use spaces to separate your array elements, not commas
 %
 % Write whatever you want in this file. As long as it is preceded by a '%' sign at the beginning of the line, it won't be read by MatLab.
 % Write all your parameters in uncommented lines, and they will be read as code.
@@ -28,7 +29,7 @@ fixDur = 1
 prePost = 10
 
 % Trial duration: calculated as the sum of the stimulus presentation and fixation cross presentation times.
-trialDur = p.stimDur + p.fixDur
+trialDur = 3.5
 
 
 %% STIMULUS SIZE
@@ -65,7 +66,7 @@ numRuns = 2
 
 % Give the path to your trials stimulus list file here, where you made a sequential list of all the stimuli you will present for each trial you will have across the whole experiment
 
-stimListFile = './list_of_trials.txt'
+stimListFile = 'list_of_trials.txt'
 
 
 % Your stimulus list will be divided into runs based on the number you gave above. The order is kept intact by default. Decide below if you want to randomise it.
@@ -82,8 +83,10 @@ stimRandomisation = 'run'
 % Fixation cross size
 fixSize = [.6 .5 .1]
 
-% Fixation cross color: each triplet corresponds to one element of the cross
-fixCol = [0 0 0;  255 255 255; 0 0 0]
+% Fixation cross color: each triplet corresponds to one element of the cross from center to periphery
+fixColOut = [0 0 0]
+fixColMid = [255 255 255]
+fixColIn = [0 0 0]
 
 
 
@@ -103,15 +106,19 @@ scrWidthPC = 510
 
 % Define the response key codes at the scanner (MRI) and in debug mode (PC), as well as the trigger values to expect
 % Keep the values below at default, except if you e.g. change buttons
+% Make sure you align the response keys wit the response key instructions!
 respKeyMRI = [51 52]
 triggerKeyMRI = 53
 
 % Decide on the keyboard responses to give in debugging mode
-respKeyPC = {'q' 'w'}
+respKeyPC = {'q' "w"}
 triggerKeyPC = 'a'
 
 % Give names to the response keys for instruction purposes
+% Make sure the instructions response keys match the order of the actual given response keys
 resKeyInstructions = {'left/green' 'right/red'}
+
+% Declare an escape key to press to exit the task
 escapeKey = 'ESCAPE'
 
 
