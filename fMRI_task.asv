@@ -134,7 +134,7 @@ while true
     % Record all events in a run-specific log file.
     
     % Construct a unique identifier (runID)
-    runID = strcat(num2str(in.subNum), '-', num2str(in.runNum), '-', num2str(butMap(1)), '_', num2str(butMap(2)));
+    runID = strcat(num2str(in.subNum), '-', num2str(in.runNum), '-', num2str(butMap, ','));
     
     % Capture the current date and time to include in the log file name, providing
     % a timestamp that helps in organizing and identifying log files chronologically.

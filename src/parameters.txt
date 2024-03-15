@@ -50,7 +50,7 @@ resizeMode = 'visualUnits'
 
 
 outWidth = 8
-outHeight = 8
+% outHeight = 8
 
 
 %% STIMULUS LOCATION & DESIGN LIST

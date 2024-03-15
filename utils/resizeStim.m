@@ -1,4 +1,4 @@
-function resized_image = resizeStim(image, mode, varargin)
+function resizedImage = resizeStim(image, params)
 % RESIZESTIM Resizes an image based on input parameters.
 %   This function resizes the input image based on the specified mode and
 %   width/height parameters. If mode is 'visualUnits', the width and height
@@ -9,10 +9,10 @@ function resized_image = resizeStim(image, mode, varargin)
 %
 %   Parameters:
 %   image: The input image to be resized.
-%   mode: The mode of resizing. Must be 'visualUnits' or 'pixelSize'.
-%   Name-Value Pair Arguments:
-%   'width': The width of the resized image (visual degrees or pixels).
-%   'height': The height of the resized image (visual degrees or pixels).
+%   params: A parameter structure containing the following elements:
+%       resizeMode: The mode of resizing. Must be 'visualUnits' or 'pixelSize'.
+%       outWidth: The width of the resized image (visual degrees or pixels).
+%       outHeight: The height of the resized image (visual degrees or pixels).
 %
 %   Returns:
 %   resized_image: The resized image.
@@ -21,34 +21,39 @@ function resized_image = resizeStim(image, mode, varargin)
 %   resized_image = resizeStim(input_image, 'visualUnits', 'Height', 5);
 
 
-% Parse name-value pair arguments
-p = inputParser;
-addParameter(p, 'width', []);
-addParameter(p, 'height', []);
-parse(p, varargin{:});
+% Check which dimensions have been specified and calculate AR accordingly
+% If both width and height are specified, go ahead
+if isfield(params, 'outWidth') && isfield(params, 'outHeight')
+    % Report the values accordingly
+    width = params.outWidth;
+    height = params.outHeight;
 
-% Retrieve width and height values
-width = p.Results.width;
-height = p.Results.height;
-
-
-% If only one dimension is specified, calculate the other dimension proportionally
-if isempty(width)
+% If no width has been provided
+elseif ~isfield(params, 'outWidth')
     % Calculate width proportionally
     aspect_ratio = size(image, 2) / size(image, 1);
+    height = params.outHeight;
     width = height * aspect_ratio;
-elseif isempty(height)
+
+% If no height has been provided
+elseif ~isfield(params, 'outHeight')
     % Calculate height proportionally
     aspect_ratio = size(image, 1) / size(image, 2);
+    width = params.outWidth;
     height = width * aspect_ratio;
+
+% If no dimension has been provided, raise an error
+elseif ~isfield(params, 'outHeight') && ~isfield(params, 'outWidth')
+   error('Neither ''outWidth'' nor ''outHeight'' are specified in params.'); 
+
 end
 
-% Check mode
-if strcmpi(mode, 'visualUnits')
+% Check the resize mode
+if strcmpi(params.resizeMode, 'visualUnits')
     % Convert visual degrees to pixels
     output_width_pixels = convertVisualUnits(width, 'deg', 'px');
     output_height_pixels = convertVisualUnits(height, 'deg', 'px');
-elseif strcmpi(mode, 'pixelSize')
+elseif strcmpi(params.resizeMode, 'pixelSize')
     output_width_pixels = width;
     output_height_pixels = height;
 else
@@ -56,6 +61,6 @@ else
 end
 
 % Resize the image
-resized_image = imresize(image, [output_height_pixels , output_width_pixels]);
+resizedImage = imresize(image, [output_height_pixels , output_width_pixels]);
 
 end

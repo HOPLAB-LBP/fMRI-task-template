@@ -1,4 +1,4 @@
-function butMap = determineButtonMapping(in, params)
+function butMap = determineButtonMapping(params, subNum, runNum)
 % determineButtonMapping Determines the button mapping based on subject and run numbers.
 %
 % This function calculates the button mapping to be used in an experimental
@@ -23,9 +23,9 @@ function butMap = determineButtonMapping(in, params)
 
 
 % Check if subject number is even
-if mod(in.subNum, 2) == 0
+if mod(subNum, 2) == 0
     % For even subject numbers, check run number
-    if mod(in.runNum, 2) == 1
+    if mod(runNum, 2) == 1
         % If run number is odd, set button mapping to 1
         butMap.mapNumber = 1;
     else
@@ -34,7 +34,7 @@ if mod(in.subNum, 2) == 0
     end
 else
     % For odd subject numbers, also check run number
-    if mod(in.runNum, 2) == 1
+    if mod(runNum, 2) == 1
         % If run number is odd, set button mapping to 2
         butMap.mapNumber = 2;
     else
@@ -46,10 +46,10 @@ end
 % Based on the button map from above, switch the response keys or not
 if butMap.mapNumber == 1
     butMap.respKey = params.respKey; % Keep the order of response keys
-    butMap.resInst = params.resKeyInstructions; % Keep the order of response instructions
+    butMap.respInst = params.resKeyInstructions; % Keep the order of response instructions
 elseif butMap.mapNumber == 2
     butMap.respKey = fliplr(params.respKey); % Reverse the order of response keys
-    butMap.resInst = fliplr(params.resKeyInstructions); % Reverse the order of response instructions
+    butMap.respInst = fliplr(params.resKeyInstructions); % Reverse the order of response instructions
 end
 
 end

@@ -1,4 +1,4 @@
-function trialList = makeTrialList(params)
+function trialList = makeTrialList(params, in)
 % MAKETRIALLIST Creates a stimulus list based on the parameters provided.
 %   This function fetches image filenames from the external file
 %   specified in the parameters, and reads it line by line to make
@@ -68,11 +68,40 @@ runColumn = repelem(1:params.numRuns, trialsPerRun)';
 trialList = struct();
 % Assign values to each field
 for i = 1:length(stimList)
+    % Write the run number
     trialList(i).run = runColumn(i);
-    % Remove the unnecessary quotation marks
-    stimList(i) = strrep(stimList(i), '"', '');
-    stimList(i) = strrep(stimList(i), '''', '');
-    trialList(i).filename = stimList(i);
+    % Extract the filename string from the list
+    stimFileCell = stimList(i);
+    stimFileStr = stimFileCell{1};
+    % Write the image file path
+    trialList(i).filename = stimFileStr;
+end
+
+% Calculate the ideal stimulus onset times for one run
+stimOnsetRun= params.prePost:params.trialDur: ...
+    (trialsPerRun*params.trialDur)+(params.prePost-params.trialDur);
+% Make a list to extend to the complete trial list
+stimOnsetList = stimOnsetRun;
+for i = 2:params.numRuns
+    stimOnsetList = [stimOnsetList stimOnsetRun];
+end
+
+% Add relevant columns to the trial list structure
+for i = 1:numel(trialList)
+    % Declare a trial number
+    trialList(i).trialNb = i;
+    % Declare a button mapping based on subject and run number
+    trialList(i).butMap = determineButtonMapping(params, in.subNum, trialList(i).run).mapNumber;
+    trialList(i).respKey = determineButtonMapping(params, in.subNum, trialList(i).run).respKey;
+    trialList(i).respInst = determineButtonMapping(params, in.subNum, trialList(i).run).respInst;
+    % Declare a subject number
+    trialList(i).subNum = in.subNum;
+    % Declare the ideal stimulus onset times
+    trialList(i).idealStimOnset = stimOnsetList(i);
+    % Declare a placeholder for subject response
+    trialList(i).response = NaN;
+    % Declare a placeholder for actual stimulus onset
+    trialList(i).stimOnset= NaN;
 end
 
 end
