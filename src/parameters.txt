@@ -17,6 +17,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+
 %% STIMULUS TIMING
 
 % Stimulus duration - how long each stimulus is shown, in seconds
@@ -30,6 +31,15 @@ prePost = 10
 
 % Trial duration: calculated as the sum of the stimulus presentation and fixation cross presentation times.
 trialDur = 3.5
+
+
+
+%% TASK NAME
+
+% Give a short name to your task. This will be used to record log files. Make it informative and one-word.
+
+taskName = 'exp'
+
 
 
 %% STIMULUS SIZE
@@ -48,9 +58,9 @@ resize = true
 % resizeMode = pixelSize
 resizeMode = 'visualUnits'
 
-
 outWidth = 8
 % outHeight = 8
+
 
 
 %% STIMULUS LOCATION & DESIGN LIST
@@ -78,6 +88,7 @@ stimListFile = 'list_of_trials.txt'
 stimRandomisation = 'run'
 
 
+
 %% FIXATION CROSS
 
 % Fixation cross size
@@ -89,8 +100,19 @@ fixColMid = [255 255 255]
 fixColIn = [0 0 0]
 
 
+%% SCREEN SIZE AND COLOUR
 
-%% SCREEN DISTANCE AND WIDTH
+% Declare the background colour you want for your your screen. Give a single number for grayscale (e.g. 0 =  black) or an array of 3 numbers for RGB values (e.g. [200 0 0] = red)
+
+% screenCol = [255 0 0]
+screenCol = 0
+
+% Declare the size of the window in which the debugging mode will be ran (non full screen)
+debugWindow = [1920 1080]
+
+
+
+%% SCREEN DISTANCE
 
 % Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC)
 % The MRI values have distance of 630 and width of 340 at default. 
@@ -102,15 +124,21 @@ scrDistPC = 520
 scrWidthPC = 510
 
 
+
 %% RESPONSE KEYS
 
 % Define the response key codes at the scanner (MRI) and in debug mode (PC), as well as the trigger values to expect
-% Keep the values below at default, except if you e.g. change buttons
-% Make sure you align the response keys wit the response key instructions!
+% Keep the values below at default, except if you e.g. change buttons at the scanner
+% Make sure you align the response keys with the response key instructions
+% Based on the user defined fmriPC mode, either the MRI or the PC settings will be used.
+
+% First give the keys to use at the scanner (most likely, leave these unchanged)
+
 respKeyMRI = [51 52]
 triggerKeyMRI = 53
 
-% Decide on the keyboard responses to give in debugging mode
+% Then decide on the keyboard responses to give in debugging mode
+
 respKeyPC = {'q' "w"}
 triggerKeyPC = 'a'
 

@@ -1,4 +1,4 @@
-function params = parseParameterFile(filename)
+function params = parseParameterFile(filename, fmriMode)
 % PARSEPARAMETERFILE Parses a custom text file containing MATLAB parameters.
 %   This function reads the specified text file and extracts MATLAB parameters
 %   while ignoring commented-out text.
@@ -108,6 +108,29 @@ end
 
 % When done, close the file
 fclose(fid);
+
+% MODE-SPECIFIC PARAMETERS
+
+% Here we set some settings based on the fmriMode mode. First check whether
+% a fmri mode has been set, otherwise raise an error
+if ~exist("fmriMode", "var")
+    error(['No fmriMode mode has been defined. Set fmriMode to true or false' ...
+        ' before parsing parameters.']);
+end
+
+% If fmri mode is selected, choose these settings
+if fmriMode == true
+    params.scrDist = params.scrDistMRI; % screen distance
+    params.scrWidth = params.scrWidthMRI; % screen width
+    params.respKey = params.respKeyMRI; % response keys
+    params.triggerKey = params.triggerKeyMRI; % trigger key
+% If fmri mode is off, choose these settings
+elseif fmriMode == false
+    params.scrDist = params.scrDistPC; % screen distance
+    params.scrWidth = params.scrWidthPC; % screen width
+    params.respKey = kbName(params.respKeyPC); % response keys
+    params.triggerKey = kbName(params.triggerKeyPC); % trigger key
+end
 
 % Display a message
 disp(['Parameters imported from "', filename, '".']);
