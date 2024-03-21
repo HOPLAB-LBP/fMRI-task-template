@@ -54,8 +54,6 @@ params = parseParameterFile('parameters.txt', fmriMode);
 % Initialise psychtoolbox (PTB)
 initializePTB();
 
-% Store some 
-
 %% USER INPUT: SUBJECT NUMBER
 
 % Declare subject number and decide on the run to start from

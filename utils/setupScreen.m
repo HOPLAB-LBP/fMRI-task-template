@@ -1,4 +1,4 @@
-function [win, winRect] = setupScreen(params, debugMode)
+function [win, winRect, VBLTimestamp] = setupScreen(params, debugMode)
 % SETUPSCREEN - Configure the Psychtoolbox graphics window for stimulus presentation.
 %
 %   [win, winRect] = SETUPSCREEN(params, debugMode) configures the graphics window 
@@ -51,6 +51,10 @@ elseif debugMode == false
     % Open a full-screen window on the specified screen, with a background color of 0 (black).
     [win, winRect] = Screen('OpenWindow', screen, 0);
 end
+
+% Perform an initial screen flip to synchronize the start of the experiment
+% Collect a time stamp at the same time to keep a record
+[VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
 
 
 end
