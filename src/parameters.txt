@@ -38,7 +38,7 @@ trialDur = 3.5
 
 % Give a short name to your task. This will be used to record log files. Make it informative and one-word.
 
-taskName = 'exp'
+taskName = 'my_exp'
 
 
 
@@ -65,36 +65,40 @@ outWidth = 8
 
 %% STIMULUS LOCATION & DESIGN LIST
 
-% Give your stimulus folder directory, along with any wildcard selection you would need.
-% Giving a wild card could help not selecting unwanted (invisible) files (e.g. DS_store, ., .., etc.).
-
-stimDir = './src/stimuli/*.jpg'
-
 % Declare how many runs you have
 
 numRuns = 2
 
-% Give the path to your trials stimulus list file here, where you made a sequential list of all the stimuli you will present for each trial you will have across the whole experiment
+% Give the path to your trials stimulus list file here, where you made a sequential list of the stimuli you will present. This list can be partial or full (see Readme for full explanations).
+% The stimulus list file should be a .tsv file, with its first column named 'stimuli'.
+% - A full list has one line per trial for the whole experiment
+% - A partial list only has trial for a part of the experiment, e.g. for one run
 
-stimListFile = 'list_of_trials.txt'
+stimListFile = 'list_of_trials.tsv'
+
+% Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated. If you gave a full list, set this number to 1. If you gave a partial list, make sure to include as many repetitions necessary to fill in your experiment.
+
+numRepetitions = 2
 
 
-% Your stimulus list will be divided into runs based on the number you gave above. The order is kept intact by default. Decide below if you want to randomise it.
-% Decide on the randomisation of this list: 
-% - comment 'stimRandomisation' out to keep the order intact;
-% - set 'stimRandomisation' to 'run' to randomise trials within run
-% - set 'stimRandomisation' to 'all' to randomise trials across the whole experiment
+% Your trial list will be created based on the list of stimuli and number of repetitions you gave above. It will also be divided into runs based on the number of runs you declared.
+% The order of your stimulus list is kept intact by default. Decide below if you want to randomise it or not, and how.
+% - comment out 'stimRandomization' to keep the order intact;
+% - set 'stimRandomization' to 'run' to randomise trials within run;
+% - set 'stimRandomization' to 'all' to randomise trials across the whole experiment.
 
 stimRandomisation = 'run'
 
 
 
+
 %% FIXATION CROSS
 
-% Fixation cross size
+% Declare the fixation cross size in visual degrees
 fixSize = [.6 .5 .1]
 
-% Fixation cross color: each triplet corresponds to one element of the cross from center to periphery
+% Declare the fixation cross color: each triplet corresponds to one element of the cross from center to periphery
+% By default this is a black-white-black sequence
 fixColOut = [0 0 0]
 fixColMid = [255 255 255]
 fixColIn = [0 0 0]
@@ -104,7 +108,7 @@ fixColIn = [0 0 0]
 
 %% SCREEN SIZE AND COLOUR
 
-% Declare the background colour you want for your your screen. Give a single number for grayscale (e.g. 0 =  black) or an array of 3 numbers for RGB values (e.g. [200 0 0] = red)
+% Declare the background colour you want for your screen. Give a single number for grayscale (e.g. 0 =  black) or an array of 3 numbers for RGB values (e.g. [200 0 0] = red)
 
 % screenCol = [255 0 0]
 screenCol = 0
@@ -119,6 +123,20 @@ debugWindow = [1920 1080]
 % Declare the text size and font to use when displaying instructions on screen
 textSize = 30
 textFont = 'Helvetica'
+
+
+
+% Write your instructions here sentence by sentence; try to keep it relatively short (3-4 lines).
+% Use the place holder () to insert your response keys, those will be replaced by the actual response keys, in sequential order (left then right).
+% Add instructions line if necessary by declaring some more instruction fields (instructionsText4, instructionsText5, …)
+
+instructionsText1 = 'On each trial judge whether you prefer the current or the previous image.'
+instructionsText2 = 'Press () for the current image, or press () for the previous image.'
+instructionsText3 = 'REMEMBER: keep your eyes on the fixation point!'
+instructionsText4 = 'Press any button to begin!'
+
+% Write a message to display while the script waits for the trigger
+triggerWaitText = 'Experiment loading ...'
 
 
 

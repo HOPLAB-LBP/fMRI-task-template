@@ -1,0 +1,8 @@
+EVENT_TYPE	EVENT_NAME	RUNNUM	DATETIME	EXP_ONSET	ACTUAL_ONSET	DELTA	EVENT_ID
+ERROR	Err	-	2024-03-21 10:44:20.554	-	-	-	-
+Detailed error message:
+Error using Screen
+See error message printed above.
+
+Error in setupScreen (line 52)
+    [win, winRect] = Screen('OpenWindow', screen, 0);

@@ -1,4 +1,6 @@
-function initializePTB()
+function debugInitializePTB(keyboardID)
+% This function is exactly similar to initializePTB except it solves 
+% a problem I have on my mac which has to do with detecting keyboard input
 % INITIATEPTB Initializes the experiment environment.
 %   This function performs the necessary setup steps to initialize the
 %   experiment environment. It closes any open Psychtoolbox screens,
@@ -12,13 +14,13 @@ try
     
     % Unify key names across different operating systems
     %KbName('UnifyKeyNames');
-    KbName('UnifyKeyNames');
+    % KbName('UnifyKeyNames');
     
     % Create a queue for keyboard events
-    KbQueueCreate;
+    KbQueueCreate(keyboardID);
     
     % Start recording keyboard events
-    KbQueueStart;
+    KbQueueStart(keyboardID);
     
     % Initialize the random number generator with a random seed
     rng('shuffle');

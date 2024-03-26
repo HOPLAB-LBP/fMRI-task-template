@@ -128,8 +128,9 @@ if fmriMode == true
 elseif fmriMode == false
     params.scrDist = params.scrDistPC; % screen distance
     params.scrWidth = params.scrWidthPC; % screen width
-    params.respKey = kbName(params.respKeyPC); % response keys
-    params.triggerKey = kbName(params.triggerKeyPC); % trigger key
+    params.respKey = KbName(params.respKeyPC); % response keys
+    params.triggerKey = KbName(params.triggerKeyPC); % trigger key
+    params.escapeKey = KbName(params.escapeKey); % trigger key
 end
 
 % Display a message

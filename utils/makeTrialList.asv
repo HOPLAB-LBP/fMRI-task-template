@@ -9,7 +9,7 @@ function trialList = makeTrialList(params, in)
 %   fills the trial list structure with relevant information.
 %   It also keeps any extra variable contained in the .tsv file containing
 %   the list of trials that you provide with 'params.stimListFile', and 
-%   saves it with its original name in the output.
+%   saves it with
 %
 %   Input:
 %       - params: A structure containing parameters required to generate
@@ -39,7 +39,7 @@ function trialList = makeTrialList(params, in)
 %   Written by [Your Name] on [Date].
 
 % Check if the required fields are present in the params structure
-requiredFields = {'stimListFile', 'numRepetitions', 'numRuns', 'prePost', 'trialDur'};
+requiredFields = {'stimListFile', 'numRuns', 'prePost', 'trialDur'};
 missingFields = setdiff(requiredFields, fieldnames(params));
 if ~isempty(missingFields)
     error('makeTrialList:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
@@ -72,25 +72,22 @@ end
 trialsPerRun = floor(height(stimList) / params.numRuns);
 
 % Randomize trials if required, per run or across the task
-if isfield(params, 'stimRandomization')
-    if strcmp(params.stimRandomization, 'run')
-        % Randomize within each run
-        for i = 1:params.numRuns
-            % Find the index of the trials of the current run
-            idx = 1 + (trialsPerRun * (i-1)) : trialsPerRun + (trialsPerRun * (i-1));
-            % Create a new random index for these trials
-            randIdx = idx(randperm(length(idx)));
-            % Re-attribute the run rows randomly
-            stimList(idx,:) = stimList(randIdx,:);
-        end
-    elseif strcmp(params.stimRandomization, 'all')
-        % Create a random index for all stimuli
-        randIdx = randperm(height(stimList));
-        % Randomize the rows across all runs
-        stimList = stimList(randIdx, :);
+if strcmp(params.stimRandomization, 'run')
+    % Randomize within each run
+    for i = 1:params.numRuns
+        % Find the index of the trials of the current run
+        idx = 1 + (trialsPerRun * (i-1)) : trialsPerRun + (trialsPerRun * (i-1));
+        % Create a new random index for these trials
+        randIdx = idx(randperm(length(idx)));
+        % Re-attribute the run rows randomly
+        stimList(idx,:) = stimList(randIdx,:);
     end
+elseif strcmp(params.stimRandomization, 'all')
+    % Create a random index for all stimuli
+    randIdx = randperm(height(stimList));
+    % Randomize the rows across all runs
+    stimList = stimList(randIdx, :);
 end
-
 
 
 % Add the run number information to the list

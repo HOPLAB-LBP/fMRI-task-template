@@ -22,14 +22,19 @@ function logFile = createLogFile(params, in)
 %   Output argument:
 %   - logFile: File identifier for the created log file.
 
-% Construct a unique identifier (runID)
-runID = strcat(num2str(in.subNum), '-', num2str(in.runNum));
+% Check if the required fields are present in the params structure
+requiredFields = {'taskName'};
+missingFields = setdiff(requiredFields, fieldnames(params));
+if ~isempty(missingFields)
+    error('createLogFile:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
+end
+
 
 % Create a time stamp
 currentDateTime = string(datetime('now', 'Format', 'yyyyMMddHHmmss'));
 
 % Construct a log file name using the time stamp, runID, and task name
-logFileName = strcat(currentDateTime, '_log_', runID, '_', params.taskName, '.tsv');
+logFileName = strcat(currentDateTime, '_log_', num2str(in.subNum), '_', params.taskName, '.tsv');
 
 % Create a path for the log file in the results folder
 logFilePathName = fullfile(in.resDir, logFileName);

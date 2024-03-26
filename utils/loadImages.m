@@ -1,5 +1,6 @@
 function imMat = loadImages(trialList, params)
 % LOADIMAGES Loads images from a list of filenames and optionally resizes them.
+%
 %   imMat = LOADIMAGES(trialList, params) reads images from the list of filenames
 %   provided in trialList and returns them in a structure imMat. The function also
 %   accepts a params structure that can specify whether to resize the images and 
@@ -20,6 +21,32 @@ function imMat = loadImages(trialList, params)
 %   - imMat:     A structure containing the loaded images. Each image is stored
 %                as a field 'im' in the structure. The field names are indexed
 %                according to their position in the trialList.
+%
+%   Details:
+%   - If image resizing is enabled (params.resize == true), the function resizes
+%     each image according to the specified output width and height (params.outWidth,
+%     params.outHeight). The resized images are stored in the 'im' field of the
+%     output structure.
+%   - Additionally, the function retrieves the actual pixel width and height of
+%     each image and saves them in the params structure under the fields 'imWidth'
+%     and 'imHeight', respectively. These values can be useful for further processing
+%     or analysis.
+%
+%   Example:
+%   trialList(1).filename = 'image1.jpg';
+%   trialList(2).filename = 'image2.jpg';
+%   params.resize = true;
+%   params.outWidth = 200;
+%   params.outHeight = 150;
+%   imMat = loadImages(trialList, params);
+
+% Check if the required fields are present in the params structure
+requiredFields = {'resize'};
+missingFields = setdiff(requiredFields, fieldnames(params));
+if ~isempty(missingFields)
+    error('loadImages:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
+end
+
 
 % Create an empty image structure to hold onto the images
 imMat = struct();
@@ -42,5 +69,10 @@ for imNum = 1:length(trialList)
     imMat.image(imNum).im = im;
 
 end
+
+% Save the actual pixel width and height of the image
+[imHeight, imWidth, ~] = size(im); % extract the height and width
+params.imHeight = imHeight; % save the image height
+params.imWidth = imWidth; % save the image width
 
 end

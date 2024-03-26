@@ -1,26 +1,36 @@
 function butMap = determineButtonMapping(params, subNum, runNum)
-% determineButtonMapping Determines the button mapping based on subject and run numbers.
+% DETERMINEBUTTONMAPPING Determines the button mapping based on subject and run numbers.
 %
-% This function calculates the button mapping to be used in an experimental
-% task based on the subject number and the run number. The mapping logic is
-% designed to alternate the button mapping across subjects and runs to
-% distribute potential biases evenly. Specifically, it assigns one mapping
-% for even subject numbers with odd run numbers and another mapping for
-% even subject numbers with even run numbers, and the opposite assignments
-% for odd subject numbers.
+%   butMap = DETERMINEBUTTONMAPPING(params, subNum, runNum) calculates the button mapping
+%   to be used in an experimental task based on the subject number and the run number. The mapping
+%   logic alternates the button mapping across subjects and runs to distribute potential biases evenly.
+%   Specifically, it assigns one mapping for even subject numbers with odd run numbers and another
+%   mapping for even subject numbers with even run numbers. The opposite assignments apply to odd subject
+%   numbers.
 %
-% Inputs:
-%   subNum - An integer representing the subject number.
-%   runNum - An integer representing the run number of the experiment.
+%   Inputs:
+%   - params:     Structure containing parameters required for button mapping. It must contain the fields:
+%                 'respKey' - A cell array containing response keys.
+%                 'resKeyInstructions' - A cell array containing instructions corresponding to response keys.
+%   - subNum:     An integer representing the subject number.
+%   - runNum:     An integer representing the run number of the experiment.
 %
-% Output:
-%   butMap - An integer (1 or 2) indicating the button mapping to be used.
+%   Output:
+%   - butMap:     Structure containing button mapping information.
+%                 Fields:
+%                 'mapNumber' - An integer (1 or 2) indicating the button mapping to be used.
+%                 'respKey' - Cell array containing response keys based on the determined mapping.
+%                 'respInst' - Cell array containing instructions corresponding to response keys.
 %
-% Example usage:
-%   butMap = determineButtonMapping(1, 2); % Might return 1 or 2 based on the logic.
-%
-% Andrea Costantino, [9/6/23]
+%   Example:
+%   butMap = determineButtonMapping(params, 1, 2); % Returns button mapping based on subject and run numbers.
 
+% Check if the required fields are present in the params structure
+requiredFields = {'respKey', 'resKeyInstructions'};
+missingFields = setdiff(requiredFields, fieldnames(params));
+if ~isempty(missingFields)
+    error('determineButtonMapping:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
+end
 
 % Check if subject number is even
 if mod(subNum, 2) == 0

@@ -20,7 +20,6 @@ function resizedImage = resizeStim(image, params)
 %   Example:
 %   resized_image = resizeStim(input_image, 'visualUnits', 'Height', 5);
 
-
 % Check which dimensions have been specified and calculate AR accordingly
 % If both width and height are specified, go ahead
 if isfield(params, 'outWidth') && isfield(params, 'outHeight')

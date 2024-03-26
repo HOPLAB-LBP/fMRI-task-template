@@ -23,7 +23,7 @@ function logError(logFile, exception)
 stackTrace = getReport(exception, 'extended', 'hyperlinks', 'off');
 
 % Log error message and stack trace to the log file
-fprintf(logFile, 'ERROR\tErr\t%s\t-\t-\t-\t-\n', string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')));
+fprintf(logFile, 'ERROR\tErr\t-\t%s\t-\t-\t-\t-\n', string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')));
 fprintf(logFile, 'Detailed error message:\n%s\n', stackTrace);
 
 % Also display the error message in the MATLAB Command Window

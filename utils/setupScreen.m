@@ -1,4 +1,4 @@
-function [win, winRect, VBLTimestamp] = setupScreen(params, debugMode)
+function [win, winRect, screen, VBLTimestamp] = setupScreen(params, debugMode)
 % SETUPSCREEN - Configure the Psychtoolbox graphics window for stimulus presentation.
 %
 %   [win, winRect] = SETUPSCREEN(params, debugMode) configures the graphics window 
@@ -27,6 +27,11 @@ function [win, winRect, VBLTimestamp] = setupScreen(params, debugMode)
 %   - Sync tests are disabled to ensure compatibility.
 %   - A full-screen window with a black background is opened for the experimental presentation.
 
+requiredFields = {'debugWindow'};
+missingFields = setdiff(requiredFields, fieldnames(params));
+if ~isempty(missingFields)
+    error('setupScreen:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
+end
 
 % Check for debug mode or not
 if debugMode == true
