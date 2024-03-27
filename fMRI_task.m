@@ -16,7 +16,7 @@ clear; % Clear all variables from the workspace.
 cleanObj = onCleanup(@()sca);
 
 % Decide on the debugMode and PC mode
-debugMode = false; % debugMode mode flag. Set to false for actual experiment runs.
+debugMode = true; % debugMode mode flag. Set to false for actual experiment runs.
 fmriMode = false; % Computer mode flag. Set to true whenrunning on the fMRI scanner computer.
 
 %% CHECK AND SET WORKING DIRECTORY
@@ -54,11 +54,11 @@ params = parseParameterFile('parameters.txt', fmriMode);
 % % This should be removed eventually
 % This is a quick fix for mac users: detect the ID of your keyboard
 % keyboardID = detectKeyboard();
-keyboardID = 26;
+keyboardID = 23;
 
 % Initialise psychtoolbox (PTB)
 % initializePTB();
-debugInitializePTB();
+debugInitializePTB(23);
 
 %% USER INPUT: SUBJECT NUMBER
 
@@ -146,108 +146,89 @@ catch exception
 
 end
 
-%% FIXATION SETUP
+% %% FIXATION SETUP
+% 
+% % Set up the fixation point, in a try-catch structure to log errors
+% try
+%     % Prepare the central fixation point based on the window & parameters
+%     [fixSize, fixRect, fixCol] = setupFixation(params, winRect);
+% 
+% catch exception
+% 
+%     % Log the exception if it has been caught
+%     logError(logFile, exception);
+% 
+% end
+% 
+% % Save the visual degree-converted fixation size
+% in.fixSize = fixSize;
+% 
+% % Prepare an image rectangle where stimuli will be presented, positioned at
+% % the center and based on image size
+% % ImageRect = CenterRect([0 0 m m], winRect);
 
-% Set up the fixation point, in a try-catch structure to log errors
-try
-    % Prepare the central fixation point based on the window & parameters
-    [fixSize, fixRect, fixCol] = setupFixation(params, winRect);
+   
+%% RUN-SPECIFIC PARAMETERS
 
-catch exception
+% Prompt user to confirm which run to start now
+in.runNum = str2double(inputdlg('Start run #:', '', 1, {''}));
 
-    % Log the exception if it has been caught
-    logError(logFile, exception);
+% Extract the trials of the run
+runTrials = trialList([trialList.run] == in.runNum);
 
-end
+% Based on the run number find the button mapping & instructions
+butMap = unique([runTrials.respKey]);
+respInst = unique([runTrials.respInst]);
 
-% Save the visual degree-converted fixation size
-in.fixSize = fixSize;
+%% INSTRUCTIONS
 
-% Prepare an image rectangle where stimuli will be presented, positioned at
-% the center and based on image size
-% ImageRect = CenterRect([0 0 m m], winRect);
- 
-%% BEGIN THE EXPERIMENT
+% Generate the run-specific instructions
+displayInstructions(win, params, in, respInst);
 
-% Declare a default run number to start from
-in.runNum = 1;
+% Display them on screen and log it
+[VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
+% Log this event, recording the time at which the instructions were displayed.
+fprintf(logFile, 'FLIP\tInstr\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
 
-% Start going over the trial list, until we reach the end of it
-while true        
-    %% RUN-SPECIFIC PARAMETERS
-    
-    % Prompt user to confirm which run to start now
-    currentRun = {num2str(in.runNum)}; % declare a default option (next run)
-    in.runNum = str2double(inputdlg('Start run #:', '', 1, currentRun));
-    
-    % Extract the trials of the run
-    runTrials = trialList([trialList.run] == in.runNum);
-    
-    % Based on the run number find the button mapping & instructions
-    butMap = unique([runTrials.respKey]);
-    respInst = unique([runTrials.respInst]);
-    
-    %% INSTRUCTIONS
-    
-    % Generate the run-specific instructions
-    displayInstructions(win, params, in, respInst);
-    
-    % Display them on screen and log it
-    [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
-    % Log this event, recording the time at which the instructions were displayed.
-    fprintf(logFile, 'FLIP\tInstr\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
-    
-    % Log the key press confirming participant has read the instructions
-    conditionFunc = @(x) true; % A placeholder condition function that always returns true.
-    % switch back to this function eventually  
-    %LogKeyPress(params, in, logFile, false, true, conditionFunc);
-    % I'm using this function below due to a problem on my laptop
-    debugLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
+% Log the key press confirming participant has read the instructions
+conditionFunc = @(x) true; % A placeholder condition function that always returns true.
+% switch back to this function eventually  
+%LogKeyPress(params, in, logFile, false, true, conditionFunc);
+% I'm using this function below due to a problem on my laptop
+debugLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
 
 
-    %% TRIGGER WAIT
+%% TRIGGER WAIT
 
-    % Display a message on screen while waiting for the scanner trigger
-    DrawFormattedText(win, params.triggerWaitText, 'center', 'center', black);
+% Display a message on screen while waiting for the scanner trigger
+DrawFormattedText(win, params.triggerWaitText, 'center', 'center', black);
 
-    % Display the message and log it
-    [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
-    % Log the screen flip event, indicating that the experiment is in a trigger-wait state
-    fprintf(logFile, 'FLIP\tTgrWait\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
+% Display the message and log it
+[VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
+% Log the screen flip event, indicating that the experiment is in a trigger-wait state
+fprintf(logFile, 'FLIP\tTgrWait\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
 
-    % Record the trigger signal
-    % ** We record the trigger twice because of a bug where MR8 sends 2
-    % triggers **
-    conditionFunc = @(x) true; % A condition function that always returns true, used here for simplicity.
-    % here again, switch back to non-debug function afterwards
-    % LogKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
-    % LogKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
-    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
-    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
+% Record the trigger signal
+% ** We record the trigger twice because of a bug where MR8 sends 2
+% triggers **
+conditionFunc = @(x) true; % A condition function that always returns true, used here for simplicity.
+% here again, switch back to non-debug function afterwards
+% LogKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
+% LogKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
+debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
+debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
 
-    %% TRIAL LOOP
+%% TRIAL LOOP
 
-    % Show an initial fixation display
-    Screen('FillRect', win, gray); % Fill the screen with gray
-    Screen('FillOval', win, fixCol, fixRect); % Draw the fixation cross
-    
-    % Display the fixation cross and log it
-    [VBLTimestamp, ~, ~, ~] = Screen('Flip', win); % Flip the screen to display the fixation cross.
-    % Log this fixation display event, marking the onset of the fixation period in the experiment log file.
-    fprintf(logFile, 'FLIP\tFix\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
+% Show an initial fixation display
+Screen('FillRect', win, gray); % Fill the screen with gray
+displayFixation(win, winRect, in); % Draw the fixation element
 
-    %% END OF THE TRIAL LOOP
+% Display the fixation cross and log it
+[VBLTimestamp, ~, ~, ~] = Screen('Flip', win); % Flip the screen to display the fixation cross.
+% Log this fixation display event, marking the onset of the fixation period in the experiment log file.
+fprintf(logFile, 'FLIP\tFix\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), VBLTimestamp - in.scriptStart);
 
-    % Interupt the while loop when it's done
-    % If the end is reached, interrupt the while loop
-    if in.runNum == max([trialList.run]);
-        break
-    end
-
-    % Continue onto the next run: update the run number
-    in.runNum = in.runNum + 1;
-
-end
 
 
 

@@ -54,19 +54,25 @@ imMat = struct();
 % Loop through all the images
 for imNum = 1:length(trialList)
 
-    % Find the image file name
-    file = trialList(imNum).filename;
+    % Find the image file name in the 'stimuli' field
+    file = trialList(imNum).stimuli;
 
-    % Read the image
-    im = imread(file);
+    % Check if the trial is a fixation trial or not
+    if strcmp(file,'fixation')
+        disp('Prout')
 
-    % If necessary, resize the image
-    if params.resize == true
-        im = resizeStim(im, params);
+    else
+        % If not a fixation trial, read the image normally
+        im = imread(file);
+    
+        % If necessary, resize the image
+        if params.resize == true
+            im = resizeStim(im, params);
+        end
+    
+        % Add image to the structure
+        imMat.image(imNum).im = im;
     end
-
-    % Add image to the structure
-    imMat.image(imNum).im = im;
 
 end
 
