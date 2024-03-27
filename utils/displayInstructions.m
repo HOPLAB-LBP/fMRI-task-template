@@ -1,4 +1,4 @@
-function displayInstructions(win, params, in, respInst)
+function displayInstructions(win, params, in, respInst1, respInst2)
 % DISPLAYINSTRUCTIONS Displays instructions on the screen.
 %
 %   DISPLAYINSTRUCTIONS(WIN, PARAMS, BUTMAP) displays instructions on the
@@ -79,7 +79,10 @@ end
 % Find the place holders and insert the correct buttons where relevant
 % Find the occurrences of the placeholder '()'
 idx = strfind(instructionParagraph, '()');
-    
+
+% Make an array of response instructions to index from
+respInst = {respInst1, respInst2}
+
 % Loop through the place holder positions and replace them
 for i = 1:numel(idx)
     

@@ -1,4 +1,4 @@
-function [firstPressedKey, in] = LogKeyPress(params, in, logFile, triggerKeyBreaks, otherKeysBreak, conditionFunc)
+function [firstPressedKey, in] = logKeyPress(params, in, logFile, triggerKeyBreaks, otherKeysBreak, conditionFunc)
 %%% LogKeyPress - Function for logging key press
 % This function logs key press events and writes to logFile. It continues
 % until the conditionFunc returns true, or when the specific key events occur.
@@ -34,22 +34,23 @@ while conditionFunc(true)
 
     % log the trigger key
     if pressed && firstPress(params.triggerKey)
-        fprintf(logFile, 'PULSE\tTrigger\t%d\t%s\t-\t%f\t-\t%d\n', in.runNum, char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
+        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
         if triggerKeyBreaks
             break
         end
 
         % log and return if the escape key is pressed
     elseif pressed && firstPress(params.escapeKey)
-        fprintf(logFile, 'RESP\tEscape\t%d\t%s\t-\t%f\t-\t%d\n', in.runNum, char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
+        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
         in.pressedAbortKey = true; % Assign the pressed key
         %break
         error('ScriptExecution:ManuallyAborted', 'Script execution manually aborted.');
 
         % log any other key press and break if the condition is met
     elseif pressed
-        fprintf(logFile, 'RESP\tKeyPress\t%d\t%s\t-\t%f\t-\t%d\n', in.runNum, char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
-        if isempty(firstPressedKey) && any(keyCode == params.respKey) % Check if firstPressedKey is still empty and pressed key is in respKey array
+        logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+        % Check if firstPressedKey is still empty and pressed key is any of the response keys
+        if isempty(firstPressedKey) && (any(keyCode == params.respKey1) || any(keyCode == params.respKey2))
             firstPressedKey = keyCode; % Assign the pressed key
         end
         if otherKeysBreak

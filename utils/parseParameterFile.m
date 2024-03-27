@@ -1,115 +1,39 @@
 function params = parseParameterFile(filename, fmriMode)
 % PARSEPARAMETERFILE Parses a custom text file containing MATLAB parameters.
 %   This function reads the specified text file and extracts MATLAB parameters
-%   while ignoring commented-out text.
+%   while ignoring commented-out text, evaluating the content of the text
+%   file just as if it were a matlab script. It creates a structure called
+%   'params', which should correspond to the content of the parameter file.
 %
 %   INPUT:
 %   filename: The name of the text file to parse.
+%   fmriMode: A boolean flag indicating whether the function is operating 
+%       in fMRI mode. This will determine some screen & keyboard options.
 %
 %   OUTPUT:
 %   params: A MATLAB structure containing the extracted parameters.
+%
+%   Example:
+%   params = parseParameterFile('parameters.txt', true);
 
 % Check if the file exists
 if exist(filename, 'file') ~= 2
     error(['Your parameter file "', filename, '" does not exist.']);
 end
 
-% Read the text file in a file identifier
-fid = fopen(filename, 'r');
-% Check if the file was found and read
-if fid == -1
-    error('Could not open file');
-end
+% Read the contents of the text file
+fileID = fopen(filename, 'r');
+scriptCode = fread(fileID, '*char').';
+fclose(fileID);
 
-% Initialize an empty parameters structure
+% Declare an empty parameter structure that will be filled in
 params = struct();
 
-% Read lines from the file
-tline = fgetl(fid);
+% Evaluate and execute the script code, filling in the params structure
+eval(scriptCode);
 
-% Extract the information from the line
-while ischar(tline)
-    % Ignore lines that start with '%'
-    if isempty(tline) || tline(1) == '%'
-        tline = fgetl(fid);
-        continue;
-    end
-    
-    % Split the line by '='
-    parts = strsplit(tline, '=');
-    
-    % Extract parameter name and value
-    param_name = strtrim(parts{1});
-    param_value = strtrim(parts{2});
-    
-    % Check for the type of the value and save it accordingly
-    
-    % Check if the value is a string (single or double quote)
-    if startsWith(param_value, '''') || startsWith(param_value, '"') ...
-            && endsWith(param_value, '''') || endsWith(param_value, '"')
-        % Remove single quotes and assign the value
-        param_value = strtrim(param_value(2:end-1));
-    
-    % Check if the value is a boolean
-    elseif param_value == "true"
-        param_value = true;
-    elseif param_value == "false"
-        param_value = false;
-    
-    % Check if the value is an array of numbers
-    elseif (startsWith(param_value, '[') && endsWith(param_value, ']'))
-        % Remove brackets
-        param_value = strtrim(param_value(2:end-1));
-        % Split the list and handle string elements
-        list_values = strsplit(param_value, ' ');
-        % Create an empty array to store the values
-        array = zeros(1, length(list_values));
-        % Loop through the values of the list
-        for i = 1:numel(list_values)
-            % Add the elements in the array as numbers
-            array(i) = str2double(list_values{i});
-        end
-        % Save the resulting array in the parameter value
-        param_value = array;
 
-    % Check if the value is a list of strings
-    elseif (startsWith(param_value, '{') && endsWith(param_value, '}'))
-        % Remove curly brackets
-        param_value = strtrim(param_value(2:end-1));
-        % Split the list and handle string elements
-        list_values = strsplit(param_value, ' ');
-        % Create an empty array to store the values
-        string_list = cell(1, length(list_values));
-        % Loop through the values of the list
-        for i = 1:numel(list_values)
-            % Remove unneccessary quotation marks
-            list_values{i} = strrep(list_values{i}, '"', '');
-            list_values{i} = strrep(list_values{i}, '''', '');
-            % Add the elements in the array as numbers
-            string_list{i} = list_values{i};
-        end
-        % Save the resulting array in the parameter value
-        param_value = string_list;
-
-    % Check if the value is numeric
-    elseif ~isnan(str2double(param_value))
-        % Convert to number
-        param_value = str2double(param_value);
-
-    end
-    
-    % Assign parameter to structure
-    params.(param_name) = param_value;
-    
-    % Read next line and continue in the while loop
-    tline = fgetl(fid);
-
-end
-
-% When done, close the file
-fclose(fid);
-
-% MODE-SPECIFIC PARAMETERS
+% MODE-SPECIFIC SCREEN & KEY PARAMETERS
 
 % Here we set some settings based on the fmriMode mode. First check whether
 % a fmri mode has been set, otherwise raise an error
@@ -118,19 +42,37 @@ if ~exist("fmriMode", "var")
         ' before parsing parameters.']);
 end
 
+% Check if the relevant key and screen settings are present
+if fmriMode == 1
+    requiredFields = {'scrDistMRI','scrWidthMRI','respKeyMRI1','respKeyMRI2','triggerKeyMRI','escapeKey'};
+elseif fmriMode == 0
+    requiredFields = {'scrDistPC','scrWidthPC','respKeyPC1','respKeyPC2','triggerKeyPC','escapeKey'};
+end
+
+% Check if fields are missing
+missingFields = setdiff(requiredFields, fieldnames(params));
+if ~isempty(missingFields)
+    error('makeTrialList:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
+end
+
 % If fmri mode is selected, choose these settings
 if fmriMode == true
     params.scrDist = params.scrDistMRI; % screen distance
     params.scrWidth = params.scrWidthMRI; % screen width
-    params.respKey = params.respKeyMRI; % response keys
+    params.respKey1 = params.respKeyMRI1; % response key 1
+    params.respKey2 = params.respKeyMRI2; % response key 2
     params.triggerKey = params.triggerKeyMRI; % trigger key
+    params.escapeKey = KbName(params.escapeKey); % escape key
 % If fmri mode is off, choose these settings
 elseif fmriMode == false
     params.scrDist = params.scrDistPC; % screen distance
     params.scrWidth = params.scrWidthPC; % screen width
-    params.respKey = KbName(params.respKeyPC); % response keys
+    params.respKey1 = KbName(params.respKeyPC1); % response key 1
+    params.respKey2 = KbName(params.respKeyPC2); % response key 2
     params.triggerKey = KbName(params.triggerKeyPC); % trigger key
-    params.escapeKey = KbName(params.escapeKey); % trigger key
+    params.escapeKey = KbName(params.escapeKey); % escape key
+    params.respInst1 = params.respKeyPC1; % button1 instructions
+    params.respInst2 = params.respKeyPC2; % button2 instructions
 end
 
 % Display a message

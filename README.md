@@ -7,11 +7,21 @@ This is a template script for running a task in the fMRI scanner. It is designed
  - `utils`and `src` directories
  - `parameters.txt` file in the `src` directory
 
+## Parameters
+
+Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they control.
+
+- `` 
+...
+
 ## Trial list
 
 requirements: list of trials in a tsv file, with the first column named 'stimuli' and listing the files
 
 any other column will be read as an extra variable in the trial list structure
+
+use this if you want to monitor accuracy online: the variable will be read as you add it and can then be used 
+in the trial loop
 
 fixation events
 

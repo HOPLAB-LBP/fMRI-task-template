@@ -59,7 +59,7 @@ for imNum = 1:length(trialList)
 
     % Check if the trial is a fixation trial or not
     if strcmp(file,'fixation')
-        disp('Prout')
+        imMat.image(imNum).im = 'fixation';
 
     else
         % If not a fixation trial, read the image normally

@@ -26,7 +26,7 @@ function butMap = determineButtonMapping(params, subNum, runNum)
 %   butMap = determineButtonMapping(params, 1, 2); % Returns button mapping based on subject and run numbers.
 
 % Check if the required fields are present in the params structure
-requiredFields = {'respKey', 'resKeyInstructions'};
+requiredFields = {'respKey1','respKey2','respInst1','respInst2'};
 missingFields = setdiff(requiredFields, fieldnames(params));
 if ~isempty(missingFields)
     error('determineButtonMapping:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
@@ -55,11 +55,15 @@ end
 
 % Based on the button map from above, switch the response keys or not
 if butMap.mapNumber == 1
-    butMap.respKey = params.respKey; % Keep the order of response keys
-    butMap.respInst = params.resKeyInstructions; % Keep the order of response instructions
+    butMap.respKey1 = params.respKey1; % Keep the order of response keys
+    butMap.respKey2 = params.respKey2;
+    butMap.respInst1 = params.respInst1; % Keep the order of response instructions
+    butMap.respInst2 = params.respInst2;
 elseif butMap.mapNumber == 2
-    butMap.respKey = fliplr(params.respKey); % Reverse the order of response keys
-    butMap.respInst = fliplr(params.resKeyInstructions); % Reverse the order of response instructions
+    butMap.respKey1 = params.respKey2; % Reverse the order of response keys
+    butMap.respKey2 = params.respKey1;
+    butMap.respInst1 = params.respInst2; % Reverse the order of response instructions
+    butMap.respInst2 = params.respInst1;
 end
 
 end

@@ -1,41 +1,25 @@
-stimuli	category
-./src/stimuli/animal_sheep.jpg	animal
-./src/stimuli/animal_zebra.jpg	animal
-./src/stimuli/food_banana.jpg	food
-./src/stimuli/food_cake.jpg	food
-./src/stimuli/food_pizza.jpg	food
-./src/stimuli/object_camera.jpg	objects
-./src/stimuli/object_phone.jpg	objects
-./src/stimuli/people_wheel_repair.jpg	people
-./src/stimuli/people_crowd.jpg	people
-./src/stimuli/people_frisbee.jpg	people
-./src/stimuli/people_horse.jpg	people
-./src/stimuli/people_inside.jpg	people
-./src/stimuli/people_train.jpg	people
-./src/stimuli/scene_station.jpg	scene
-./src/stimuli/scene_working_space.jpg	scene
-./src/stimuli/sport_baseball.jpg	sport
-./src/stimuli/sport_skate_park.jpg	sport
-./src/stimuli/sport_skateboard.jpg	sport
-./src/stimuli/sport_tennis.jpg	sport
-./src/stimuli/vehicle_plane.jpg	vehicle
-./src/stimuli/animal_sheep.jpg	animal
-./src/stimuli/animal_zebra.jpg	animal
-./src/stimuli/food_banana.jpg	food
-./src/stimuli/food_cake.jpg	food
-./src/stimuli/food_pizza.jpg	food
-./src/stimuli/object_camera.jpg	objects
-./src/stimuli/object_phone.jpg	objects
-./src/stimuli/people_wheel_repair.jpg	people
-./src/stimuli/people_crowd.jpg	people
-./src/stimuli/people_frisbee.jpg	people
-./src/stimuli/people_horse.jpg	people
-./src/stimuli/people_inside.jpg	people
-./src/stimuli/people_train.jpg	scene
-./src/stimuli/scene_station.jpg	scene
-./src/stimuli/scene_working_space.jpg	scene
-./src/stimuli/sport_baseball.jpg	sport
-./src/stimuli/sport_skate_park.jpg	sport
-./src/stimuli/sport_skateboard.jpg	sport
-./src/stimuli/sport_tennis.jpg	sport
-./src/stimuli/vehicle_plane.jpg	vehicle
+stimuli	category	setting
+./src/stimuli/animal_sheep.jpg	animal	outside
+./src/stimuli/animal_zebra.jpg	animal	outside
+./src/stimuli/food_banana.jpg	food	inside
+./src/stimuli/food_cake.jpg	food	inside
+./src/stimuli/food_pizza.jpg	food	inside
+./src/stimuli/object_camera.jpg	objects	inside
+./src/stimuli/object_phone.jpg	objects	inside
+./src/stimuli/people_wheel_repair.jpg	people	outside
+./src/stimuli/people_crowd.jpg	people	outside
+./src/stimuli/people_frisbee.jpg	people	outside
+./src/stimuli/people_horse.jpg	people	outside
+./src/stimuli/people_inside.jpg	people	inside
+./src/stimuli/people_train.jpg	people	outside
+./src/stimuli/scene_station.jpg	scene	outside
+./src/stimuli/scene_working_space.jpg	scene	inside
+./src/stimuli/sport_baseball.jpg	sport	outside
+./src/stimuli/sport_skate_park.jpg	sport	outside
+./src/stimuli/sport_skateboard.jpg	sport	outside
+./src/stimuli/sport_tennis.jpg	sport	outside
+./src/stimuli/vehicle_plane.jpg	vehicle	outside
+fixation	fixation	
+fixation	fixation	
+fixation	fixation	
+fixation	fixation	

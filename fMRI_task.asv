@@ -355,10 +355,9 @@ catch exception
 end
 %% SAVE AND CLOSE
 
-% Log the end of the run
-% fprintf(logFile, 'END\t-\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart);
-logEvent(logFile, 'END','-', dateTimeStr, '-', GetSecs-in.scriptStart, '-', '-');
-% Save the relevant data and close PTB objects
+% Save (only if not in debug mode) and close the task after the main loop
+fprintf(logFile, 'END\t-\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart);
+
 SaveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile);
 
 

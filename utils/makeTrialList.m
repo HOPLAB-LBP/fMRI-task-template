@@ -97,7 +97,7 @@ end
 % Make a list of run numbers corresponding to the trials
 runList = repelem(1:params.numRuns, trialsPerRun)';
 % Convert the runList to a table
-runTable = array2table(runList, 'VariableNames', {'Run'});
+runTable = array2table(runList, 'VariableNames', {'run'});
 % Concatenate the runTable with the stimList table
 stimList = [stimList, runTable];
 
@@ -122,8 +122,10 @@ for i = 1:numel(trialList)
     trialList(i).run = runList(i);
     % Declare a button mapping based on subject and run number
     trialList(i).butMap = determineButtonMapping(params, in.subNum, trialList(i).run).mapNumber;
-    trialList(i).respKey = determineButtonMapping(params, in.subNum, trialList(i).run).respKey;
-    trialList(i).respInst = determineButtonMapping(params, in.subNum, trialList(i).run).respInst;
+    trialList(i).respKey1 = determineButtonMapping(params, in.subNum, trialList(i).run).respKey1;
+    trialList(i).respKey2 = determineButtonMapping(params, in.subNum, trialList(i).run).respKey2;
+    trialList(i).respInst1 = determineButtonMapping(params, in.subNum, trialList(i).run).respInst1;
+    trialList(i).respInst2 = determineButtonMapping(params, in.subNum, trialList(i).run).respInst2;
     % Declare a subject number
     trialList(i).subNum = in.subNum;
     % Declare the ideal stimulus onset times

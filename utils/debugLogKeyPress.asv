@@ -36,21 +36,22 @@ while conditionFunc(true)
 
     % log the trigger key
     if pressed && firstPress(params.triggerKey)
-        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+        fprintf(logFile, 'PULSE\tTrigger\t%s\t-\t%f\t-\t%d\n', char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
+        logEve
         if triggerKeyBreaks
             break
         end
 
-    % log and return if the escape key is pressed
+        % log and return if the escape key is pressed
     elseif pressed && firstPress(params.escapeKey)
-        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+        fprintf(logFile, 'RESP\tEscape\t%s\t-\t%f\t-\t%d\n', char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
         in.pressedAbortKey = true; % Assign the pressed key
         %break
         error('ScriptExecution:ManuallyAborted', 'Script execution manually aborted.');
 
         % log any other key press and break if the condition is met
     elseif pressed
-        logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+        fprintf(logFile, 'RESP\tKeyPress\t%s\t-\t%f\t-\t%d\n', char(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart, keyCode);
         if isempty(firstPressedKey) && (any(keyCode == params.respKey1) || any(keyCode == params.respKey2))
             firstPressedKey = keyCode; % Assign the pressed key
         end
