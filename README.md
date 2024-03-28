@@ -18,16 +18,27 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 This section explains how the trial list is made in the script, along with the randomisation, import of images, etc.
 
-![alt text](./src/readme_files/full_trial_list.png "Example 1: use a full trial list")
-
-![alt text](./src/readme_files/partial_trial_list.png "Example 2: use a partial trial list")
+### Here explanations on how to write your `.tsv` trial list
 
 requirements: list of trials in a tsv file, with the first column named 'stimuli' and listing the files
 
-any other column will be read as an extra variable in the trial list structure
-
 use this if you want to monitor accuracy online: the variable will be read as you add it and can then be used 
 in the trial loop
+
+any other column will be read as an extra variable in the trial list structure
+
+![trial_list](./src/readme_files/trial_list.png)
+
+### Here, explanations about the randomisation.
+
+![trial_randomization](./src/readme_files/trial_randomization.png)
+
+### Here explanations about fixation trials
+
+![fixation_trials](./src/readme_files/fixation_trials.png)
+
+
+
 
 fixation events: explain how writing 'fixation' instead of an image file name will make a fixation trial
 
