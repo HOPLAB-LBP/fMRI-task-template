@@ -18,7 +18,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 This section explains how the trial list is made in the script, along with the randomisation, import of images, etc.
 
-![alt text](./src/readme_files/full_trial_list.pdf)
+![alt text](./src/readme_files/full_trial_list.png)
 
 requirements: list of trials in a tsv file, with the first column named 'stimuli' and listing the files
 
