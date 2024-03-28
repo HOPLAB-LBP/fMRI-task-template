@@ -16,6 +16,10 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 ## Trial list
 
+This section explains how the trial list is made in the script, along with the randomisation, import of images, etc.
+
+![alt text](./src/readme_files/full_trial_list.pdf)
+
 requirements: list of trials in a tsv file, with the first column named 'stimuli' and listing the files
 
 any other column will be read as an extra variable in the trial list structure
@@ -23,10 +27,12 @@ any other column will be read as an extra variable in the trial list structure
 use this if you want to monitor accuracy online: the variable will be read as you add it and can then be used 
 in the trial loop
 
-fixation events
+fixation events: explain how writing 'fixation' instead of an image file name will make a fixation trial
 
 
 ## Trouble shooting notes
+
+This section lists the most often encountered bugs and their solution
 
 ### Screen Setup
 If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES).
