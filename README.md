@@ -6,6 +6,7 @@ This is a template script for running a task in the fMRI scanner. It is designed
 
  - `utils`and `src` directories
  - `parameters.txt` file in the `src` directory
+ - `list_of_trials.tsv` in the `src` directory
 
 ## Parameters
 
@@ -35,12 +36,22 @@ any other column will be read as an extra variable in the trial list structure
 
 ### Here explanations about fixation trials
 
+fixation events: explain how writing 'fixation' instead of an image file name will make a fixation trial
+
 ![fixation_trials](./src/readme_files/fixation_trials.png)
 
 
+## General script design
+
+Here an explanation of what the script does. 
+- Mention that it is meant to be played once for each run. 
+- Mention that the user has to input the run number each time.
+- Mention that the trial list is created once for the current participant, then sampled from for each run.
+
+## 
 
 
-fixation events: explain how writing 'fixation' instead of an image file name will make a fixation trial
+
 
 
 ## Trouble shooting notes
