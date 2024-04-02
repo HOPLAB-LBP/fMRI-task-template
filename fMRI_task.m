@@ -53,12 +53,12 @@ params = parseParameterFile('parameters.txt', fmriMode);
 
 % % This should be removed eventually
 % This is a quick fix for mac users: detect the ID of your keyboard
-% keyboardID = detectKeyboard();
-keyboardID = 23;
+keyboardID = detectKeyboard();
+% keyboardID = 23;
 
 % Initialise psychtoolbox (PTB)
-initializePTB();
-% debugInitializePTB(23);
+% initializePTB();
+debugInitializePTB(keyboardID);
 
 %% USER INPUT: SUBJECT & RUN NUMBER
 
@@ -188,9 +188,9 @@ try
     % Log the key press confirming participant has read the instructions
     conditionFunc = @(x) true; % A placeholder condition function that always returns true.
     % switch back to this function eventually  
-    logKeyPress(params, in, logFile, false, true, conditionFunc);
+    % logKeyPress(params, in, logFile, false, true, conditionFunc);
     % I'm using this function below due to a problem on my laptop
-    % debugLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
+    debugLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
     
     
     %% TRIGGER WAIT
@@ -208,10 +208,10 @@ try
     % ** We record the trigger twice because of a bug where MR8 sends 2 triggers **
     conditionFunc = @(x) true; % A condition function that always returns true, used here for simplicity.
     % here again, switch back to non-debug function afterwards
-    logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
-    logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
-    % debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
-    % debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
+    % logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
+    % logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
+    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
+    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
     
     %% PRE-FIXATION
     
@@ -232,8 +232,8 @@ try
     
     % Wait for and log any key presses during the initial fixation period.
     conditionFunc = @(x) (GetSecs - runStart) <= params.prePost; % Define a condition function for the duration of the pre-trial fixation.
-    logKeyPress(params, in, logFile, false, false, conditionFunc); % Call a custom function to log key presses, passing the condition for timing.
-    % debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Call a custom function to log key presses, passing the condition for timing.
+    % logKeyPress(params, in, logFile, false, false, conditionFunc); % Call a custom function to log key presses, passing the condition for timing.
+    debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Call a custom function to log key presses, passing the condition for timing.
     
     %% TRIAL LOOP
     
@@ -263,8 +263,8 @@ try
         % Define a condition to capture responses only during the stimulus duration
         conditionFunc = @(x) (GetSecs - trialStart) <= params.stimDur;
         % Record key presses during the stimulus presentation
-        pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc); % Capture and log the first key press, if any.
-        % pressedKey = debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Capture and log the first key press, if any.
+        % pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc); % Capture and log the first key press, if any.
+        pressedKey = debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Capture and log the first key press, if any.
 
         %% Trial accuracy
 
@@ -299,8 +299,8 @@ try
             pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc); % attempt to capture responses during the fixation.
             % pressedKey = debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % attempt to capture responses during the fixation.
         else
-            logKeyPress(params, in, logFile, false, false, conditionFunc); % Otherwise, continue to log any additional key presses (first response was already recorded).
-            % debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Otherwise, continue to log any additional key presses (first response was already recorded).
+            % logKeyPress(params, in, logFile, false, false, conditionFunc); % Otherwise, continue to log any additional key presses (first response was already recorded).
+            debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Otherwise, continue to log any additional key presses (first response was already recorded).
         end
     
         % Store the response (if any) in the trial list for later analysis.
@@ -311,7 +311,6 @@ try
     
     %% FINAL FIXATION
     
-    % Final Fixation Block
     % Fill the screen with gray to reset the background
     Screen('FillRect', win, gray);
     % Draw the final fixation cross
@@ -320,7 +319,6 @@ try
     % Flip the screen and log it
     [PostFixFlip, ~, ~, ~] = Screen('Flip', win);
     % Log the display of the final fixation cross, marking the end of active stimulus presentation.
-    % fprintf(logFile, 'FLIP\tFix\t%d\t%s\t-\t%f\t-\t-\n', in.numRun, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), PostFixFlip - in.scriptStart);
     logEvent(logFile, 'FLIP','Fix', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', '-');
     
     % Record any key presses during this final fixation period, ensuring all participant responses are captured.
