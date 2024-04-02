@@ -139,7 +139,7 @@ try
     %% SCREEN SETUP
     
     % Configure the PTB graphics window based on parameters and debug mode
-    [win, winRect, screen, VBLTimestamp] = setupScreen(params, debugMode);
+    [win, winRect, screen, VBLTimestamp] = setupScreen(debugMode);
     
     % Store the screen setup time stamp
     in.scriptStart = VBLTimestamp;
@@ -268,19 +268,20 @@ try
 
         %% Trial accuracy
 
-        % This is a working zone showing how you can record trial accuracy
-        % Fetch the correct key based on the current button mapping
-        if strcmp(runTrials(i).setting, 'inside')
-            corrKey = respKey1;
-        elseif strcmp(runTrials(i).setting, 'outside')
-            corrKey = respKey2;
-        else
-            corrKey = NaN;
-        end
-        % Calculate accuracy based on the current pressed key
-        accuracy = corrKey == pressedKey;
-        % Log the accuracy in the console
-        fprintf(1, 'Trial %d accuracy = %d\n', i, accuracy);
+        % % This is a working zone showing how you can record trial accuracy
+        % % It is commented out by default; uncommented it to see the demo
+        % % Fetch the correct key based on the current button mapping
+        % if strcmp(runTrials(i).setting, 'inside')
+        %     corrKey = respKey1;
+        % elseif strcmp(runTrials(i).setting, 'outside')
+        %     corrKey = respKey2;
+        % else
+        %     corrKey = NaN;
+        % end
+        % % Calculate accuracy based on the current pressed key
+        % accuracy = corrKey == pressedKey;
+        % % Log the accuracy in the console
+        % fprintf(1, 'Trial %d accuracy = %d\n', i, accuracy);
         
         %% Post-stimulus fixation
         
@@ -353,7 +354,7 @@ end
 % fprintf(logFile, 'END\t-\t%d\t%s\t-\t%f\t-\t-\n', in.runNum, string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS')), GetSecs-in.scriptStart);
 logEvent(logFile, 'END','-', dateTimeStr, '-', GetSecs-in.scriptStart, '-', '-');
 % Save the relevant data and close PTB objects
-SaveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile);
+saveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile);
 
 
 

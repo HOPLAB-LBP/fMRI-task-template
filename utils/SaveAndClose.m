@@ -1,4 +1,4 @@
-function SaveAndClose(params, in, debugMode, varargin)
+function saveAndClose(params, in, debugMode, varargin)
 % SAVEANDCLOSE - Save data and close resources.
 %
 %    Syntax:
@@ -25,13 +25,13 @@ function SaveAndClose(params, in, debugMode, varargin)
 
 % Parse input arguments
 ip = inputParser;
-addOptional(ip, 'runTrials', [], @(x) isnumeric(x) || iscell(x));
+addOptional(ip, 'runTrials', struct(), @isstruct);
 addOptional(ip, 'runImMat', [], @(x) isstruct(x) || isempty(x) || iscell(x));
 addOptional(ip, 'logFile', [], @isnumeric);
 parse(ip, varargin{:});
 
 runTrials = ip.Results.runTrials;
-runImMat = ip.Results.imList;
+runImMat = ip.Results.runImMat;
 
 % Show the mouse cursor again
 ShowCursor;
@@ -50,7 +50,8 @@ if debugMode ~= 1
     
     % Generate a unique identifier for the data and save data
     runInfo = [sprintf('%02d', in.subNum) '_' num2str(in.runNum)];
-    dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_' in.taskName '.mat']);
+    timeStamp = dateTimeStr();
+    dataName = fullfile(in.resDir, [timeStamp '_' runInfo '_' params.taskName '.mat']);
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
 end
 

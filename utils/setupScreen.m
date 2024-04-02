@@ -35,8 +35,8 @@ if debugMode == true
     % Extract the screen rectangle size from the selected screen
     windowRect = Screen('Rect', screenNumber);
     % Downsize it by 10% for a clearer view
-    windowRect(3) = round(screenSize(3)*0.9);
-    windowRect(4) = round(screenSize(3)*0.9);
+    windowRect(3) = round(windowRect(3)*0.9);
+    windowRect(4) = round(windowRect(4)*0.9);
 
     % Open a window on the specified screen, with the defined size and background color
     % The 'kPsychGUIWindow' flag ensures the window appears with GUI window decorations (title bar, etc.).

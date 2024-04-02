@@ -38,7 +38,7 @@ if strcmp(params.fixType, 'round')
     centerElement = outElement / 6;
     
     % Join the three element sizes in an array
-    rectSize = [outELement midElement centerElement];
+    rectSize = [outElement midElement centerElement];
     
     % Convert the element sizes from to pixels
     fixSize = round(convertVisualUnits(rectSize, 'deg', 'px')); 

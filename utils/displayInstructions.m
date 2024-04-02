@@ -81,7 +81,7 @@ end
 idx = strfind(instructionParagraph, '()');
 
 % Make an array of response instructions to index from
-respInst = {respInst1, respInst2}
+respInst = {respInst1, respInst2};
 
 % Loop through the place holder positions and replace them
 for i = 1:numel(idx)
