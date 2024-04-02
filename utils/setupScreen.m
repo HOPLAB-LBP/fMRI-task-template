@@ -1,4 +1,4 @@
-function [win, winRect, screen, VBLTimestamp] = setupScreen(debugMode)
+function [win, winRect, screenNumber, VBLTimestamp] = setupScreen(debugMode)
 % SETUPSCREEN - Configure the Psychtoolbox graphics window for stimulus presentation.
 %
 %   [win, winRect] = SETUPSCREEN(params, debugMode) configures the graphics window 

@@ -2,3 +2,5 @@ detectKeyboard.m
 _debugging.m
 tryout_scripts
 .DS_Store
+/data/.DS_Store
+/src/.DS_Store
