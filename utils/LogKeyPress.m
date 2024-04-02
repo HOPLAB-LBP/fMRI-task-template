@@ -1,22 +1,23 @@
 function [firstPressedKey, in] = logKeyPress(params, in, logFile, triggerKeyBreaks, otherKeysBreak, conditionFunc)
-%%% LogKeyPress - Function for logging key press
-% This function logs key press events and writes to logFile. It continues
-% until the conditionFunc returns true, or when the specific key events occur.
-% The function returns  an integer corresponding to key code of the first 
-% pressed key, if the first pressed key is included in the array params.respKey
-% (i.e., if the key pressed is one of the assigned keys for the task)
+% LOGKEYPRESS - Function for logging key press
+% 
+%   This function logs key press events and writes to logFile. It continues
+%   until the conditionFunc returns true, or when the specific key events occur.
+%   The function returns  an integer corresponding to key code of the first 
+%   pressed key, if the first pressed key is included in the array params.respKey
+%   (i.e., if the key pressed is one of the assigned keys for the task)
 %
-% Args:
-%   params (struct): A structure containing key codes.
-%   in (struct): A structure containing script start time and other information.
-%   logFile (file): The file to write logs to.
-%   triggerKeyBreaks (logical, optional): Whether pressing the trigger key breaks the loop.
-%   otherKeysBreak (logical, optional): Whether pressing any key other than the trigger or escape key breaks the loop.
-%   conditionFunc (function, optional): The function to evaluate for loop exit.
+%   Args:
+%    params (struct): A structure containing key codes.
+%    in (struct): A structure containing script start time and other information.
+%    logFile (file): The file to write logs to.
+%    triggerKeyBreaks (logical, optional): Whether pressing the trigger key breaks the loop.
+%    otherKeysBreak (logical, optional): Whether pressing any key other than the trigger or escape key breaks the loop.
+%    conditionFunc (function, optional): The function to evaluate for loop exit.
 %
-% Example:
-%   [firstPressedKey, in] = logKeyPress(p, logFile, in, true, false, @(keyCode) keyCode <= 4)
-%   [~, in] = logKeyPress(p, logFile, in, true, false, @(x) true) i.e., the loop continues indefinitely unless a key event breaks it.
+%   Example:
+%    [firstPressedKey, in] = logKeyPress(p, logFile, in, true, false, @(keyCode) keyCode <= 4)
+%    [~, in] = logKeyPress(p, logFile, in, true, false, @(x) true) i.e., the loop continues indefinitely unless a key event breaks it.
 %
 % Andrea Costantino [16/6/23]
 

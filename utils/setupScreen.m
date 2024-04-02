@@ -37,13 +37,16 @@ end
 if debugMode == true
     % In debug mode, disable sync tests to prevent Psychtoolbox warnings that can interrupt debugging.
     Screen('Preference', 'SkipSyncTests', 0);
-    screen = max(Screen('Screens')); % Identify the display screen to use, typically the primary monitor.
+    screenNumber = max(Screen('Screens')); % Identify the display screen to use, typically the primary monitor.
+    % Extract the screen rectangle size from the selected screen
+    windowRect = Screen('Rect', screenNumber);
+    % Downsize it by 10% for a clearer view
+    windowRect(3) = round(screenSize(3)*0.9);
+    windowRect(4) = round(screenSize(3)*0.9);
 
-    % Define the window size explicitly for debug purposes, allowing for a non-fullscreen window
-    windowRect = [0 0 params.debugWindow(1) params.debugWindow(2)];% Set the window size to the desired pixel size
     % Open a window on the specified screen, with the defined size and background color
     % The 'kPsychGUIWindow' flag ensures the window appears with GUI window decorations (title bar, etc.).
-    [win, winRect] = Screen('OpenWindow', screen, 0, windowRect, [], [], [], [], [], kPsychGUIWindow);
+    [win, winRect] = Screen('OpenWindow', screenNumber, 0, windowRect, [], [], [], [], [], kPsychGUIWindow);
 
 elseif debugMode == false
 
@@ -51,10 +54,10 @@ elseif debugMode == false
     ListenChar(2); % Enable character listening to suppress keypresses showing in MATLAB.
     HideCursor; % Hide the mouse cursor to avoid distractions.
     Screen('Preference', 'SkipSyncTests', 0); % Still disable sync tests for compatibility.
-    screen = max(Screen('Screens')); % Again, identify the display screen to use.
+    screenNumber = max(Screen('Screens')); % Again, identify the display screen to use.
 
     % Open a full-screen window on the specified screen, with a background color of 0 (black).
-    [win, winRect] = Screen('OpenWindow', screen, 0);
+    [win, winRect] = Screen('OpenWindow', screenNumber, 0);
 end
 
 % Perform an initial screen flip to synchronize the start of the experiment

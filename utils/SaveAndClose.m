@@ -1,25 +1,25 @@
 function SaveAndClose(params, in, debugMode, varargin)
-% SaveAndClose - Save data and close resources.
+% SAVEANDCLOSE - Save data and close resources.
 %
-% Syntax:
-%   SaveAndClose(params, in, varargin)
+%    Syntax:
+%      SaveAndClose(params, in, varargin)
 %
-% Inputs:
-%   - parals: Struct containing experiment parameters
-%   - in: Struct containing run information.
-%   - varargin: Optional additional variables to be saved. These can include:
-%               - runTrials: Array storing info about trials and responses.
-%               - runImMat: Struct storing info about the images (one image per row).
-%               - logFile: File identifier of the log file.
+%    Inputs:
+%      - parals: Struct containing experiment parameters
+%      - in: Struct containing run information.
+%      - varargin: Optional additional variables to be saved. These can include:
+%           - runTrials: Array storing info about trials and responses.
+%           - runImMat: Struct storing info about the images (one image per row).
+%           - logFile: File identifier of the log file.
 %
-% Description:
-%   This function saves relevant variables and files, and closes resources such as
-%   the task screen, log file, and input devices. The variables `params` and `in`
-%   are required, while the other variables are optional and will be saved if 
-%   provided.
+%     Description:
+%       This function saves relevant variables and files, and closes resources such as
+%       the task screen, log file, and input devices. The variables `params` and `in`
+%       are required, while the other variables are optional and will be saved if 
+%       provided.
 %
-% Example:
-%   SaveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile)
+%   Example:
+%       SaveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile)
 %
 % Andrea Costantino [16/6/23]
 
@@ -53,4 +53,5 @@ if debugMode ~= 1
     dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_' in.taskName '.mat']);
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
 end
+
 end

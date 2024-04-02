@@ -69,12 +69,8 @@ if debugMode == true
 else
     % Else if in actual experiment mode
     prompt = {'subject number', 'Run number'};
-    % If the subject number aready exists, auto-fill it
-    if exist('answer', 'var') == 1
-        def = {answer{1}, ''};
-    else
-        def = {'', ''};
-    end
+    % Define empty default answers
+    def = {'', ''};
     % Collect user input
     answer = inputdlg(prompt,'',1,def);
 end
@@ -221,7 +217,7 @@ try
     
     % Show an initial fixation display
     Screen('FillRect', win, gray); % Fill the screen with gray
-    displayFixation(win, winRect, in); % Draw the fixation element
+    displayFixation(win, winRect, params, in); % Draw the fixation element
     
     % Display the fixation cross and log it
     [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
@@ -290,7 +286,7 @@ try
         
         % Fill the screen with gray & show the fixation
         Screen('FillRect', win, gray);
-        displayFixation(win, winRect, in);
+        displayFixation(win, winRect, params, in);
 
         % Flip the screen and log it
         [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
@@ -319,7 +315,7 @@ try
     % Fill the screen with gray to reset the background
     Screen('FillRect', win, gray);
     % Draw the final fixation cross
-    displayFixation(win, winRect, in);
+    displayFixation(win, winRect, params, in);
 
     % Flip the screen and log it
     [PostFixFlip, ~, ~, ~] = Screen('Flip', win);

@@ -1,5 +1,6 @@
 function resizedImage = resizeStim(image, params)
 % RESIZESTIM Resizes an image based on input parameters.
+% 
 %   This function resizes the input image based on the specified mode and
 %   width/height parameters. If mode is 'visualUnits', the width and height
 %   parameters are treated as visual degrees of visual angle. If mode is

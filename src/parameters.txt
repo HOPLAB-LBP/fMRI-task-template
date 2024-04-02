@@ -17,11 +17,12 @@ params.stimDur = 2.5;
 % Fixation duration - how long the fixation cross appears for, in seconds. This corresponds to the ISI and to the response window.
 params.fixDur = 1;
 
-% Pre- and post-trial interval duration, in seconds.
-params.prePost = 10;
-
 % Trial duration: calculated as the sum of the stimulus presentation and fixation cross presentation times.
 params.trialDur = 3.5;
+
+% Pre- and post-run fixation period duration, in seconds.
+params.prePost = 10;
+
 
 
 
@@ -33,6 +34,7 @@ params.taskName = 'my_exp';
 
 
 
+
 %% STIMULUS SIZE
 
 % In this section, decide on whether your stimuli should be resized or not. If they already have the desired size, set the 'resize' parameter to 'false'. If your stimuli need resizing, then set it to 'true' and choose your resizing method.
@@ -40,17 +42,18 @@ params.taskName = 'my_exp';
 params.resize = true;
 
 % If you set 'resize' to 'true', choose a resize mode below by declaring the variable 'resizeMode'.
-% The possible resizing modes are: visualUnits, pixelSize. 
-% Give your output size by specifying the 'outWidth' and/or 'outHeight' parameters. Giving only one of them will adaptively resize the other proportionately.
+% The possible resizing modes are: 'visualUnits' and 'pixelSize'. 
+% Give your output size by specifying the 'outWidth' and/or 'outHeight' parameters. Giving only one of them will adaptively resize the other proportionately, which you should probably do if you use non-square images.
 % For each mode, give two values: one for the width, one for the height of the resized image.
-%  - visualUnits: convert your stimulus size from visual degrees to pixels. Give your input in degrees of visual angle.
-%  - pixelSize: resize your image to the desired pixel size. Give your input in pixels.
+%  - In the 'visualUnits' mode, you convert your stimulus size from visual degrees to pixels. Give your input in degrees of visual angle.
+%  - In the 'pixelSize' mode, you resize your image to the desired pixel size. Give your input in pixels.
 
-% params.resizeMode = pixelSize;
+% params.resizeMode = 'pixelSize';
 params.resizeMode = 'visualUnits';
 
 params.outWidth = 8;
 % params.outHeight = 8;
+
 
 
 
@@ -60,20 +63,20 @@ params.outWidth = 8;
 
 params.numRuns = 2;
 
-% Give the path to your trials stimulus list file here, where you made a sequential list of the stimuli you will present. This list can be partial or full (see Readme for full explanations).
+% Give the path to your trials stimulus list file here, where you made a sequential list of the stimuli you will present. This list can be partial or full (see the Readme file for full explanations on how full and partial lists will be processed).
 % The stimulus list file should be a .tsv file, with its first column named 'stimuli'.
-% - A full list has one line per trial for the whole experiment
-% - A partial list only has trial for a part of the experiment, e.g. for one run
+% - A full list has one line for each and every trial of the whole experiment.
+% - A partial list only has a list of trials for a part of the experiment, e.g. for one run.
 
 params.stimListFile = 'list_of_trials.tsv';
 
-% Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated. If you gave a full list, set this number to 1. If you gave a partial list, make sure to include as many repetitions necessary to fill in your experiment.
+% Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated. If you gave a full list, set this number to 1. If you gave a partial list, make sure to include as many repetitions as necessary to fill in your experiment.
 
 params.numRepetitions = 2;
 
 
 % Your trial list will be created based on the list of stimuli and number of repetitions you gave above. It will also be divided into runs based on the number of runs you declared.
-% The order of your stimulus list is kept intact by default. Decide below if you want to randomise it or not, and how.
+% The order of your stimulus list is kept intact by default. Decide below if you want to randomise it or not, and how (see the Readme file for a detailed explanation of how randomisation is operated).
 % - comment out 'stimRandomization' to keep the order intact;
 % - set 'stimRandomization' to 'run' to randomise trials within run;
 % - set 'stimRandomization' to 'all' to randomise trials across the whole experiment.
@@ -86,26 +89,14 @@ params.stimRandomization = 'run';
 %% FIXATION CROSS
 
 % Declare the fixation cross size in visual degrees
-params.fixSize = [.6 .5 .1];
-
-% Declare the fixation cross color: each triplet corresponds to one element of the cross from center to periphery
-% By default this is a black-white-black sequence
-params.fixColOut = [0 0 0];
-params.fixColMid = [255 255 255];
-params.fixColIn = [0 0 0];
+params.fixSize = .6;
 
 
+% Choose a type of fixation. There are two choices by default: a circular element (black-white-black target) or a classic black cross. Change the function 'displayFixation' to adjust the fixation element to your needs.
 
+params.fixType = 'round';
+% params.fixType = 'cross';
 
-%% SCREEN SIZE AND COLOUR
-
-% Declare the background colour you want for your screen. Give a single number for grayscale (e.g. 0 =  black) or an array of 3 numbers for RGB values (e.g. [200 0 0] = red)
-
-% params.screenCol = [255 0 0];
-params.screenCol = 0;
-
-% Declare the size of the window in which the debugging mode will be ran (non full screen)
-params.debugWindow = [1920 1080];
 
 
 
@@ -119,7 +110,7 @@ params.textFont = 'Helvetica';
 
 % Write your instructions here sentence by sentence; try to keep it relatively short (3-4 lines).
 % Use the place holder () to insert your response keys, those will be replaced by the actual response keys, in sequential order (left then right).
-% Add instructions line if necessary by declaring some more instruction fields (instructionsText4, instructionsText5, …)
+% Add instructions line if necessary by declaring some more instruction fields (instructionsText4, instructionsText5, …).
 
 params.instructionsText1 = 'On each trial judge whether the image is inside or outside.';
 params.instructionsText2 = 'Press () for the inside, or press () for outside.';
@@ -134,12 +125,12 @@ params.triggerWaitText = 'Experiment loading ...';
 
 %% SCREEN DISTANCE
 
-% Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC)
+% Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC).
 % The MRI values have distance of 630 and width of 340 at default. 
 params.scrDistMRI = 630;
 params.scrWidthMRI = 340;
 
-% Decide on the PC values
+% Decide on the PC values. The default are made to reflect the MRI values.
 params.scrDistPC = 520;
 params.scrWidthPC = 510;
 
@@ -148,9 +139,9 @@ params.scrWidthPC = 510;
 
 %% RESPONSE KEYS
 
-% Define the response key codes at the scanner (MRI) and in debug mode (PC), as well as the trigger values to expect
-% Keep the values below at default, except if you e.g. change buttons at the scanner
-% Make sure you align the response keys with the response key instructions
+% Define the response key codes at the scanner (MRI) and in debug mode (PC), as well as the trigger values to expect.
+% Keep the values below at default, except if you e.g. change buttons at the scanner.
+% Make sure you align the response keys with the response key instructions.
 % Based on the user defined fmriPC mode, either the MRI or the PC settings will be used.
 
 % First give the keys to use at the scanner (most likely, leave these unchanged)

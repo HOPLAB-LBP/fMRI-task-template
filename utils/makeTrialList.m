@@ -1,7 +1,7 @@
 function trialList = makeTrialList(params, in)
-% makeTrialList - Generate a list of trials based on provided parameters and input data.
+% MAKETRIALLIST - Generate a list of trials based on provided parameters and input data.
 %
-%   trialList = makeTrialList(params, in) generates a list of trials using
+%   trialList = MAKETRIALLIT(params, in) generates a list of trials using
 %   parameters stored in the 'params' structure and input data stored in
 %   the 'in' structure. It reads a stimulus list file, duplicates the list
 %   based on the specified number of repetitions, randomizes trials as
@@ -33,10 +33,6 @@ function trialList = makeTrialList(params, in)
 %       params.stimRandomization = 'run';
 %       in.subNum = 1;
 %       trialList = makeTrialList(params, in);
-%
-%   See also: readtable, determineButtonMapping
-%
-%   Written by [Your Name] on [Date].
 
 % Check if the required fields are present in the params structure
 requiredFields = {'stimListFile', 'numRepetitions', 'numRuns', 'prePost', 'trialDur'};

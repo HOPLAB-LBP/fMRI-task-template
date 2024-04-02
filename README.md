@@ -1,4 +1,4 @@
-# fMRI-task
+# fMRI-task template
 
 This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs.
 

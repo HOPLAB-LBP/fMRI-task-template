@@ -1,33 +1,36 @@
 function size = convertVisualUnits(size, varargin)
-% Convert the size of a stimulus from one unit to another. The function 
-% assumes square pixels. The function is inspired by 
-% https://www.sr-research.com/visual-angle-calculator/, and therefore 
-% follows the same calculations. The default parameters are set to match
-% the KU Leuven fMRI scanner facilities:
+% CONVERTUNITS Converts the size of a stimulus from one unit to another.
+%   This function assumes square pixels and follows the calculations
+%   inspired by https://www.sr-research.com/visual-angle-calculator/.
+%   The default parameters are set to match the KU Leuven fMRI scanner
+%   facilities.
 %
-% from_unit = 'deg'
-% to_unit = 'px'
-% distance_mm = 630 
-% display_resolution_x = 1920  
-% display_resolution_y = 1080  
-% display_size_x_mm = 340  
-% display_size_y_mm = 190  
+%   Parameters:
+%       - size (int or float): The size of the stimulus to be converted.
+%       - from_unit (str): The unit of 'size'. Must be 'mm', 'deg', or 'px'.
+%       - to_unit (str): The unit to which 'size' should be converted. Must 
+%           be 'mm', 'deg', or 'px'.
+%       - distance_mm (int, optional): The distance from the viewer to the 
+%           display, in millimeters. This argument is only needed if 
+%           converting between visual angle and millimeters.
+%       - display_resolution_x (int, optional): The horizontal resolution 
+%           of the display, in pixels. This argument is only needed if 
+%           converting between pixels and millimeters.
+%       - display_resolution_y (int, optional): The vertical resolution of 
+%           the display, in pixels. This argument is only needed if 
+%           converting between pixels and millimeters.
+%       - display_size_x_mm (int, optional): The width of the display, in 
+%           millimeters. This argument is only needed if converting between 
+%           pixels and millimeters.
+%       - display_size_y_mm (int, optional): The height of the display, in 
+%           millimeters. This argument is only needed if converting between 
+%           pixels and millimeters.
 %
-% Parameters:
-% size (int or float): The size of the stimulus to be converted.
-% from_unit (str): The unit of 'size'. Must be 'mm', 'deg', or 'px'.
-% to_unit (str): The unit to which 'size' should be converted. Must be 'mm', 'deg', or 'px'.
-% distance_mm (int, optional): The distance from the viewer to the display, in millimeters. This argument is only needed if converting between visual angle and millimeters.
-% display_resolution_x (int, optional): The horizontal resolution of the display, in pixels. This argument is only needed if converting between pixels and millimeters.
-% display_resolution_y (int, optional): The vertical resolution of the display, in pixels. This argument is only needed if converting between pixels and millimeters.
-% display_size_x_mm (int, optional): The width of the display, in millimeters. This argument is only needed if converting between pixels and millimeters.
-% display_size_y_mm (int, optional): The height of the display, in millimeters. This argument is only needed if converting between pixels and millimeters.
+%   Returns:
+%   - float: The size of the stimulus in the desired unit.
 %
-% Returns:
-% float: The size of the stimulus in the desired unit.
-%
-% Example:
-% convert_units(10, 'deg', 'mm', 100) -> 17.4977
+%    Example:
+%       - convert_units(10, 'deg', 'mm', 100) -> 17.4977
 %
 % Andrea Costantino [28/12/2022]
 
