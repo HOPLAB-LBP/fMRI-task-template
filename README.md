@@ -2,6 +2,28 @@
 
 This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs. Your main tool is `fMRI_task.m`, which is designed to play one run of experimental task at a time.
 
+To-do list:
+ - [ ] get the output files sorted out: 
+   - [ ] create event files, put them in a BIDS folder
+   - [ ] merge the trial list tsv in the main mat output
+   - [ ] rename the files correctly
+ Aim for this structure:
+````
+data
+├── bh
+    ├── sub-01
+    └── sub-02
+        ├── YYYY-MM-DD_sub-02_task-name.mat --> contains in, params, trialList for the whole experiment
+        ├── YYYY-MM-DD-HH:MM:SS_sub-02_run-01_task-name-log.tsv --> log file for run 1
+        ├── YYYY-MM-DD-HH:MM:SS_sub-02_run-02_task-name-log.tsv --> log file for run 2
+├── BIDS
+    ├── sub-01
+    └── sub-02
+        ├── sub-02_run-01_task-name_events.tsv --> event file for run 1
+        └── sub-02_run-02_task-name_events.tsv --> event file for run 2
+````
+
+
 **Repository structure**
 ```
 .
@@ -156,28 +178,15 @@ The instructions you write line by line in the parameters will be pasted togethe
 
 Upon completion and given the `debugMode` flag is off, your `data` folder should look like this:
 
+_This section is still under construction_
 ````
 data
 ├── sub-01
-└── sub-02
-    ├── 2024-04-02 18:47:19.175_231_1_size_task.mat
-    ├── 2024-04-03 09:57:45.609_231_2_size_task.mat
-    ├── 2024-04-03 10:58:51.772_231_3_size_task.mat
-    ├── 2024-04-03 11:00:15.461_231_5_size_task.mat
-    ├── 2024-04-03 11:14:18.047_sub231_run5_size_task.mat
-    ├── 20240402183523_log_231_size_task.tsv
-    ├── 20240402183927_log_231_size_task.tsv
-    ├── 20240403094805_log_231_size_task.tsv
-    ├── 20240403095644_log_231_size_task.tsv
-    ├── 20240403105826_log_231_size_task.tsv
-    ├── 20240403105936_log_231_size_task.tsv
-    ├── 20240403111340_log_231_size_task.tsv
-    └── trial-list-sub-231.tsv
+...
 ````
-
-One log file per run 
-One mat per run
-An overall tsv for the whole experiment
+<!-- One log file per run  -->
+<!-- One mat per run -->
+<!-- An overall tsv for the whole experiment -->
 
 
 
