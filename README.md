@@ -48,34 +48,34 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 | Parameter name | Default value | Description |
 | -------------- | :-----------: | ----------: |
-| `stimDur`  | 1.0 | |
-| `fixDur`  | 1.0 | |
-| `prePost` | 10 | |
-| `taskName` | 'my_exp' | |
-| `resize` | true | |
-| `resizeMode` | 'visualUnits' | |
-| `outWidth` | 8 | |
-| `outHeight` | 8 | |
-| `numRuns` | 2 | |
-| `stimListFile` | 'list_of_trials.tsv' | |
-| `numRepetitions` | 2 | |
-| `stimRandomization` | 'run' | |
-| `fixSize` | .6 | |
-| `fixType` | 'round' | |
-| `textSize` | 30 | |
-| `textFont` | 'Helvetica' | |
-| `instructionsText1`, `instructionsText2`, ... | 'On each trial..' | |
-| `triggerWaitText` | 'Experiment loading ...' | |
-| `scrDistMRI` | 630 | |
-| `scrWidthMRI` | 340 | |
-| `scrDistPC` | 520 | |
-| `scrWidthPC` | 510 | |
-| `respKeyMRI1`, `respKeyMRI2` | 51, 52 | |
-| `triggerKeyMRI` | 53 | |
-| `respInstMRI1`, `respInstMRI2` | 'left/green', 'right/red' | |
-| `respKeyPC1`, `respKeyPC2` | 'q', 'w' | |
-| `triggerKeyPC` | 'a' | |
-| `escapeKey` | 'ESCAPE' | |
+| `stimDur`  | `1` | Stimulus presentation time (in seconds). |
+| `fixDur`  | `1` | Duration of each post-stimulus fixation (in seconds). |
+| `prePost` | `10` | Duration of the pre- and post-run fixation periods (in seconds).|
+| `taskName` | 'my_exp' | Name of your experiment, useful to identify it in output files. |
+| `resize` | `true` | Resize flag, determines whether your stimuli get resized or not. |
+| `resizeMode` | 'visualUnits' | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](# Trial list)). |
+| `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
+| `outHeight` | `8` | If the resize flag is `true`, the height of your resized stimuli. |
+| `numRuns` | `2` | Total number of runs in the experiment. |
+| `stimListFile` | 'list_of_trials.tsv' | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](# Trial list)).|
+| `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list. |
+| `stimRandomization` | 'run' | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all'. |
+| `fixSize` | .`6` | Size of your fixation element (in degrees of visual angle).|
+| `fixType` | 'round' | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
+| `textSize` | `30` | Size of your text on screen. |
+| `textFont` | 'Helvetica' | Font of your text on screen. |
+| `instructionsText1`, `instructionsText2`, ... | 'On each trial..' | Line-by-line elements of instruction to give at the beginning of each run. |
+| `triggerWaitText` | 'Experiment loading ...' | Message to display while the script waits for a trigger to begin the task. |
+| `scrDistMRI` | `630` | Distance to the screen in the MRI scanner (in mm). |
+| `scrWidthMRI` | `340` | Width of the screen in the MRI scanner (in mm). |
+| `scrDistPC` | `520` | Estimated distance to the PC screen in debug mode (in mm).  |
+| `scrWidthPC` | `510` | Estimated width of the PC screen in debug mode (in mm).|
+| `respKeyMRI1`, `respKeyMRI2` | `51`, `52` | Key codes of the response buttons at the scanner (2-button right & red response box).|
+| `triggerKeyMRI` | `53` | Key code of the MRI trigger.|
+| `respInstMRI1`, `respInstMRI2` | 'left/green', 'right/red' | Names to display for each key in the instructions at the scanner.|
+| `respKeyPC1`, `respKeyPC2` | 'q', 'w' | Keyboard response keys in debug mode (will also be used in the instructions). |
+| `triggerKeyPC` | 'a' | Mock trigger keyboard key to use in debug mode.|
+| `escapeKey` | 'ESCAPE' | Keyboard key to use to abort the experiment.|
 
 
 
