@@ -1,6 +1,6 @@
 # fMRI task template
 
-This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs.
+This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs. Your main tool is `fMRI_task.m`, which is designed to play one run of experimental task at a time.
 
 ## Requirements
 
@@ -30,7 +30,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `stimListFile` | *'list_of_stimuli.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
 | `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). |
 | `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all' (see [Trial randomization](#trial-randomization)). |
-| `fixSize` | .`6` | Size of your fixation element (in degrees of visual angle).|
+| `fixSize` | `.6` | Size of your fixation element (in degrees of visual angle).|
 | `fixType` | _'round'_ | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
 | `textSize` | `30` | Size of your text on screen. |
 | `textFont` | _'Helvetica'_ | Font of your text on screen. |
@@ -56,7 +56,7 @@ The trials of your task will be executed based on the **parameters** and **list 
 
 ### How to write your list of stimuli
 
-Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `category` and `setting`).
+Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `animacy` and `setting`).
 
 ```
 stimuli     animacy     setting
@@ -74,13 +74,12 @@ Your list of trials will be build from the list of stimuli provided in the `stim
 
 There are two possible ways of writing this list:
 
-1. Provide a **full stimuli list**, with one line for each trial of *the whole* experiment, and set the number of repetitions to 1. This is the way to go if you want to control exactly the whole sequence of action.
-2. Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment, but not for the whole experiment. In this case, set the number of repetitions to >1. This is the way to go if you are repeating the same set of stimuli several times across the experiment.
+- Provide a **full stimuli list**, with one line for each trial of *the whole* experiment, and set the number of repetitions to 1. This is the way to go if you want to control exactly the whole sequence of action.
+- Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment, but not for the whole experiment. In this case, set the number of repetitions to >1. This is the way to go if you are repeating the same set of stimuli several times across the experiment.
 
 ![trial_list](./src/readme_files/trial_list.png)
 
-
-the file is saved or built, and contains all the variables needed 
+The resulting trial list gets enhanced of several extra variables (trial number, etc.) and is then saved as `trial-list-sub#.tsv`. On any given run, the file either already exists and is read, or gets created if it doesn't exist yet.
 
 ### Monitoring accuracy
 
@@ -102,13 +101,15 @@ You can introduce fixation events in your task by replacing image file names in 
 
 ![fixation_trials](./src/readme_files/fixation_trials.png)
 
+### Button randomisation & instructions
 
-## General script design
+This task template takes two response buttons, which can be determined using the `respKey` parameters. A random assignment is made for the first run. The order of buttons is then switched across runs. Make sure the repsonse instructions you write in the `respInst` parameters match the order of the response button parameters. These will be used to render correct instructions at the beginning of each run.
 
-Here an explanation of what the script does. 
-- Mention that it is meant to be played once for each run. 
-- Mention that the user has to input the run number each time.
-- Mention that the trial list is created once for the current participant, then sampled from for each run.
+![button_mapping](./src/readme_files/button_mapping.png)
+
+The instructions you write line by line in the parameters will be pasted together in a single paragraph. Add as many instruction lines as you need (`instructionsText4`, `instructionsText5`, ...). Make sure to have two **place holders** in your instructions, denoted with parentheses `()`. These will be replaced by the response instructions you gave, and alternated in between runs.
+
+![instructions](./src/readme_files/instructions.png)
 
 ## Output
 
@@ -124,13 +125,5 @@ This section lists the most often encountered bugs and their solution.
 
 | Problem | Resolution |
 | :------ | :--------- |
-| ### Screen Setup | If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES). |
-| ### Trigger Wait | There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.
-|
-
-
-### Screen Setup
-If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES).
-
-### Trigger Wait
-There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.
+| **Screen Setup** | If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES). |
+| **Trigger Wait** | There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.|
