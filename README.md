@@ -53,21 +53,18 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 The trials of your task will be executed based on the **parameters** and **list of stimuli** file that you input. Upon execution, a list of trials is created that contains all the information about the trials to be played in the experiment. 
 
-This section explains how the trial list is made in the script, along with the randomisation, import of images, etc.
 
 ### How to write your list of stimuli
 
 Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `category` and `setting`).
 
 ```
-stimuli	                                category	        setting
-./src/stimuli/animal_sheep.jpg	        animal	            outside
-./src/stimuli/animal_zebra.jpg	        animal	            outside
-./src/stimuli/food_banana.jpg	        food	            inside
-./src/stimuli/food_cake.jpg	            food	            inside
-./src/stimuli/food_pizza.jpg	        food	            inside
-./src/stimuli/object_camera.jpg	        objects	            inside
-./src/stimuli/object_phone.jpg	        objects	            inside
+stimuli     animacy     setting
+image1.png  animate     outside
+image2.png  inanimate   inside
+image3.png  inanimate   outside
+image4.png  animate     outside
+image5.png  animate     inside
 ```
 
 Your list of trials will be build from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
