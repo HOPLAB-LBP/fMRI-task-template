@@ -65,7 +65,7 @@ params.numRuns = 2;
 % - A full list has one line for each and every trial of the whole experiment.
 % - A partial list only has a list of trials for a part of the experiment, e.g. for one run.
 
-params.stimListFile = 'list_of_trials.tsv';
+params.stimListFile = 'list_of_stimuli.tsv';
 
 % Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated. If you gave a full list, set this number to 1. If you gave a partial list, make sure to include as many repetitions as necessary to fill in your experiment.
 

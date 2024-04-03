@@ -9,7 +9,7 @@ Make sure the following exist in your your root directory:
  - A `utils` folder containing utility functions.
  - A `src` folder containing all your stimuli in `src/stimuli`.
  - A `parameters.txt` file in the `src` directory, containing your experimental parameters.
- - A `list_of_trials.tsv` file in the `src` directory, containing a list of your trial stimuli & other relevant variables.
+ - A `list_of_stimuli.tsv` file in the `src` directory, containing a list of your trial stimuli & other relevant variables.
 
 ## Parameters
 
@@ -27,8 +27,8 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
 | `outHeight` | `8` | If the resize flag is `true`, the height of your resized stimuli. |
 | `numRuns` | `2` | Total number of runs in the experiment. |
-| `stimListFile` | *'list_of_trials.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
-| `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list. |
+| `stimListFile` | *'list_of_stimuli.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
+| `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). |
 | `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all'. |
 | `fixSize` | .`6` | Size of your fixation element (in degrees of visual angle).|
 | `fixType` | _'round'_ | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
@@ -51,13 +51,34 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 ## Trial list
 
+The trials of your task will be executed based on the **parameters** and **list of stimuli** file that you input. Upon execution, a list of trials is created that contains all the information about the trials to be played in the experiment. 
+
 This section explains how the trial list is made in the script, along with the randomisation, import of images, etc.
 
-### Here explanations on how to write your `.tsv` trial list
+### How to write your list of stimuli
 
-requirements: list of trials in a tsv file, with the first column named 'stimuli' and listing the files
+Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `category` and `setting`).
 
-use this if you want to monitor accuracy online: the variable will be read as you add it and can then be used 
+```
+stimuli	                        category	setting
+./src/stimuli/animal_sheep.jpg	animal	    outside
+./src/stimuli/animal_zebra.jpg	animal	    outside
+./src/stimuli/food_banana.jpg	food	    inside
+./src/stimuli/food_cake.jpg	    food	    inside
+./src/stimuli/food_pizza.jpg	food	    inside
+./src/stimuli/object_camera.jpg	objects	    inside
+./src/stimuli/object_phone.jpg	objects	    inside
+```
+
+Your list of trials will be build from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
+
+1. Based on the length of your stimuli column and the number of repetitions (`numRepetitions`), a total number of trials is calculated (stimuli list length * number of repetitions).
+2. Based on the number of runs 
+
+ There are two possible ways of writing this list:
+
+1. Provide a **full stimuli list**
+
 in the trial loop
 
 any other column will be read as an extra variable in the trial list structure
