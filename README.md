@@ -60,14 +60,14 @@ This section explains how the trial list is made in the script, along with the r
 Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `category` and `setting`).
 
 ```
-stimuli	                            category	    setting
-./src/stimuli/animal_sheep.jpg	    animal	        outside
-./src/stimuli/animal_zebra.jpg	    animal	        outside
-./src/stimuli/food_banana.jpg	    food	        inside
-./src/stimuli/food_cake.jpg	        food	        inside
-./src/stimuli/food_pizza.jpg	    food	        inside
-./src/stimuli/object_camera.jpg	    objects	        inside
-./src/stimuli/object_phone.jpg	    objects	        inside
+stimuli	                                category	        setting
+./src/stimuli/animal_sheep.jpg	        animal	            outside
+./src/stimuli/animal_zebra.jpg	        animal	            outside
+./src/stimuli/food_banana.jpg	        food	            inside
+./src/stimuli/food_cake.jpg	            food	            inside
+./src/stimuli/food_pizza.jpg	        food	            inside
+./src/stimuli/object_camera.jpg	        objects	            inside
+./src/stimuli/object_phone.jpg	        objects	            inside
 ```
 
 Your list of trials will be build from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
@@ -81,6 +81,13 @@ There are two possible ways of writing this list:
 2. Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment, but not for the whole experiment. In this case, set the number of repetitions to >1. This is the way to go if you are repeating the same set of stimuli several times across the experiment.
 
 ![trial_list](./src/readme_files/trial_list.png)
+
+
+the file is saved or built, and contains all the variables needed 
+
+### Monitoring accuracy
+
+You might wish to monitor the accuracy of your participants online, to have an idea of how the task is going or to give feedback. This can be achieved by playing with extra variables in your `list_of_stimuli.tsv` file. These variables will automatically be indexed in your trial list and can hence be accessed during/right after trial presentation. The script contains a section showing how to use such variables for accuracy monitoring (see the `%% monitoring accuracy` section, l.290).
 
 ### Trial randomization
 
@@ -109,7 +116,7 @@ Here an explanation of what the script does.
 ## Output
 
 Here I describe all the output that users will find in the data folder.
-
+show a tree of the results per participant
 
 
 
