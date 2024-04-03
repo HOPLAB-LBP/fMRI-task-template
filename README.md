@@ -47,7 +47,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 
 | Parameter name | Default value | Description |
-| -------------- | :-----------: | ----------: |
+| :-------------- | :-----------: | :---------- |
 | `stimDur`  | `1` | Stimulus presentation time (in seconds). |
 | `fixDur`  | `1` | Duration of each post-stimulus fixation (in seconds). |
 | `prePost` | `10` | Duration of the pre- and post-run fixation periods (in seconds).|
