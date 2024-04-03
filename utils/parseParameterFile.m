@@ -76,6 +76,9 @@ elseif fmriMode == false
     params.respInst2 = params.respKeyPC2; % button2 instructions
 end
 
+% Calculate a total trial duration: sum of stimulus presentation and fixation cross presentation times
+params.trialDur = params.stimDur + params.fixDur;
+
 % Display a message
 disp(['Parameters imported from "', filename, '".']);
 

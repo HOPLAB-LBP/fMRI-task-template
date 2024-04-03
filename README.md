@@ -4,16 +4,80 @@ This is a template script for running a task in the fMRI scanner. It is designed
 
 ## Requirements
 
- - `utils`and `src` directories
- - `parameters.txt` file in the `src` directory
- - `list_of_trials.tsv` in the `src` directory
+Make sure the following exist in your your root directory:
+
+ - A `utils` folder containing utility functions.
+ - A `src` folder containing all your stimuli in `src/stimuli`.
+ - A `parameters.txt` file in the `src` directory, containing your experimental parameters.
+ - A `list_of_trials.tsv` file in the `src` directory, containing a list of your trial stimuli & other relevant variables.
 
 ## Parameters
 
-Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they control.
+Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they do.
 
-- `` 
-...
+- `stimDur` 
+- `fixDur` 
+- `trialDur`
+- `prePost`
+- `taskName`
+- `resize`
+- `resizeMode`
+- `outWidth`
+- `outHeight`
+- `numRuns`
+- `numRepetitions`
+- `stimRandomization`
+- `fixSize`
+- `fixType`
+- `textSize`
+- `textFont`
+- `instructionsText1`, `instructionsText2`, ...
+- `triggerWaitText`
+- `scrDistMRI`
+- `scrWidthMRI`
+- `scrDistPC`
+- `scrWidthPC`
+- `respKeyMRI1`, `respKeyMRI2`
+- `respInstMRI1`, `respInstMRI2`
+- `triggerKeyMRI`
+- `respKeyPC1`, `respKeyPC2`
+- `respInstPC1`, `respInstPC2`
+- `triggerKeyPC`
+- `escapeKey`
+
+
+| Parameter name | Default value | Description |
+| -------------- | :-----------: | ----------: |
+| `stimDur`  | 1.0 | |
+| `fixDur`  | 1.0 | |
+| `prePost` | 10 | |
+| `taskName` | 'my_exp' | |
+| `resize` | true | |
+| `resizeMode` | 'visualUnits' | |
+| `outWidth` | 8 | |
+| `outHeight` | 8 | |
+| `numRuns` | 2 | |
+| `stimListFile` | 'list_of_trials.tsv' | |
+| `numRepetitions` | 2 | |
+| `stimRandomization` | 'run' | |
+| `fixSize` | .6 | |
+| `fixType` | 'round' | |
+| `textSize` | 30 | |
+| `textFont` | 'Helvetica' | |
+| `instructionsText1`, `instructionsText2`, ... | 'On each trial..' | |
+| `triggerWaitText` | 'Experiment loading ...' | |
+| `scrDistMRI` | 630 | |
+| `scrWidthMRI` | 340 | |
+| `scrDistPC` | 520 | |
+| `scrWidthPC` | 510 | |
+| `respKeyMRI1`, `respKeyMRI2` | 51, 52 | |
+| `triggerKeyMRI` | 53 | |
+| `respInstMRI1`, `respInstMRI2` | 'left/green', 'right/red' | |
+| `respKeyPC1`, `respKeyPC2` | 'q', 'w' | |
+| `triggerKeyPC` | 'a' | |
+| `escapeKey` | 'ESCAPE' | |
+
+
 
 ## Trial list
 
