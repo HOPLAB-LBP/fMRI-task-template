@@ -48,7 +48,9 @@ Here an explanation of what the script does.
 - Mention that the user has to input the run number each time.
 - Mention that the trial list is created once for the current participant, then sampled from for each run.
 
-## 
+## Output
+
+Here I describe all the output that users will find in the data folder.
 
 
 

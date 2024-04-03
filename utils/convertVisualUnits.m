@@ -31,8 +31,6 @@ function size = convertVisualUnits(size, varargin)
 %
 %    Example:
 %       - convert_units(10, 'deg', 'mm', 100) -> 17.4977
-%
-% Andrea Costantino [28/12/2022]
 
 % Set default values for optional arguments
 default_values = {'deg','px',630, 1920, 1080, 340, 190};

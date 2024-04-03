@@ -57,12 +57,14 @@ if strcmp(params.fixType, 'round')
     
     % Define the colors for the fixation point. This matrix specifies colors 
     % for each element of the fixation.
-    fixCol = [in.black;  in.white; in.black]';
+    fixCol = [in.black in.black in.black
+              in.white in.white in.white 
+              in.black in.black in.black]';
     
     % Draw the actual fixation cross
     Screen('FillOval', win, fixCol, fixRect); % Draw the fixation cross
 
-elseif strcmp(params.fixType, 'coss')
+elseif strcmp(params.fixType, 'cross')
 
     % Make a fixation cross with two intersected rectangles
     

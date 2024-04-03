@@ -1,37 +1,24 @@
-function saveAndClose(params, in, debugMode, varargin)
+function saveAndClose(params, in, debugMode, runTrials, trialList, runImMat, logFile)
 % SAVEANDCLOSE - Save data and close resources.
 %
 %    Syntax:
-%      SaveAndClose(params, in, varargin)
+%      SaveAndClose(params, in, debugMode, runTrials, runImMat, logFile)
 %
 %    Inputs:
-%      - parals: Struct containing experiment parameters
+%      - params: Struct containing experiment parameters
 %      - in: Struct containing run information.
-%      - varargin: Optional additional variables to be saved. These can include:
-%           - runTrials: Array storing info about trials and responses.
-%           - runImMat: Struct storing info about the images (one image per row).
-%           - logFile: File identifier of the log file.
+%      - runTrials: Array storing info about trials and responses.
+%      - runImMat: Struct storing info about the images (one image per row).
+%      - logFile: File identifier of the log file.
 %
 %     Description:
-%       This function saves relevant variables and files, and closes resources such as
-%       the task screen, log file, and input devices. The variables `params` and `in`
-%       are required, while the other variables are optional and will be saved if 
-%       provided.
+%       This function saves relevant variables and files, and closes 
+%       resources such as the task screen, log file, and input devices. The
+%       variables runTrials and runImMat will be saved in debugMode is
+%       turned off.
 %
 %   Example:
-%       SaveAndClose(params, in, 'runTrials', runTrials, 'runImMat', runImMat, 'logFile', logFile)
-%
-% Andrea Costantino [16/6/23]
-
-% Parse input arguments
-ip = inputParser;
-addOptional(ip, 'runTrials', struct(), @isstruct);
-addOptional(ip, 'runImMat', [], @(x) isstruct(x) || isempty(x) || iscell(x));
-addOptional(ip, 'logFile', [], @isnumeric);
-parse(ip, varargin{:});
-
-runTrials = ip.Results.runTrials;
-runImMat = ip.Results.runImMat;
+%       SaveAndClose(params, in, runTrials, runImMat, logFile)
 
 % Show the mouse cursor again
 ShowCursor;
@@ -42,17 +29,21 @@ Screen('CloseAll');
 % Enable character listening again
 ListenChar(0);
 
+% If we're not in debug mode, close the log file and save the run data
 if debugMode ~= 1
     % Close the log file
-    if ~isempty(ip.Results.logFile)
-        fclose(ip.Results.logFile);
+    if ~isempty(logFile)
+        fclose(logFile);
     end
     
     % Generate a unique identifier for the data and save data
-    runInfo = [sprintf('%02d', in.subNum) '_' num2str(in.runNum)];
-    timeStamp = dateTimeStr();
-    dataName = fullfile(in.resDir, [timeStamp '_' runInfo '_' params.taskName '.mat']);
+    runInfo = [sprintf('sub%02d', in.subNum) '_run' num2str(in.runNum)];
+    dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_' params.taskName '.mat']);
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
+    
+    % Save the updated trial list
+    writetable(struct2table(trialList), in.trialListDir , 'Delimiter', '\t', 'FileType', 'text');
+    
 end
 
 end

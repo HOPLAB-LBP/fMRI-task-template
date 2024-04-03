@@ -8,6 +8,11 @@ function dateTimeStr = dateTimeStr()
 %   Example:
 %       - dateTimeStr = getCurrentDateTimeString();
 
+% Extract the current date and time
 dateTimeStr = string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS'));
+
+% Extract the first (and only) element of the string array
+dateTimeStr = dateTimeStr{1};
+
 
 end

@@ -1,5 +1,6 @@
 function initializePTB()
 % INITIATEPTB Initializes the experiment environment.
+% 
 %   This function performs the necessary setup steps to initialize the
 %   experiment environment. It closes any open Psychtoolbox screens,
 %   unifies key names across different operating systems, creates a

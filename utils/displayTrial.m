@@ -1,4 +1,4 @@
-function displayTrial(runImMat, i, win, winRect, in)
+function displayTrial(params, runImMat, i, win, winRect, in)
 % DISPLAYTRIAL Renders the visual events of a prototypical trial
 %
 %   displayTrial(runImMat, i, win, in, logFile) contains the elements of 
@@ -30,7 +30,7 @@ imStim = runImMat(i).im;
 % If the trial contains a fixation
 if strcmp(imStim, 'fixation')
     % Display a fixation element instead of an image
-    displayFixation(win, winRect, in);
+    displayFixation(win, winRect, params, in);
 
 else
     % Create a texture from the image for rendering

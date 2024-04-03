@@ -8,12 +8,46 @@
 % participants are prompted to report if images show an inside or an
 % outside scene. 
 % 
-% Make sure to set the debugMode and fmriMode flags to the values you need
-% before running this script.
-%  - Turn 'debugMode' on to run the task in a window rather than full
-%    screen, and to avoid saving results.
-%  - Turn 'fmriMode' on to read the scanner trigger and response buttons,
-%    and use the scanner screen distance and width properties.
+% Here are the dependencies of the present script:
+%  - parameters arefrom an outside text file
+% called 'parameters.txt' a
+
+%
+% This script implements a 1-back memory task designed for cognitive 
+% neuroscience research, particularly for use in conjunction with fMRI 
+% studies. The task involves presenting stimuli to participants, who must 
+% indicate whether the current stimulus matches the one immediately 
+% preceding it. This script also records key events, including responses 
+% and triggers from the fMRI machine, into a log file for subsequent analysis.
+%
+% Please adjust the parameters according to your experimental requirements.
+% Be aware that due to MATLAB's single-threaded execution model, real-time 
+% event recording, especially for key presses, may not achieve millisecond 
+% accuracy. This limitation is crucial for tasks requiring precise timing 
+% measurements.
+%
+% NOTE: most of the script is meant to be general enough to be re-used for
+% other purposes **without any edit**. There are some sections, denoted by
+% ' -- TAKS-DEPENDENT, CHANGE THIS', that are.. well, task-dependent. 
+% Ideally, these are the **only** sections you should change. 
+%
+% IMPORTANT: To mitigate potential timing disruptions caused by MATLAB's 
+% execution model, consider employing MATLAB's timer objects for periodic 
+% checks or external software/hardware solutions for critical timing or 
+% response capture needs. Note that with the script's current configuration,
+% some key presses, including those intended as triggers from the fMRI 
+% machine, may not be recorded if they occur at the same exact time as
+% another event (e.g., screen flip).
+%
+% Customization Tips:
+% - Adjust parameters related to your stimuli (e.g., folders, classes, etc.)
+% - Adjust timing parameters to fit the desired stimulus presentation duration.
+% - Modify key detection logic if integrating with specialized hardware or 
+%   if additional response types need to be captured.
+% - Ensure compatibility with your fMRI machine's trigger mechanism, potentially
+%   requiring adjustments to the trigger listening setup (we wait for 2 pulses).
+
+% 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% CLEANUP & SET MODES

@@ -12,7 +12,7 @@
 %% STIMULUS TIMING
 
 % Stimulus duration - how long each stimulus is shown, in seconds
-params.stimDur = 2.5;
+params.stimDur = 1.0;
 
 % Fixation duration - how long the fixation cross appears for, in seconds. This corresponds to the ISI and to the response window.
 params.fixDur = 1;
