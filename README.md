@@ -15,67 +15,37 @@ Make sure the following exist in your your root directory:
 
 Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they do.
 
-- `stimDur` 
-- `fixDur` 
-- `trialDur`
-- `prePost`
-- `taskName`
-- `resize`
-- `resizeMode`
-- `outWidth`
-- `outHeight`
-- `numRuns`
-- `numRepetitions`
-- `stimRandomization`
-- `fixSize`
-- `fixType`
-- `textSize`
-- `textFont`
-- `instructionsText1`, `instructionsText2`, ...
-- `triggerWaitText`
-- `scrDistMRI`
-- `scrWidthMRI`
-- `scrDistPC`
-- `scrWidthPC`
-- `respKeyMRI1`, `respKeyMRI2`
-- `respInstMRI1`, `respInstMRI2`
-- `triggerKeyMRI`
-- `respKeyPC1`, `respKeyPC2`
-- `respInstPC1`, `respInstPC2`
-- `triggerKeyPC`
-- `escapeKey`
-
 
 | Parameter name | Default value | Description |
 | :-------------- | :-----------: | :---------- |
 | `stimDur`  | `1` | Stimulus presentation time (in seconds). |
 | `fixDur`  | `1` | Duration of each post-stimulus fixation (in seconds). |
 | `prePost` | `10` | Duration of the pre- and post-run fixation periods (in seconds).|
-| `taskName` | 'my_exp' | Name of your experiment, useful to identify it in output files. |
+| `taskName` | *'my_exp'* | Name of your experiment, useful to identify it in output files. |
 | `resize` | `true` | Resize flag, determines whether your stimuli get resized or not. |
-| `resizeMode` | 'visualUnits' | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](# Trial list)). |
+| `resizeMode` | _'visualUnits'_ | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](#trial-list)). |
 | `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
 | `outHeight` | `8` | If the resize flag is `true`, the height of your resized stimuli. |
 | `numRuns` | `2` | Total number of runs in the experiment. |
-| `stimListFile` | 'list_of_trials.tsv' | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](# Trial list)).|
+| `stimListFile` | *'list_of_trials.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
 | `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list. |
-| `stimRandomization` | 'run' | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all'. |
+| `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all'. |
 | `fixSize` | .`6` | Size of your fixation element (in degrees of visual angle).|
-| `fixType` | 'round' | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
+| `fixType` | _'round'_ | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
 | `textSize` | `30` | Size of your text on screen. |
-| `textFont` | 'Helvetica' | Font of your text on screen. |
-| `instructionsText1`, `instructionsText2`, ... | 'On each trial..' | Line-by-line elements of instruction to give at the beginning of each run. |
-| `triggerWaitText` | 'Experiment loading ...' | Message to display while the script waits for a trigger to begin the task. |
+| `textFont` | _'Helvetica'_ | Font of your text on screen. |
+| `instructionsText1`, `instructionsText2`, ... | *'On each trial..'* | Line-by-line elements of instruction to give at the beginning of each run. |
+| `triggerWaitText` | *'Experiment loading ...'* | Message to display while the script waits for a trigger to begin the task. |
 | `scrDistMRI` | `630` | Distance to the screen in the MRI scanner (in mm). |
 | `scrWidthMRI` | `340` | Width of the screen in the MRI scanner (in mm). |
 | `scrDistPC` | `520` | Estimated distance to the PC screen in debug mode (in mm).  |
 | `scrWidthPC` | `510` | Estimated width of the PC screen in debug mode (in mm).|
 | `respKeyMRI1`, `respKeyMRI2` | `51`, `52` | Key codes of the response buttons at the scanner (2-button right & red response box).|
 | `triggerKeyMRI` | `53` | Key code of the MRI trigger.|
-| `respInstMRI1`, `respInstMRI2` | 'left/green', 'right/red' | Names to display for each key in the instructions at the scanner.|
-| `respKeyPC1`, `respKeyPC2` | 'q', 'w' | Keyboard response keys in debug mode (will also be used in the instructions). |
-| `triggerKeyPC` | 'a' | Mock trigger keyboard key to use in debug mode.|
-| `escapeKey` | 'ESCAPE' | Keyboard key to use to abort the experiment.|
+| `respInstMRI1`, `respInstMRI2` | _'left/green'_, _'right/red'_ | Names to display for each key in the instructions at the scanner.|
+| `respKeyPC1`, `respKeyPC2` | _'q'_, _'w'_ | Keyboard response keys in debug mode (will also be used in the instructions). |
+| `triggerKeyPC` | _'a'_ | Mock trigger keyboard key to use in debug mode.|
+| `escapeKey` | _'ESCAPE'_ | Keyboard key to use to abort the experiment.|
 
 
 
