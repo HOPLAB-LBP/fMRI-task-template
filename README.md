@@ -29,7 +29,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `numRuns` | `2` | Total number of runs in the experiment. |
 | `stimListFile` | *'list_of_stimuli.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
 | `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). |
-| `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all'. |
+| `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all' (see [Trial randomization](#trial-randomization)). |
 | `fixSize` | .`6` | Size of your fixation element (in degrees of visual angle).|
 | `fixType` | _'round'_ | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
 | `textSize` | `30` | Size of your text on screen. |
@@ -60,38 +60,41 @@ This section explains how the trial list is made in the script, along with the r
 Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `category` and `setting`).
 
 ```
-stimuli	                        category	setting
-./src/stimuli/animal_sheep.jpg	animal	    outside
-./src/stimuli/animal_zebra.jpg	animal	    outside
-./src/stimuli/food_banana.jpg	food	    inside
-./src/stimuli/food_cake.jpg	    food	    inside
-./src/stimuli/food_pizza.jpg	food	    inside
-./src/stimuli/object_camera.jpg	objects	    inside
-./src/stimuli/object_phone.jpg	objects	    inside
+stimuli	                            category	    setting
+./src/stimuli/animal_sheep.jpg	    animal	        outside
+./src/stimuli/animal_zebra.jpg	    animal	        outside
+./src/stimuli/food_banana.jpg	    food	        inside
+./src/stimuli/food_cake.jpg	        food	        inside
+./src/stimuli/food_pizza.jpg	    food	        inside
+./src/stimuli/object_camera.jpg	    objects	        inside
+./src/stimuli/object_phone.jpg	    objects	        inside
 ```
 
 Your list of trials will be build from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
 
-1. Based on the length of your stimuli column and the number of repetitions (`numRepetitions`), a total number of trials is calculated (stimuli list length * number of repetitions).
-2. Based on the number of runs 
+1. Based on the length of your stimuli column and the number of repetitions (`numRepetitions`), a total number of trials is calculated (stimuli list length * number of repetitions). The list of stimuli is duplicated to match this length.
+2. Based on the number of runs, each entry in the list of stimuli gets assigned a run number, considering evenly long runs and starting from 1.
 
- There are two possible ways of writing this list:
+There are two possible ways of writing this list:
 
-1. Provide a **full stimuli list**
-
-in the trial loop
-
-any other column will be read as an extra variable in the trial list structure
+1. Provide a **full stimuli list**, with one line for each trial of *the whole* experiment, and set the number of repetitions to 1. This is the way to go if you want to control exactly the whole sequence of action.
+2. Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment, but not for the whole experiment. In this case, set the number of repetitions to >1. This is the way to go if you are repeating the same set of stimuli several times across the experiment.
 
 ![trial_list](./src/readme_files/trial_list.png)
 
-### Here, explanations about the randomisation.
+### Trial randomization
+
+You can ask the script to randomize your trials by playing with the `stimRandomization` parameter.
+
+- Comment out the `stimRandomization` parameter in your parameters file if you don't need any randomization from your list of stimuli.
+- Set the `stimRandomization` parameter to _'run'_ to randomize your trials within each run.
+- Set the `stimRandomization` parameter to _'all'_ to randomize your trials across all runs.
 
 ![trial_randomization](./src/readme_files/trial_randomization.png)
 
-### Here explanations about fixation trials
+### Fixation trials
 
-fixation events: explain how writing 'fixation' instead of an image file name will make a fixation trial
+You can introduce fixation events in your task by replacing image file names in your list of stimuli by the word _fixation_. The script will read those differently and show a fixation instead of showing a stimulus for these trials.
 
 ![fixation_trials](./src/readme_files/fixation_trials.png)
 
