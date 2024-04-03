@@ -2,16 +2,57 @@
 
 This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs. Your main tool is `fMRI_task.m`, which is designed to play one run of experimental task at a time.
 
-## Requirements
+**Repository structure**
+```
+.
+├── README.md
+├── data
+├── fMRI_task.m
+├── src
+│   ├── list_of_stimuli.tsv
+│   ├── parameters.txt
+│   ├── readme_files
+│   └── stimuli
+│       └── your images here ...
+└── utils
+    ├── adjustFixationDuration.m
+    ├── configScreenCol.m
+    ├── convertVisualUnits.m
+    ├── createLogFile.m
+    ├── dateTimeStr.m
+    ├── debugInitializePTB.m
+    ├── debugLogKeyPress.m
+    ├── determineButtonMapping.m
+    ├── displayFixation.m
+    ├── displayInstructions.m
+    ├── displayTrial.m
+    ├── initializePTB.m
+    ├── loadImages.m
+    ├── logEvent.m
+    ├── logKeyPress.m
+    ├── makeTrialList.m
+    ├── parseParameterFile.m
+    ├── resizeStim.m
+    ├── saveAndClose.m
+    └── setupScreen.m
+```
 
-Make sure the following exist in your your root directory:
+
+### Requirements
+
+Make sure the following exist in your root directory:
 
  - A `utils` folder containing utility functions.
  - A `src` folder containing all your stimuli in `src/stimuli`.
  - A `parameters.txt` file in the `src` directory, containing your experimental parameters.
  - A `list_of_stimuli.tsv` file in the `src` directory, containing a list of your trial stimuli & other relevant variables.
 
-## Parameters
+Before starting your experiment, make sure you set the two flags `fmriMode` and `debugMode`. These will determine a number of things:
+
+- `debugMode` will make your experiment run in a window instead of full screen, and will prevent data from being saved. Switching it off will make the cursor dissapear for the time of the experiment, have it run in full screen, and save all result and log data.
+- `fmriMode` will have the fMRI screen properties, response & trigger buttons, and response instruction values used. Switching it off will turn these parameters to their PC values.
+
+### Parameters
 
 Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they do.
 
@@ -49,12 +90,12 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 
 
-## Trial list
+### Trial list
 
 The trials of your task will be executed based on the **parameters** and **list of stimuli** file that you input. Upon execution, a list of trials is created that contains all the information about the trials to be played in the experiment. 
 
 
-### How to write your list of stimuli
+#### How to write your list of stimuli
 
 Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `animacy` and `setting`).
 
@@ -81,11 +122,11 @@ There are two possible ways of writing this list:
 
 The resulting trial list gets enhanced of several extra variables (trial number, etc.) and is then saved as `trial-list-sub#.tsv`. On any given run, the file either already exists and is read, or gets created if it doesn't exist yet.
 
-### Monitoring accuracy
+#### Monitoring accuracy
 
 You might wish to monitor the accuracy of your participants online, to have an idea of how the task is going or to give feedback. This can be achieved by playing with extra variables in your `list_of_stimuli.tsv` file. These variables will automatically be indexed in your trial list and can hence be accessed during/right after trial presentation. The script contains a section showing how to use such variables for accuracy monitoring (see the `%% monitoring accuracy` section, l.290).
 
-### Trial randomization
+#### Trial randomization
 
 You can ask the script to randomize your trials by playing with the `stimRandomization` parameter.
 
@@ -95,13 +136,13 @@ You can ask the script to randomize your trials by playing with the `stimRandomi
 
 ![trial_randomization](./src/readme_files/trial_randomization.png)
 
-### Fixation trials
+#### Fixation trials
 
 You can introduce fixation events in your task by replacing image file names in your list of stimuli by the word _fixation_. The script will read those differently and show a fixation instead of showing a stimulus for these trials.
 
 ![fixation_trials](./src/readme_files/fixation_trials.png)
 
-### Button randomisation & instructions
+#### Button randomisation & instructions
 
 This task template takes two response buttons, which can be determined using the `respKey` parameters. A random assignment is made for the first run. The order of buttons is then switched across runs. Make sure the repsonse instructions you write in the `respInst` parameters match the order of the response button parameters. These will be used to render correct instructions at the beginning of each run.
 
@@ -111,15 +152,36 @@ The instructions you write line by line in the parameters will be pasted togethe
 
 ![instructions](./src/readme_files/instructions.png)
 
-## Output
+### Output
 
-Here I describe all the output that users will find in the data folder.
-show a tree of the results per participant
+Upon completion and given the `debugMode` flag is off, your `data` folder should look like this:
+
+````
+data
+├── sub-01
+└── sub-02
+    ├── 2024-04-02 18:47:19.175_231_1_size_task.mat
+    ├── 2024-04-03 09:57:45.609_231_2_size_task.mat
+    ├── 2024-04-03 10:58:51.772_231_3_size_task.mat
+    ├── 2024-04-03 11:00:15.461_231_5_size_task.mat
+    ├── 2024-04-03 11:14:18.047_sub231_run5_size_task.mat
+    ├── 20240402183523_log_231_size_task.tsv
+    ├── 20240402183927_log_231_size_task.tsv
+    ├── 20240403094805_log_231_size_task.tsv
+    ├── 20240403095644_log_231_size_task.tsv
+    ├── 20240403105826_log_231_size_task.tsv
+    ├── 20240403105936_log_231_size_task.tsv
+    ├── 20240403111340_log_231_size_task.tsv
+    └── trial-list-sub-231.tsv
+````
+
+One log file per run 
+One mat per run
+An overall tsv for the whole experiment
 
 
 
-
-## Trouble shooting notes
+### Trouble shooting notes
 
 This section lists the most often encountered bugs and their solution.
 
