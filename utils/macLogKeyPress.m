@@ -1,6 +1,7 @@
-function [firstPressedKey, in] = debugLogKeyPress(params, in, logFile, triggerKeyBreaks, otherKeysBreak, conditionFunc, keyboardID)
+function [firstPressedKey, in] = macLogKeyPress(params, in, logFile, triggerKeyBreaks, otherKeysBreak, conditionFunc, keyboardID)
 % This function is exactly similar to logkeypress except it solves 
-% a problem I have on my mac which has to do with detecting keyboard input
+% a problem present on mac systems which has to do with detecting keyboard 
+% input.
 %%% LogKeyPress - Function for logging key press
 % This function logs key press events and writes to logFile. It continues
 % until the conditionFunc returns true, or when the specific key events occur.

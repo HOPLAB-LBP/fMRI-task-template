@@ -30,6 +30,9 @@ cleanObj = onCleanup(@()sca);
 debugMode = true; % debugMode mode flag. Set to false for actual experiment runs.
 fmriMode = false; % Computer mode flag. Set to true whenrunning on the fMRI scanner computer.
 
+% If you're running on mac, use this flag
+macMode = true;
+
 %% CHECK AND SET WORKING DIRECTORY
 
 % Declare default directories for the source and utilities
@@ -57,19 +60,10 @@ addpath(defaultSrcDir );
 addpath(defaultUtilsDir); 
 disp('Directories have been added to the MATLAB path.');
 
-%% IMPORT EXTERNAL PARAMETERS & INITIALISE PTB
+%% IMPORT EXTERNAL PARAMETERS
 
 % Use the parse parameter function to import all parameters from file
 params = parseParameterFile('parameters.txt', fmriMode);
-
-% % This should be removed eventually
-% This is a quick fix for mac users: detect the ID of your keyboard
-% keyboardID = detectKeyboard();
-keyboardID = 24;
-
-% Initialise psychtoolbox (PTB)
-% initializePTB();
-debugInitializePTB(keyboardID);
 
 %% USER INPUT: SUBJECT & RUN NUMBER
 
@@ -92,6 +86,18 @@ in.runNum = str2double(answer{2});
 
 % Save a timestamp in the input parameters
 in.timestamp = string(datetime('now', 'Format', 'yyyy-MM-dd_HHmmss'));
+
+%% INITIALISE PSYCHOTOOLBOX
+
+% Initialise psychtoolbox (PTB)
+if macMode == true
+    % This is a quick fix for mac users: detect the ID of your keyboard
+    keyboardID = detectKeyboard();
+    % Then use this keyboardID to initialise the keyboard
+    macInitializePTB(keyboardID);
+else
+    initializePTB();
+end
 
 %% SETUP A SUBJECT-SPECIFIC RESULTS DIRECTORY
 
@@ -177,8 +183,8 @@ try
     respKey1 = unique([runTrials.respKey1]);
     respKey2 = unique([runTrials.respKey2]);
     % Based on the run number find the response button instructions
-    respInst1 = unique([runTrials.respInst1]);
-    respInst2 = unique([runTrials.respInst2]);
+    respInst1 = unique({runTrials.respInst1});
+    respInst2 = unique({runTrials.respInst2});
     
     % Extract the images of the run
     runImMat = imMat.image(runTrials(1).trialNb:runTrials(end).trialNb);
@@ -190,16 +196,18 @@ try
     
     % Display them on screen and log it
     [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
-    % Log this event, recording the time at which the instructions were displayed.
+    % Log this event, recording the time at which the instructions were displayed
     logEvent(logFile, 'FLIP','Instr', dateTimeStr,'-',VBLTimestamp - in.scriptStart,'-','-');
     
-    % Log the key press confirming participant has read the instructions
-    conditionFunc = @(x) true; % A placeholder condition function that always returns true.
-    % switch back to this function eventually  
-    % logKeyPress(params, in, logFile, false, true, conditionFunc);
-    % I'm using this function below due to a problem on my laptop
-    debugLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
+    % Anonymous function that always returns true
+    conditionFunc = @(x) true; 
     
+    % Log the key press confirming participant has read the instructions
+    if macMode == true
+        macLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
+    else
+        logKeyPress(params, in, logFile, false, true, conditionFunc);    
+    end    
     
     %% TRIGGER WAIT
     
@@ -211,14 +219,18 @@ try
     % Log the screen flip event, indicating that the experiment is in a trigger-wait state
     logEvent(logFile, 'FLIP','TgrWait', dateTimeStr,'-',VBLTimestamp - in.scriptStart,'-','-');
     
+    % Anonymous function that always returns true
+    conditionFunc = @(x) true;
+
     % Record the trigger signal
     % ** We record the trigger twice because of a bug where MR8 sends 2 triggers **
-    conditionFunc = @(x) true; % A condition function that always returns true, used here for simplicity.
-    % here again, switch back to non-debug function afterwards
-    % logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
-    % logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
-    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
-    debugLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
+    if macMode == true
+        macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
+        macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
+    else
+        logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
+        logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
+    end
     
     %% PRE-FIXATION
     
@@ -236,10 +248,15 @@ try
     % Calculate the time elapsed since the script started
     preRunTime = runStart - in.scriptStart;
     
-    % Wait for and log any key presses during the initial fixation period.
-    conditionFunc = @(x) (GetSecs - runStart) <= params.prePost; % Define a condition function for the duration of the pre-trial fixation.
-    % logKeyPress(params, in, logFile, false, false, conditionFunc); % Call a custom function to log key presses, passing the condition for timing.
-    debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Call a custom function to log key presses, passing the condition for timing.
+    % Anonymous function to wait for the duration of the pre-trial fixation
+    conditionFunc = @(x) (GetSecs - runStart) <= params.prePost;
+
+    % Wait for and log any key presses during the fixation period
+    if macMode == true
+        macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
+    else
+        logKeyPress(params, in, logFile, false, false, conditionFunc);
+    end
     
     %% TRIAL LOOP
     
@@ -249,15 +266,17 @@ try
         
         % Record the start time of the current trial for timing calculations
         trialStart = GetSecs;
+
         % Calculate and store the onset time (relative to the pre-stim fixation block)
         runTrials(i).stimOnset = trialStart - runStart;
+
         % Adjust fixation duration based on the timing of this trial relative to its scheduled time.
         fixDur = adjustFixationDuration(runTrials, i, params);
     
         %% Stimulus presentation
         
         % Display the stimulus on screen based on the displayTrial function
-        displayTrial(runImMat, i, win, winRect, in);
+        displayTrial(params, in, runImMat, i, win, winRect);
 
         % Flip the screen to show the stimulus
         [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
@@ -273,13 +292,54 @@ try
         
         %% Trial response
         
-        % Define a condition to capture responses only during the stimulus duration
+        % Anonymous function to wait for the duration of the stimulus duration
         conditionFunc = @(x) (GetSecs - trialStart) <= params.stimDur;
+        
         % Record key presses during the stimulus presentation
-        % pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc); % Capture and log the first key press, if any.
-        pressedKey = debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Capture and log the first key press, if any.
+        if macMode == true
+            pressedKey = macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
+        else
+            pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc);
+        end
+
         % Store the response in the trial list structure
         runTrials(i).response = pressedKey;
+        
+        %% Post-stimulus fixation
+        
+        % Fill the screen with gray & show the fixation
+        Screen('FillRect', win, gray);
+        displayFixation(win, winRect, params, in);
+
+        % Flip the screen and log it
+        [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
+        logEvent(logFile, 'FLIP','Fix', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', '-');
+    
+        % Anonymous function to wait for the duration of the post-trial fixation
+        conditionFunc = @(x) (GetSecs - trialStart) <= params.stimDur + fixDur;
+        
+        % Record key presses during fixation. Here we select only the first response
+        % If the subj responded during the stimulus, we don't record this response
+        if isempty(pressedKey) % If no key press was recorded during the stimulus presentation,
+            % attempt to capture responses during the fixation.
+            if macMode == true
+                pressedKey = macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
+            else
+                pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc);
+            end
+        else
+            % Otherwise, continue to log any additional key presses (first response was already recorded).
+            if macMode == true
+                macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
+            else
+                logKeyPress(params, in, logFile, false, false, conditionFunc);
+            end
+        end
+    
+        % Store the response (if any) in the trial list for later analysis.
+        if ~isempty(pressedKey)
+            runTrials(i).response = pressedKey; % Update the trial list with the key press identifier.
+        end
 
         %% Trial accuracy
 
@@ -297,31 +357,7 @@ try
         % accuracy = corrKey == pressedKey;
         % % Log the accuracy in the console
         % fprintf(1, 'Trial %d accuracy = %d\n', i, accuracy);
-        
-        %% Post-stimulus fixation
-        
-        % Fill the screen with gray & show the fixation
-        Screen('FillRect', win, gray);
-        displayFixation(win, winRect, params, in);
 
-        % Flip the screen and log it
-        [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
-        logEvent(logFile, 'FLIP','Fix', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', '-');
-    
-        % Record keys during fixation. Here we select only the first response -- i.e., if the subj responded during the stimulus, we don't record this response
-        conditionFunc = @(x) (GetSecs - trialStart) <= params.stimDur + fixDur; % Define a condition function for the duration of the post-trial fixation.
-        if isempty(pressedKey) % If no key press was recorded during the stimulus presentation,
-            pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc); % attempt to capture responses during the fixation.
-            % pressedKey = debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % attempt to capture responses during the fixation.
-        else
-            % logKeyPress(params, in, logFile, false, false, conditionFunc); % Otherwise, continue to log any additional key presses (first response was already recorded).
-            debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Otherwise, continue to log any additional key presses (first response was already recorded).
-        end
-    
-        % Store the response (if any) in the trial list for later analysis.
-        if ~isempty(pressedKey)
-            runTrials(i).response = pressedKey; % Update the trial list with the key press identifier.
-        end
     end
     
     %% FINAL FIXATION
@@ -336,10 +372,15 @@ try
     % Log the display of the final fixation cross, marking the end of active stimulus presentation.
     logEvent(logFile, 'FLIP','Post-fix', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', '-');
     
-    % Record any key presses during this final fixation period, ensuring all participant responses are captured.
-    conditionFunc = @(x) (GetSecs - PostFixFlip) <= params.prePost; % Define the condition based on the duration of the final fixation.
-    logKeyPress(params, in, logFile, false, false, conditionFunc); % Capture and log key presses during this period.
-    % debugLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID); % Capture and log key presses during this period.
+    % Anonymous function to wait for the duration of the final fixation
+    conditionFunc = @(x) (GetSecs - PostFixFlip) <= params.prePost;
+
+    % Record any key presses during this final fixation period, ensuring all participant responses are captured
+    if macMode == true
+        macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
+    else
+        logKeyPress(params, in, logFile, false, false, conditionFunc);
+    end
     
     % Calculate and log the total duration of the run, providing a measure of the entire trial sequence length.
     runTime = GetSecs - runStart; % Calculate the total time taken for the run.

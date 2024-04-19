@@ -74,6 +74,12 @@ Before starting your experiment, make sure you set the two flags `fmriMode` and 
 - `debugMode` will make your experiment run in a window instead of full screen, and will prevent data from being saved. Switching it off will make the cursor dissapear for the time of the experiment, have it run in full screen, and save all result and log data.
 - `fmriMode` will have the fMRI screen properties, response & trigger buttons, and response instruction values used. Switching it off will turn these parameters to their PC values.
 
+The `macMode` is an extra flag you can set on if you're running your experiment on Mac. Do note that Psychtoolbox is not optimised for Mac systems, and surely isn't maintained anymore on macOS in newest versions. Use this flag to develop and/or debug your task on your local machine if you have to and are using a Mac. Here are the things that will change if you set that flag on:
+
+- **Keyboard detection**: the task will begin by running the `detectKeyboard` function, which will ask you to give some key presses in the command window. This will allow MatLab to detect which keyboard you're using and return a _keyboardID_.
+- **Psychtoolbox initialisation**: the initialisation of Psychtoolbox will be done using this _keyboardID_ to create the keyboard queue and record key presses.
+- **key presses** will then be recorded using a different function that uses _keyboardID_ as an argument to know where to look for input.
+
 ### Parameters
 
 Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they do.

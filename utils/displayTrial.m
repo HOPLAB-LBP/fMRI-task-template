@@ -1,4 +1,4 @@
-function displayTrial(params, runImMat, i, win, winRect, in)
+function displayTrial(params, in, runImMat, i, win, winRect)
 % DISPLAYTRIAL Renders the visual events of a prototypical trial
 %
 %   displayTrial(runImMat, i, win, in, logFile) contains the elements of 

@@ -37,7 +37,7 @@ if debugMode ~= 1
     end
     
     % Generate a unique identifier for the data and save data
-    runInfo = [sprintf('sub%02d', in.subNum) '_run' num2str(in.runNum)];
+    runInfo = [sprintf('sub%d', in.subNum) '_run' num2str(in.runNum)];
     dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_' params.taskName '.mat']);
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
     
