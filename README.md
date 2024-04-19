@@ -6,8 +6,11 @@ This is a template script for running a task in the fMRI scanner. It is designed
 **Repository structure**
 ```
 .
+.
 ├── README.md
 ├── data
+│   └── sub-1
+│       └── ...
 ├── fMRI_task.m
 ├── src
 │   ├── list_of_stimuli.tsv
@@ -21,8 +24,8 @@ This is a template script for running a task in the fMRI scanner. It is designed
     ├── convertVisualUnits.m
     ├── createLogFile.m
     ├── dateTimeStr.m
-    ├── debugInitializePTB.m
-    ├── debugLogKeyPress.m
+    ├── detectKeyboard.asv
+    ├── detectKeyboard.m
     ├── determineButtonMapping.m
     ├── displayFixation.m
     ├── displayInstructions.m
@@ -31,6 +34,8 @@ This is a template script for running a task in the fMRI scanner. It is designed
     ├── loadImages.m
     ├── logEvent.m
     ├── logKeyPress.m
+    ├── macInitializePTB.m
+    ├── macLogKeyPress.m
     ├── makeTrialList.m
     ├── parseParameterFile.m
     ├── resizeStim.m
