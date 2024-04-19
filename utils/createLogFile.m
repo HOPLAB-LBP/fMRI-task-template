@@ -29,12 +29,8 @@ if ~isempty(missingFields)
     error('createLogFile:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
 end
 
-
-% Create a time stamp
-currentDateTime = string(datetime('now', 'Format', 'yyyyMMddHHmmss'));
-
 % Construct a log file name using the time stamp, runID, and task name
-logFileName = strcat(currentDateTime, '_log_', num2str(in.subNum), '_', params.taskName, '.tsv');
+logFileName = strcat(dateTimeStr, '_sub', num2str(in.subNum), '_run', num2str(in.runNum), '_', params.taskName, '_log.tsv');
 
 % Create a path for the log file in the results folder
 logFilePathName = fullfile(in.resDir, logFileName);

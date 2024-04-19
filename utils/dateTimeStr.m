@@ -1,4 +1,4 @@
-function dateTimeStr = dateTimeStr()
+function dateTimeString = dateTimeStr()
 % GETCURRENTDATETIMESTRING Returns the current date and time as a string.
 %   The date and time are formatted as 'yyyy-MM-dd HH:mm:ss.SSS'.
 %
@@ -9,10 +9,7 @@ function dateTimeStr = dateTimeStr()
 %       - dateTimeStr = getCurrentDateTimeString();
 
 % Extract the current date and time
-dateTimeStr = string(datetime('now', 'Format', 'yyyy-MM-dd HH:mm:ss.SSS'));
-
-% Extract the first (and only) element of the string array
-dateTimeStr = dateTimeStr{1};
+dateTimeString = char(datetime('now', 'Format', 'yyyy-MM-dd-HH-mm'));
 
 
 end

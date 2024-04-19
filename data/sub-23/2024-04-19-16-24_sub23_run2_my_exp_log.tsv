@@ -1,0 +1,11 @@
+	EVENT_TYPE	EVENT_NAME	DATETIME	EXP_ONSET	ACTUAL_ONSET	DELTA	EVENT_ID
+	ERROR	Err	2024-04-19-16-24	-	-	-	-
+Detailed error message:
+Error using Screen
+See error message printed above.
+
+Error in setupScreen (line 54)
+    [win, winRect] = Screen('OpenWindow', screenNumber, 0);
+
+Error in fMRI_task (line 158)
+    [win, winRect, screen, VBLTimestamp] = setupScreen(debugMode);

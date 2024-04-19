@@ -47,7 +47,7 @@ elseif debugMode == false
     % In non-debug mode, prepare the environment for a clean experimental presentation.
     ListenChar(2); % Enable character listening to suppress keypresses showing in MATLAB.
     HideCursor; % Hide the mouse cursor to avoid distractions.
-    Screen('Preference', 'SkipSyncTests', 0); % Still disable sync tests for compatibility.
+    Screen('Preference', 'SkipSyncTests', 1); % Still disable sync tests for compatibility.
     screenNumber = max(Screen('Screens')); % Again, identify the display screen to use.
 
     % Open a full-screen window on the specified screen, with a background color of 0 (black).

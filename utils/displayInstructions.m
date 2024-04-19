@@ -59,7 +59,7 @@ for i = 1:numel(paramFieldnames)
     fieldName = paramFieldnames{i};
     
     % Check if the field name contains 'instructions'
-    if contains(fieldName, 'instructionsText', 'IgnoreCase', true)
+    if contains(fieldName, 'instructionsText')
         % Add content of the field to instructionFields
         instructionTexts{end+1} = params.(fieldName);
     end
@@ -85,13 +85,14 @@ respInst = {respInst1, respInst2};
 
 % Loop through the place holder positions and replace them
 for i = 1:numel(idx)
-    
-    % Replace the placeholder with the corresponding value from butMap
-    instructionParagraph = [instructionParagraph(1:idx(i)-1), num2str(respInst{i}), instructionParagraph(idx(i)+2:end)];
+    % Convert the cell content to a string
+    respStr = char(respInst{i});
+
+    % Replace the placeholder with the corresponding value from respStr
+    instructionParagraph = [instructionParagraph(1:idx(i)-1), respStr, instructionParagraph(idx(i)+2:end)];
 
     % Update the next index in case the paragraph changed size
     idx(i+1:end) = strfind(instructionParagraph, '()');
-    
 end
 
 % Draw the instruction paragraph in black, centered on the screen

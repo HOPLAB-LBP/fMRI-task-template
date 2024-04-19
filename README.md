@@ -184,17 +184,24 @@ The instructions you write line by line in the parameters will be pasted togethe
 
 Upon completion and given the `debugMode` flag is off, your `data` folder should look like this:
 
-_This section is still under construction_
 ````
-data
-├── sub-01
-...
+.
+├── sub-1
+│   ├── YYYY-MM-DD-hh-mm_sub1_run1_my_exp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub1_run1_my_exp.mat
+│   ├── YYYY-MM-DD-hh-mm_sub1_run2_my_exp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub1_run2_my_exp.mat
+│   ├── ... other runs here
+│   └── trial-list-sub-1.tsv
+└── sub-2
+    └── ...
 ````
-<!-- One log file per run  -->
-<!-- One mat per run -->
-<!-- An overall tsv for the whole experiment -->
 
+In this output are the following files:
 
+- **log files** are created for each run (i.e. each time you run the script). They contain information about every event in the script, including screen flips, key presses, errors, etc. They are meant to keep track of everything. By default, they are named *time tag*-*subject number*-*run number*-*experiment name*-*log*.
+- **`.mat` files** are created for each run and contain every variable created by MatLab during the run, including the `params` and `in` structures, `runTrials` list, etc.
+- **trial list** files are created _once_ per participant (at the beginning of the first run). They contain a full list of the trials to run across the experiment, divided into runs. Any additional variable that you added to your list of stimuli will appear in that table as well (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). Participant responses, as well as stimulus ideal and actual onset times, will also be written in that document.
 
 ### Trouble shooting notes
 
@@ -204,3 +211,4 @@ This section lists the most often encountered bugs and their solution.
 | :------ | :--------- |
 | **Screen Setup** | If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES). |
 | **Trigger Wait** | There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.|
+| **Keyboard silent** | Did your script crash, and now you cannot write anything in MatLab anymore? Maybe your keyboard is still silent. You need to enable input listening again by running `ListenChar(0)`. Find a way to run that segment, for instance by finding it in `saveAndClose`, highlighting and evaluating it.|

@@ -12,7 +12,6 @@ try
     Screen('CloseAll');
     
     % Unify key names across different operating systems
-    %KbName('UnifyKeyNames');
     KbName('UnifyKeyNames');
     
     % Create a queue for keyboard events

@@ -27,7 +27,7 @@ clear; % Clear all variables from the workspace.
 cleanObj = onCleanup(@()sca);
 
 % Decide on the debugMode and PC mode
-debugMode = true; % debugMode mode flag. Set to false for actual experiment runs.
+debugMode = false; % debugMode mode flag. Set to false for actual experiment runs.
 fmriMode = false; % Computer mode flag. Set to true whenrunning on the fMRI scanner computer.
 
 % If you're running on mac, use this flag

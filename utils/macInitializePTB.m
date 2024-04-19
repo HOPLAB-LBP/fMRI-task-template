@@ -15,7 +15,6 @@ try
     
     % Unify key names across different operating systems
     % We don't run this command in the mac mode
-    %KbName('UnifyKeyNames');
     % KbName('UnifyKeyNames');
     
     % Create a queue for keyboard events
