@@ -2,27 +2,6 @@
 
 This is a template script for running a task in the fMRI scanner. It is designed to be modular, lightweight and easy to adapt to your needs. Your main tool is `fMRI_task.m`, which is designed to play one run of experimental task at a time.
 
-To-do list:
- - [ ] get the output files sorted out: 
-   - [ ] create event files, put them in a BIDS folder
-   - [ ] merge the trial list tsv in the main mat output
-   - [ ] rename the files correctly
- Aim for this structure:
-````
-data
-├── bh
-    ├── sub-01
-    └── sub-02
-        ├── YYYY-MM-DD_sub-02_task-name.mat --> contains in, params, trialList for the whole experiment
-        ├── YYYY-MM-DD-HH:MM:SS_sub-02_run-01_task-name-log.tsv --> log file for run 1
-        ├── YYYY-MM-DD-HH:MM:SS_sub-02_run-02_task-name-log.tsv --> log file for run 2
-├── BIDS
-    ├── sub-01
-    └── sub-02
-        ├── sub-02_run-01_task-name_events.tsv --> event file for run 1
-        └── sub-02_run-02_task-name_events.tsv --> event file for run 2
-````
-
 
 **Repository structure**
 ```
