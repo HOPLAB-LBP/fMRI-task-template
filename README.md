@@ -24,7 +24,6 @@ This is a template script for running a task in the fMRI scanner. It is designed
     ├── convertVisualUnits.m
     ├── createLogFile.m
     ├── dateTimeStr.m
-    ├── detectKeyboard.asv
     ├── detectKeyboard.m
     ├── determineButtonMapping.m
     ├── displayFixation.m

@@ -1,6 +1,10 @@
-detectKeyboard.m
 _debugging.m
 tryout_scripts
+
+# Ignore all the mac-related ds store files
 .DS_Store
 /data/.DS_Store
+/data/*/.DS_Store
 /src/.DS_Store
+/src/*/.DS_Store
+utils/.DS_Store
