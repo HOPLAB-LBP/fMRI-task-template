@@ -39,6 +39,9 @@ function imMat = loadImages(trialList, params)
 %   params.outWidth = 200;
 %   params.outHeight = 150;
 %   imMat = loadImages(trialList, params);
+% 
+%   Author
+%   Tim Maniquet [12/3/24]
 
 % Check if the required fields are present in the params structure
 requiredFields = {'resize'};

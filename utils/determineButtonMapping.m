@@ -24,6 +24,12 @@ function butMap = determineButtonMapping(params, subNum, runNum)
 %
 %   Example:
 %   butMap = determineButtonMapping(params, 1, 2); % Returns button mapping based on subject and run numbers.
+% 
+%   Author
+%   Andrea Costantino [9/6/23]
+% 
+%   Last updated
+%   Tim Maniquet [22/4/24]
 
 % Check if the required fields are present in the params structure
 requiredFields = {'respKey1','respKey2','respInst1','respInst2'};

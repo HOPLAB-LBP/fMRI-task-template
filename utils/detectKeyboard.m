@@ -1,5 +1,17 @@
 function keyboardID = detectKeyboard()
-% This is a debug function I use for trying to record button presses
+% This is a debug function to use if you're on a Mac and wish to record
+% key presses. It will detect the active source of input and return its ID.
+% 
+%   Usage: Run the function and type anything in the command window. The
+%       active source of input will be detected. Press 'a' when you're done
+%       and wish to close the dialog.
+% 
+%   Returns: 
+%       keyboardID: the ID of the source of input to give to Psychtoolbox,
+%       which will allow it to record input from a Mac.
+% 
+%   Author
+%   Tim Maniquet [22/3/24]
 
 % Start by clearing up
 close all;

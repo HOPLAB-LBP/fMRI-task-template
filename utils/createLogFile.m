@@ -21,6 +21,9 @@ function logFile = createLogFile(params, in)
 %
 %   Output argument:
 %   - logFile: File identifier for the created log file.
+% 
+%   Author
+%   Tim Maniquet [15/3/24]
 
 % Check if the required fields are present in the params structure
 requiredFields = {'taskName'};

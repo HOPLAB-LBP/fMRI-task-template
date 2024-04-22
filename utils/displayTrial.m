@@ -19,6 +19,9 @@ function displayTrial(params, in, runImMat, i, win, winRect)
 %       - Retrieves the image for the current trial from the preloaded image matrix.
 %       - If the trial contains a fixation, shows a fixation element
 %       - Otherwise creates a texture from the image for rendering.
+% 
+%   Author
+%   Tim Maniquet [27/3/24]
 
 
 % Fill the screen with gray to reset the background

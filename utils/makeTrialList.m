@@ -33,6 +33,9 @@ function trialList = makeTrialList(params, in)
 %       params.stimRandomization = 'run';
 %       in.subNum = 1;
 %       trialList = makeTrialList(params, in);
+% 
+%   Author
+%   Tim Maniquet [7/3/24]
 
 % Check if the required fields are present in the params structure
 requiredFields = {'stimListFile', 'numRepetitions', 'numRuns', 'prePost', 'trialDur'};

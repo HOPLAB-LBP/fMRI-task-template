@@ -26,6 +26,12 @@ function [win, winRect, screenNumber, VBLTimestamp] = setupScreen(debugMode)
 %   - The mouse cursor is hidden to avoid distractions during stimulus presentation.
 %   - Sync tests are disabled to ensure compatibility.
 %   - A full-screen window with a black background is opened for the experimental presentation.
+% 
+%   Author
+%   Andrea Costantino [20/6/24]]
+% 
+%   Last updated
+%   Tim Maniquet [15/3/24]
 
 % Check for debug mode or not
 if debugMode == true

@@ -24,6 +24,9 @@ function adjustedFixDur = adjustFixationDuration(runTrials, trialNum, params)
 %
 %     % Calculate adjusted fixation duration
 %     adjustedFixDur = adjustFixationDuration(runTrials, i, params);
+% 
+%   Author
+%   Andrea Costantino [9/6/23]
 
 % Calculate the time difference between the actual and expected start times.
 timeDif = abs(runTrials(trialNum).stimOnset - runTrials(trialNum).idealStimOnset); 

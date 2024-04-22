@@ -27,6 +27,9 @@ function displayInstructions(win, params, in, respInst1, respInst2)
 %
 %   % Display instructions
 %   displayInstructions(win, params, butMap);
+% 
+%   Author
+%   Tim Maniquet [21/3/24]
 
 % Check if the required fields are present in the 'params' structure
 requiredFields = {'textSize', 'textFont', 'instructionsText1'};

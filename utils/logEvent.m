@@ -25,6 +25,9 @@ function logEvent(logFile, eventType, eventName, dateTime, expOnset, actualOnset
 %       - If logFile is 1, the event is logged only to the command window.
 %       - The date and time (dateTime) should be provided as a string in 
 %           the format 'yyyy-MM-dd HH:mm:ss.SSS'.
+% 
+%   Author
+%   Tim Maniquet [27/3/24]
 
 % Create the log message line from the input
 logMessage = sprintf('\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n', ...

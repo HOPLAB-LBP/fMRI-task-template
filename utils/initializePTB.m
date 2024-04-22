@@ -6,6 +6,9 @@ function initializePTB()
 %   unifies key names across different operating systems, creates a
 %   keyboard event queue, starts recording keyboard events, and initializes
 %   the random number generator with a random seed.
+% 
+%   Author
+%   Andrea Costantino [9/6/23]
 
 try
     % Close any open Psychtoolbox screens

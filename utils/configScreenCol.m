@@ -13,6 +13,9 @@ function [white, gray, black] = configScreenCol(screen)
 %   - white: CLUT index for white color.
 %   - gray: CLUT index for gray color.
 %   - black: CLUT index for black color.
+% 
+%   Author
+%   Tim Maniquet [20/3/24]
 
 
 % Obtain the CLUT index for black.

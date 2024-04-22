@@ -20,6 +20,9 @@ function displayFixation(win, winRect, params, in)
 %   Usage:
 %       displayFixation(win, winRect, params, in) draws the fixation cross
 %       on the screen using the specified parameters and colors.
+% 
+%   Author
+%   Tim Maniquet [26/3/24]
 
 % Check if the required fields are present in the params structure
 requiredFields = {'fixSize', 'fixType'};

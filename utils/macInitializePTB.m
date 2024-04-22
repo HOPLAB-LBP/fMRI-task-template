@@ -1,13 +1,17 @@
 function macInitializePTB(keyboardID)
-% This function is exactly similar to initializePTB except it solves 
-% a problem present on mac systemswhich has to do with detecting keyboard 
-% input.
-%  INITIATEPTB Initializes the experiment environment.
+%   This function is exactly similar to initializePTB except it solves 
+%   a problem present on mac systems which has to do with detecting keyboard 
+%   input.
+% 
+% MACINITIATEPTB - Initializes the experiment environment on a mac.
 %   This function performs the necessary setup steps to initialize the
 %   experiment environment. It closes any open Psychtoolbox screens,
 %   unifies key names across different operating systems, creates a
 %   keyboard event queue, starts recording keyboard events, and initializes
 %   the random number generator with a random seed.
+% 
+%   Author
+%   Tim Maniquet [22/3/24]
 
 try
     % Close any open Psychtoolbox screens

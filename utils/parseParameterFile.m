@@ -16,6 +16,9 @@ function params = parseParameterFile(filename, fmriMode)
 %
 %   Example:
 %       params = parseParameterFile('parameters.txt', true);
+% 
+%   Author
+%   Tim Maniquet [27/3/24]
 
 % Check if the file exists
 if exist(filename, 'file') ~= 2

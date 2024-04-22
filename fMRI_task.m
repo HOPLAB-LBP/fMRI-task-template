@@ -14,6 +14,17 @@
 %    screen, and to avoid saving results.
 %  - Turn 'fmriMode' on to read the scanner trigger and response buttons,
 %    and use the scanner screen distance and width properties.
+%  - Turn on the 'macMode' if you're running this script on a mac.
+% 
+% The structure & most of the ideas for this script are from previous code 
+% from Andrea Costantino & Laura Van Hove. It was adapted to a general
+% template by Tim Maniquet.
+% 
+% Authors
+% Andrea Costantino, Laura Van Hove [9/6/23]
+% 
+% Last updated
+% Tim Maniquet [22/4/24]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% CLEANUP & SET MODES

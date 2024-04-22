@@ -18,6 +18,9 @@ function [firstPressedKey, in] = logKeyPress(params, in, logFile, triggerKeyBrea
 %   Example:
 %    [firstPressedKey, in] = logKeyPress(p, logFile, in, true, false, @(keyCode) keyCode <= 4)
 %    [~, in] = logKeyPress(p, logFile, in, true, false, @(x) true) i.e., the loop continues indefinitely unless a key event breaks it.
+% 
+%   Author
+%   Andrea Costantino [16/6/23]
 
 firstPressedKey = []; % Initialize return value
 

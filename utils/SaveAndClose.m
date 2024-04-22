@@ -19,6 +19,12 @@ function saveAndClose(params, in, debugMode, runTrials, trialList, runImMat, log
 %
 %   Example:
 %       SaveAndClose(params, in, runTrials, runImMat, logFile)
+% 
+%   Author
+%   Andrea Costantino [16/6/23]
+% 
+%   Last updated
+%   Tim Maniquet [22/4/24]
 
 % Show the mouse cursor again
 ShowCursor;
