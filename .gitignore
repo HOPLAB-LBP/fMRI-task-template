@@ -1,4 +1,4 @@
-_debugging.m
+# Ignore local tryout scripts
 tryout_scripts
 
 # Ignore all the mac-related ds store files
@@ -8,3 +8,6 @@ tryout_scripts
 /src/.DS_Store
 /src/*/.DS_Store
 utils/.DS_Store
+
+# Ignore any auto-save file
+./utils/*.asv
