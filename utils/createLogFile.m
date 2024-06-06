@@ -32,8 +32,11 @@ if ~isempty(missingFields)
     error('createLogFile:paramsMissing', 'Required field(s) %s missing in the params structure.', strjoin(missingFields, ', '));
 end
 
-% Construct a log file name using the time stamp, runID, and task name
-logFileName = strcat(dateTimeStr, '_sub', num2str(in.subNum), '_run', num2str(in.runNum), '_', params.taskName, '_log.tsv');
+% Create a run info tag with structure 'sub-xx_run-xx'
+runInfo = ['sub-' zeroFill(in.subNum, 2) '_run-' zeroFill(num2str(in.runNum), 2)];
+
+% Construct a unique log file name using the time stamp run info and task name
+logFileName = strcat(dateTimeStr, '_', runInfo, '_', params.taskName, '_log.tsv');
 
 % Create a path for the log file in the results folder
 logFilePathName = fullfile(in.resDir, logFileName);

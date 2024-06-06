@@ -11,3 +11,6 @@ utils/.DS_Store
 
 # Ignore any auto-save file
 ./utils/*.asv
+
+# Ignore all the local data
+data/*

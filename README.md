@@ -75,7 +75,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `stimDur`  | `1` | Stimulus presentation time (in seconds). |
 | `fixDur`  | `1` | Duration of each post-stimulus fixation (in seconds). |
 | `prePost` | `10` | Duration of the pre- and post-run fixation periods (in seconds).|
-| `taskName` | *'my_exp'* | Name of your experiment, useful to identify it in output files. |
+| `taskName` | *'my-exp'* | Name of your experiment, useful to identify it in output files. |
 | `resize` | `true` | Resize flag, determines whether your stimuli get resized or not. |
 | `resizeMode` | _'visualUnits'_ | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](#trial-list)). |
 | `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
@@ -171,22 +171,22 @@ Upon completion and given the `debugMode` flag is off, your `data` folder should
 
 ````
 .
-├── sub-1
-│   ├── YYYY-MM-DD-hh-mm_sub1_run1_my_exp_log.tsv
-│   ├── YYYY-MM-DD-hh-mm_sub1_run1_my_exp.mat
-│   ├── YYYY-MM-DD-hh-mm_sub1_run2_my_exp_log.tsv
-│   ├── YYYY-MM-DD-hh-mm_sub1_run2_my_exp.mat
+├── sub-01
+│   ├── YYYY-MM-DD-hh-mm_sub01_run01_my-exp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub01_run01_my-exp.mat
+│   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp.mat
 │   ├── ... other runs here
-│   └── trial-list-sub-1.tsv
-└── sub-2
+│   └── YYYY-MM-DD-hh-mm_sub-01_trial-list.tsv
+└── sub-02
     └── ...
 ````
 
 In this output are the following files:
 
-- **log files** are created for each run (i.e. each time you run the script). They contain information about every event in the script, including screen flips, key presses, errors, etc. They are meant to keep track of everything. By default, they are named *time tag*-*subject number*-*run number*-*experiment name*-*log*.
-- **`.mat` files** are created for each run and contain every variable created by MatLab during the run, including the `params` and `in` structures, `runTrials` list, etc.
-- **trial list** files are created _once_ per participant (at the beginning of the first run). They contain a full list of the trials to run across the experiment, divided into runs. Any additional variable that you added to your list of stimuli will appear in that table as well (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). Participant responses, as well as stimulus ideal and actual onset times, will also be written in that document.
+- **log files** are created for each run (i.e. each time you run the script). They contain information about every event in the script, including screen flips, key presses, errors, etc. They are meant to keep track of everything. By default, they are named *time tag*-*subject number*-*run number*-*experiment name*-*log***.tsv**.
+- **`.mat` files** are created for each run and contain every variable created by MatLab during the run, including the `params` and `in` structures, `runTrials` list, etc. By default, they are named *time tag*-*subject number*-*run number*-*experiment name***.mat**.
+- **trial list** files are created _once_ per participant (at the beginning of the first run). They contain a full list of the trials to run across the experiment, divided into runs. Any additional variable that you added to your list of stimuli will appear in that table as well (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). Participant responses, as well as stimulus ideal and actual onset times, will also be written in that document. These latter bits of information can also be found in the *.mat* files, and are just double written here for practicality.
 
 ### Trouble shooting notes
 

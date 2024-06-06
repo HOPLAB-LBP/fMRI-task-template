@@ -27,7 +27,7 @@ function size = convertVisualUnits(size, varargin)
 %           pixels and millimeters.
 %
 %   Returns:
-%   - float: The size of the stimulus in the desired unit.
+%       - float: The size of the stimulus in the desired unit.
 %
 %    Example:
 %       - convert_units(10, 'deg', 'mm', 100) -> 17.4977
@@ -36,7 +36,7 @@ function size = convertVisualUnits(size, varargin)
 %   Andrea Costantino [20/6/24]
 
 % Set default values for optional arguments
-default_values = {'deg','px',630, 1920, 1080, 340, 190};
+default_values = {'deg','px', 630, 1920, 1080, 340, 190};
 % Check number of input arguments
 num_inputs = length(varargin);
 % Overwrite default values with user-provided values
