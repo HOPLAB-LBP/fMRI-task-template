@@ -121,7 +121,7 @@ image4.png  animate     outside
 image5.png  animate     inside
 ```
 
-Your list of trials will be build from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
+Your list of trials will be built from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
 
 1. Based on the length of your stimuli column and the number of repetitions (`numRepetitions`), a total number of trials is calculated (stimuli list length * number of repetitions). The list of stimuli is duplicated to match this length.
 2. Based on the number of runs, each entry in the list of stimuli gets assigned a run number, considering evenly long runs and starting from 1.
@@ -177,7 +177,7 @@ Upon completion and given the `debugMode` flag is off, your `data` folder should
 │   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp_log.tsv
 │   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp.mat
 │   ├── ... other runs here
-│   └── YYYY-MM-DD-hh-mm_sub-01_trial-list.tsv
+│   └── sub-01_trial-list.tsv
 └── sub-02
     └── ...
 ````

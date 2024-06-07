@@ -125,7 +125,7 @@ end
 %% LOAD TRIAL LIST & IMAGES
 
 % Create a filename to save the future trial list
-in.trialListDir = fullfile(in.resDir, [dateTimeStr '_sub-' zeroFill(answer{1}, 2) '_trial-list.tsv']);
+in.trialListDir = fullfile(in.resDir, ['sub-' zeroFill(answer{1}, 2) '_trial-list.tsv']);
 
 % If this file doesn't exist yet, create it
 if exist(in.trialListDir, 'file') == 0
