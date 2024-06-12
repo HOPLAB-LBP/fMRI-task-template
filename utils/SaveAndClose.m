@@ -45,7 +45,7 @@ if debugMode ~= 1
     % Generate a run info tag in the format "sub-xx_run-xx"
     runInfo = ['sub-' zeroFill(in.subNum, 2) '_run-' zeroFill(num2str(in.runNum), 2)];
     % Use this tag to enerate a unique identifier for the run data
-    dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_' params.taskName '.mat']);
+    dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_task-' params.taskName '.mat']);
     % Save the run data using the unique identifier
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
     

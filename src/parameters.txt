@@ -26,9 +26,10 @@ params.prePost = 10;
 %% TASK NAME
 
 % Give a short name to your task. This will be used to record log files. Make it informative and one-word, and make sure to **not use underscores**.
-% Underscores will be read as dividers in between information bits, it's therefore best to avoid them in the task name (use "my-exp" rather than "my_exp").
+% Underscores will be read as dividers in between information bits, it's therefore best to avoid them in the task name (use "myexp" rather than "my_exp").
+% You should also avoid hyphens as these usually separate keys and labels in BIDS format
 
-params.taskName = 'my-exp';
+params.taskName = 'myexp';
 
 
 

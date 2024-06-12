@@ -36,7 +36,7 @@ end
 runInfo = ['sub-' zeroFill(in.subNum, 2) '_run-' zeroFill(num2str(in.runNum), 2)];
 
 % Construct a unique log file name using the time stamp run info and task name
-logFileName = strcat(dateTimeStr, '_', runInfo, '_', params.taskName, '_log.tsv');
+logFileName = strcat(dateTimeStr, '_', runInfo, '_task-', params.taskName, '_log.tsv');
 
 % Create a path for the log file in the results folder
 logFilePathName = fullfile(in.resDir, logFileName);
