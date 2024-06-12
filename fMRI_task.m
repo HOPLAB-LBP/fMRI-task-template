@@ -299,6 +299,9 @@ try
         % Log the event with onset values and store it in the trial list
         logEvent(logFile, 'FLIP','Stim', dateTimeStr,idealStimOnset, actualStimOnset, ...
             actualStimOnset - idealStimOnset, runTrials(i).stimuli);
+        
+        % Store the ideal and the actual onset values in the trial list
+        runTrials(i).idealStimOnset = idealStimOnset;
         runTrials(i).stimOnset = actualStimOnset;
         
         %% Trial response
