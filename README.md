@@ -11,7 +11,7 @@ The structure & most of the ideas for this repo come from work by [@costantinoai
 .
 ├── README.md
 ├── data
-│   └── sub-1
+│   └── sub-01
 │       └── ...
 ├── fMRI_task.m
 ├── src
@@ -196,5 +196,5 @@ This section lists the most often encountered bugs and their solution.
 | :------ | :--------- |
 | **Screen Setup** | If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES). |
 | **Trigger Wait** | There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.|
-| **Keyboard silent** | Did your script crash, and now you cannot write anything in MatLab anymore? Maybe your keyboard is still silent. You need to enable input listening again by running `ListenChar(0)`. Find a way to run that segment, for instance by finding it in `saveAndClose`, highlighting and evaluating it.|
+| **Keyboard silent** | Did your script crash, and now you cannot write anything in Matlab anymore? Maybe your keyboard is still silent. You need to enable input listening again by running `ListenChar(0)`. Find a way to run that segment, for instance by finding it in `saveAndClose`, highlighting and evaluating it.|
 
