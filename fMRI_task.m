@@ -1,6 +1,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % fMRI EXPERIMENTAL TASK
-%a
+%
 % This is a template task to run an fMRI experiment. Use it as a base to
 % write your own experimental script.
 % 
