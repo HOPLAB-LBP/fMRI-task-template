@@ -110,7 +110,7 @@ The trials of your task will be executed based on the **parameters** and **list 
 
 #### How to write your list of stimuli
 
-Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `animacy` and `setting`).
+Write your list of stimuli in a file called `list_of_stimuli.tsv`, to be placed in the `src` folder. This file should contain _at least_ one column with header name `stimuli`. All other columns are optional, and will be read as extra information and stored in the list of trials output file (see below for an example, with two extra variables `animacy` and `setting`).
 
 ```
 stimuli     animacy     setting
@@ -120,6 +120,11 @@ image3.png  inanimate   outside
 image4.png  animate     outside
 image5.png  animate     inside
 ```
+
+Note that the `list_of_stimuli.tsv` is taken as a base to create the output `data/sub-xx/sub-xx_trial-list.tsv`, which merges the input list of stimuli with the output participant responses and any other variables created during the task. As such, make sure you don't enter column names in the `list_of_stimuli.tsv` that will interfere with the writing of these new variables (see below for a breakdown of the columns that will be created). 
+
+A special case if that of **`run`**: in the absence of it, a `run` column will be created based on the input parameters. However, if you do include a `run` column in your `list_of_stimuli.tsv` file, it will be considered correct and used as it is in the `trial_list`.
+
 
 Your list of trials will be built from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
 
@@ -133,7 +138,18 @@ There are two possible ways of writing this list:
 
 ![trial_list](./src/readme_files/trial_list.png)
 
-The resulting trial list gets enhanced of several extra variables (trial number, etc.) and is then saved as `trial-list-sub#.tsv`. On any given run, the file either already exists and is read, or gets created if it doesn't exist yet.
+The resulting trial list gets enhanced of several extra variables (trial number, etc.) and is then saved as `sub-xx_trial-list.tsv` in the results directory (`in.resDir`). On any given run, the file either already exists and is read, or gets created if it doesn't exist yet.
+
+Here are the variables that will be created in `sub-xx_trial-list.tsv`, on top of `stimuli` and any extra variable you enter in your `list_of_stimuli.tsv`:
+
+- `run` 
+- `trialNb` 
+- `butMap` 
+- `respKey..` 
+- `respInst..` 
+- `subNum..` 
+- `idealStimOnset` 
+- `response` 
 
 #### Monitoring accuracy
 

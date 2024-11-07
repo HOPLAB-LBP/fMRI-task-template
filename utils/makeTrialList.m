@@ -92,13 +92,18 @@ end
 
 
 
-% Add the run number information to the list
-% Make a list of run numbers corresponding to the trials
-runList = repelem(1:params.numRuns, trialsPerRun)';
-% Convert the runList to a table
-runTable = array2table(runList, 'VariableNames', {'run'});
-% Concatenate the runTable with the stimList table
-stimList = [stimList, runTable];
+% If not present yet, add the run number information to the list
+if ismember('run', stimList.Properties.VariableNames)
+    % Extract the existing list of run numbers
+    runList = stimList.run;
+elseif ~ismember('run', stimList.Properties.VariableNames)
+    % Make a list of run numbers corresponding to the trials
+    runList = repelem(1:params.numRuns, trialsPerRun)';
+    % Convert the runList to a table
+    runTable = array2table(runList, 'VariableNames', {'run'});
+    % Concatenate the runTable with the stimList table
+    stimList = [stimList, runTable];
+end
 
 
 % Calculate the ideal stimulus onset times for one run
