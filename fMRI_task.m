@@ -217,7 +217,7 @@ try
     if macMode == true
         macLogKeyPress(params, in, logFile, false, true, conditionFunc, keyboardID);
     else
-        logKeyPress(params, in, logFile, false, true, conditionFunc);    
+        LogKeyPress(params, in, logFile, false, true, conditionFunc);    
     end    
     
     %% TRIGGER WAIT
@@ -239,8 +239,8 @@ try
         macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
         macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
     else
-        logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
-        logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
+        LogKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
+        LogKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
     end
     
     %% PRE-FIXATION
@@ -266,7 +266,7 @@ try
     if macMode == true
         macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
     else
-        logKeyPress(params, in, logFile, false, false, conditionFunc);
+        LogKeyPress(params, in, logFile, false, false, conditionFunc);
     end
     
     %% TRIAL LOOP
@@ -313,7 +313,7 @@ try
         if macMode == true
             pressedKey = macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
         else
-            pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc);
+            pressedKey = LogKeyPress(params, in, logFile, false, false, conditionFunc);
         end
 
         % Store the response in the trial list structure
@@ -339,14 +339,14 @@ try
             if macMode == true
                 pressedKey = macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
             else
-                pressedKey = logKeyPress(params, in, logFile, false, false, conditionFunc);
+                pressedKey = LogKeyPress(params, in, logFile, false, false, conditionFunc);
             end
         else
             % Otherwise, continue to log any additional key presses (first response was already recorded).
             if macMode == true
                 macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
             else
-                logKeyPress(params, in, logFile, false, false, conditionFunc);
+                LogKeyPress(params, in, logFile, false, false, conditionFunc);
             end
         end
     
@@ -393,7 +393,7 @@ try
     if macMode == true
         macLogKeyPress(params, in, logFile, false, false, conditionFunc, keyboardID);
     else
-        logKeyPress(params, in, logFile, false, false, conditionFunc);
+        LogKeyPress(params, in, logFile, false, false, conditionFunc);
     end
     
     % Calculate and log the total duration of the run, providing a measure of the entire trial sequence length.
