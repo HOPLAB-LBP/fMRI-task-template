@@ -193,6 +193,9 @@ try
     % Based on the run number find the response buttons
     respKey1 = unique([runTrials.respKey1]);
     respKey2 = unique([runTrials.respKey2]);
+    % List all the response keys and append them to the parameters
+    params.respKeys = [respKey1, respKey2]; % add any value needed in here
+
     % Based on the run number find the response button instructions
     respInst1 = unique({runTrials.respInst1});
     respInst2 = unique({runTrials.respInst2});

@@ -25,14 +25,38 @@ function logEvent(logFile, eventType, eventName, dateTime, expOnset, actualOnset
 %       - If logFile is 1, the event is logged only to the command window.
 %       - The date and time (dateTime) should be provided as a string in 
 %           the format 'yyyy-MM-dd HH:mm:ss.SSS'.
+%       - The utility function formatVariable ensures the input fields can
+%           be given in any format and still get logged properly.
 % 
 %   Author
 %   Tim Maniquet [27/3/24]
 
-% Create the log message line from the input
-logMessage = sprintf('\t%s\t%s\t%s\t%f\t%f\t%f\t%s\n', ...
+% Helper function to determine the correct format for each input
+function format = formatVariable(var)
+    if ischar(var) || isstring(var)
+        format = '%s';
+    elseif isnumeric(var)
+        format = '%f';
+    else
+        error('Unsupported variable type: %s', class(var));
+    end
+end
+
+% Dynamically generate the format specifier
+formatSpec = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%s\n', ...
+                     formatVariable(eventType), ...
+                     formatVariable(eventName), ...
+                     formatVariable(dateTime), ...
+                     formatVariable(expOnset), ...
+                     formatVariable(actualOnset), ...
+                     formatVariable(delta), ...
+                     formatVariable(eventID));
+
+% Create the log message line from the input using the specified format
+logMessage = sprintf(formatSpec, ...
                     string(eventType), string(eventName), string(dateTime), ...
-                    expOnset, actualOnset, delta, string(eventID));
+                    expOnset, actualOnset, delta, ...
+                    string(eventID));
 
 % If the log file is not the command window
 if ~(logFile == 1)

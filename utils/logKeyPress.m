@@ -52,7 +52,7 @@ while conditionFunc(true)
     elseif pressed
         logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
         % Check if firstPressedKey is still empty and pressed key is any of the response keys
-        if isempty(firstPressedKey) && (any(keyCode == params.respKey1) || any(keyCode == params.respKey2))
+        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), params.respKeys))
             firstPressedKey = keyCode; % Assign the pressed key
         end
         if otherKeysBreak
