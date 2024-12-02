@@ -75,7 +75,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `stimDur`  | `1` | Stimulus presentation time (in seconds). |
 | `fixDur`  | `1` | Duration of each post-stimulus fixation (in seconds). |
 | `prePost` | `10` | Duration of the pre- and post-run fixation periods (in seconds).|
-| `taskName` | *'my-exp'* | Name of your experiment, useful to identify it in output files. |
+| `taskName` | *'myexp'* | Name of your experiment, useful to identify it in output files. Try to use a single, meaningful word (*expertisetask*, *localiser*, *maintask*, ...). |
 | `resize` | `true` | Resize flag, determines whether your stimuli get resized or not. |
 | `resizeMode` | _'visualUnits'_ | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](#trial-list)). |
 | `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
@@ -188,10 +188,10 @@ Upon completion and given the `debugMode` flag is off, your `data` folder should
 ````
 .
 ├── sub-01
-│   ├── YYYY-MM-DD-hh-mm_sub01_run01_my-exp_log.tsv
-│   ├── YYYY-MM-DD-hh-mm_sub01_run01_my-exp.mat
-│   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp_log.tsv
-│   ├── YYYY-MM-DD-hh-mm_sub01_run02_my-exp.mat
+│   ├── YYYY-MM-DD-hh-mm_sub-01_run-01_task-myexp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub-01_run-01_task-myexp.mat
+│   ├── YYYY-MM-DD-hh-mm_sub-01_run-02_task-myexp_log.tsv
+│   ├── YYYY-MM-DD-hh-mm_sub-01_run-02_task-myexp.mat
 │   ├── ... other runs here
 │   └── sub-01_trial-list.tsv
 └── sub-02
