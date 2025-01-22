@@ -3,9 +3,11 @@ function [firstPressedKey, in] = logKeyPress(params, in, logFile, triggerKeyBrea
 % 
 %   This function logs key press events and writes to logFile. It continues
 %   until the conditionFunc returns true, or when the specific key events occur.
-%   The function returns  an integer corresponding to key code of the first 
-%   pressed key, if the first pressed key is included in the array params.respKey
-%   (i.e., if the key pressed is one of the assigned keys for the task)
+%   The function logs either a meaningful key name (in most cases), or an
+%   integer (in case of escape key or trigger key) corresponding to the key code
+%   of the first pressed key. It also returns a meaningful key name if the first
+%   pressed key is included in the array params.respKey (i.e., if the key pressed
+%   is one of the assigned keys for the task).
 %
 %   Args:
 %    params (struct): A structure containing key codes.
@@ -50,11 +52,15 @@ while conditionFunc(true)
 
         % log any other key press and break if the condition is met
     elseif pressed
-        logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
-        % Check if firstPressedKey is still empty and pressed key is any of the response keys
-        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), params.respKeys))
-            firstPressedKey = keyCode; % Assign the pressed key
+        % Turn the keycode into a meaningful key name
+        keyName = KbName(keyCode);
+        % Log this more meaningful key name
+        logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
+        % If the key was one of the expected keys, return it
+        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), in.respKeys))
+            firstPressedKey = keyName; % Assign the pressed key
         end
+        % If other keys break is useful to pass screens like instructions
         if otherKeysBreak
             break
         end
