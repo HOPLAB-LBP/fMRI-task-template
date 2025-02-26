@@ -387,7 +387,7 @@ try
     % Flip the screen and log it
     [PostFixFlip, ~, ~, ~] = Screen('Flip', win);
     % Log the display of the final fixation cross, marking the end of active stimulus presentation.
-    logEvent(logFile, 'FLIP','Post-fix', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', '-');
+    logEvent(logFile, 'FLIP','Post-fix', dateTimeStr, '-', PostFixFlip - in.scriptStart, '-', '-');
     
     % Anonymous function to wait for the duration of the final fixation
     conditionFunc = @(x) (GetSecs - PostFixFlip) <= params.prePost;
@@ -401,7 +401,7 @@ try
     
     % Calculate and log the total duration of the run, providing a measure of the entire trial sequence length.
     runTime = GetSecs - runStart; % Calculate the total time taken for the run.
-    logEvent(logFile, 'RUNTIME','-', dateTimeStr, '-', VBLTimestamp - in.scriptStart, '-', runTime);
+    logEvent(logFile, 'RUNTIME','-', dateTimeStr, '-', GetSecs - in.scriptStart, '-', runTime);
 
 %% CATCH EXCEPTION
 catch exception
