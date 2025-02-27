@@ -124,25 +124,8 @@ end
 
 %% LOAD TRIAL LIST & IMAGES
 
-% Create a filename to save the future trial list
-in.trialListDir = fullfile(in.resDir, ['sub-' zeroFill(answer{1}, 2) '_trial-list.tsv']);
-
-% If this file doesn't exist yet, create it
-if exist(in.trialListDir, 'file') == 0
-    % Create a list of trials based on the input parameters
-    trialList = makeTrialList(params, in);
-    % Write the trial list as a TSV file if not in debug mode
-    if debugMode == 0
-        writetable(struct2table(trialList), in.trialListDir , 'Delimiter', '\t', 'FileType', 'text');
-    end
-
-% If this file exists, read it
-elseif exist(in.trialListDir, 'file') == 2
-    % Read the tsv trial list
-    trialListData = readtable(in.trialListDir, 'Delimiter', '\t', 'FileType', 'text');
-    % Convert it to a structure
-    trialList = table2struct(trialListData);
-end
+% From the parameters (including the list of stimuli), make a trial list
+trialList = makeTrialList(params, in);
 
 % From the trial list and parameters, load the images
 imMat = loadImages(trialList, params);
@@ -420,14 +403,11 @@ catch exception
 end
 %% SAVE AND CLOSE
 
-% Register the events from the run into the global trial list
-trialList([trialList.run] == in.runNum) = runTrials;
-
 % Log the end of the run
 logEvent(logFile, 'END','-', dateTimeStr, '-', GetSecs-in.scriptStart, '-', '-');
 
 % Save the relevant data and close PTB objects
-saveAndClose(params, in, debugMode, runTrials, trialList, runImMat, logFile);
+saveAndClose(params, in, debugMode, runTrials, runImMat, logFile);
 
 
 
