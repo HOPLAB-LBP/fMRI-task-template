@@ -1,4 +1,4 @@
-function saveAndClose(params, in, debugMode, runTrials, trialList, runImMat, logFile)
+function saveAndClose(params, in, debugMode, runTrials, runImMat, logFile)
 % SAVEANDCLOSE - Save data and close resources.
 %
 %    Syntax:
@@ -48,9 +48,6 @@ if debugMode ~= 1
     dataName = fullfile(in.resDir, [dateTimeStr '_' runInfo '_task-' params.taskName '.mat']);
     % Save the run data using the unique identifier
     save(dataName, 'params', 'in', 'runTrials', 'runImMat', '-v7.3');
-    
-    % Save the updated trial list
-    writetable(struct2table(trialList), in.trialListDir , 'Delimiter', '\t', 'FileType', 'text');
     
 end
 
