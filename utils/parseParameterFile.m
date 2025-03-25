@@ -61,22 +61,28 @@ end
 
 % If fmri mode is selected, choose these settings
 if fmriMode == true
+    % Extract the mri screen settings
     params.scrDist = params.scrDistMRI; % screen distance
     params.scrWidth = params.scrWidthMRI; % screen width
-    params.respKey1 = params.respKeyMRI1; % response key 1
-    params.respKey2 = params.respKeyMRI2; % response key 2
-    params.triggerKey = params.triggerKeyMRI; % trigger key
-    params.escapeKey = KbName(params.escapeKey); % escape key
+    % Extract the mri response key settings, make sure they are strings
+    params.respKey1 = num2str(params.respKeyMRI1); % response key 1
+    params.respKey2 = num2str(params.respKeyMRI2); % response key 2
+    params.triggerKey = num2str(params.triggerKeyMRI); % trigger key
+    params.escapeKey = num2str(params.escapeKey); % escape key
+    % Instruction fields are declared for mri by default
 % If fmri mode is off, choose these settings
 elseif fmriMode == false
+    % Extract computer screen settings
     params.scrDist = params.scrDistPC; % screen distance
     params.scrWidth = params.scrWidthPC; % screen width
-    params.respKey1 = KbName(params.respKeyPC1); % response key 1
-    params.respKey2 = KbName(params.respKeyPC2); % response key 2
-    params.triggerKey = KbName(params.triggerKeyPC); % trigger key
-    params.escapeKey = KbName(params.escapeKey); % escape key
-    params.respInst1 = params.respKeyPC1; % button1 instructions
-    params.respInst2 = params.respKeyPC2; % button2 instructions
+    % Extract computer response key settings, make sure they are strings
+    params.respKey1 = num2str(params.respKeyPC1); % response key 1
+    params.respKey2 = num2str(params.respKeyPC2); % response key 2
+    params.triggerKey = num2str(params.triggerKeyPC); % trigger key
+    params.escapeKey = num2str(params.escapeKey); % escape key
+    % Adapt the instruction fields which are mri by default
+    params.respInst1 = num2str(params.respKeyPC1); % button1 instructions
+    params.respInst2 = num2str(params.respKeyPC2); % button2 instructions
 end
 
 % Calculate a total trial duration: sum of stimulus presentation and fixation cross presentation times
