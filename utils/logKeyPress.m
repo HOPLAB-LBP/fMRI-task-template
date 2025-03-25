@@ -37,23 +37,21 @@ while conditionFunc(true)
     keyCode = find(firstPress); % find the first key that was pressed
 
     % log the trigger key
-    if pressed && firstPress(params.triggerKey)
-        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+    if pressed && firstPress(KbName(params.triggerKey))
+        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         if triggerKeyBreaks
             break
         end
 
         % log and return if the escape key is pressed
-    elseif pressed && firstPress(params.escapeKey)
-        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+    elseif pressed && firstPress(KbName(params.escapeKey))
+        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         in.pressedAbortKey = true; % Assign the pressed key
         %break
         error('ScriptExecution:ManuallyAborted', 'Script execution manually aborted.');
 
         % log any other key press and break if the condition is met
     elseif pressed
-        % Turn the keycode into a meaningful key name
-        keyName = KbName(keyCode);
         % Log this more meaningful key name
         logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         % If the key was one of the expected keys, return it

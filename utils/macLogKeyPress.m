@@ -39,31 +39,29 @@ KbQueueFlush(keyboardID);
 while conditionFunc(true)
     
     [pressed, firstPress] = KbQueueCheck(keyboardID); % check keyboard queue
-    
     keyCode = find(firstPress); % find the first key that was pressed
+    keyName = KbName(keyCode); % turn the key code into a key name
 
     % log the trigger key
-    if pressed && firstPress(params.triggerKey)
-        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+    if pressed && firstPress(KbName(params.triggerKey))
+        logEvent(logFile, 'PULSE', 'Trigger', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         if triggerKeyBreaks
             break
         end
 
     % log and return if the escape key is pressed
-    elseif pressed && firstPress(params.escapeKey)
-        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyCode);
+    elseif pressed && firstPress(KbName(params.escapeKey))
+        logEvent(logFile, 'RESP', 'Escape', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         in.pressedAbortKey = true; % Assign the pressed key
         %break
         error('ScriptExecution:ManuallyAborted', 'Script execution manually aborted.');
 
         % log any other key press and break if the condition is met
     elseif pressed
-        % Turn the keycode into a meaningful key name
-        keyName = KbName(keyCode);
         % Log this more meaningful key name
         logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         % If the key was one of the expected keys, return it
-        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), params.respKeys))
+        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), num2str(params.respKeys)))
             firstPressedKey = keyName; % Assign the pressed key
         end
         % If other keys break is useful to pass screens like instructions
