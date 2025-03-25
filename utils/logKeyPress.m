@@ -57,7 +57,7 @@ while conditionFunc(true)
         % Log this more meaningful key name
         logEvent(logFile, 'RESP', 'KeyPress', dateTimeStr, '-', GetSecs-in.scriptStart, '-', keyName);
         % If the key was one of the expected keys, return it
-        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), in.respKeys))
+        if isempty(firstPressedKey) && any(ismember(KbName(keyCode), params.respKeys))
             firstPressedKey = keyName; % Assign the pressed key
         end
         % If other keys break is useful to pass screens like instructions
