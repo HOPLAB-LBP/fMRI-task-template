@@ -143,11 +143,15 @@ params.scrWidthPC = 510;
 % Make sure you align the response keys with the response key instructions.
 % Based on the user defined fmriPC mode, either the MRI or the PC settings will be used.
 
-% First give the keys to use at the scanner (most likely, leave these unchanged)
+% Give the keys to use at the scanner (most likely, leave these unchanged)
 
-params.respKeyMRI1 = 51;
-params.respKeyMRI2 = 52;
-params.triggerKeyMRI = 53;
+% params.respKeyMRI1 = 51; % this is the double version of '3')
+% params.respKeyMRI2 = 52; % this is the double version of '4')
+% params.triggerKeyMRI = 53; % this is the double version of '5')
+
+params.respKeyMRI1 = 3;
+params.respKeyMRI2 = 4;
+params.triggerKeyMRI = 5;
 
 % Give names to the response keys for instruction purposes
 % Make sure the instructions response keys match the order of the actual given response keys
@@ -155,11 +159,11 @@ params.respInst1 = 'left/green';
 params.respInst2 =  'right/red';
 
 
-% Then decide on the keyboard responses to give in debugging mode
+% Decide on the keyboard responses to give in debugging mode
 
-params.respKeyPC1 = 'q';
-params.respKeyPC2 = 'w';
-params.triggerKeyPC = 'a';
+params.respKeyPC1 = 'f';
+params.respKeyPC2 = 'j';
+params.triggerKeyPC = 't';
 
 
 % Declare an escape key to press to exit the task
