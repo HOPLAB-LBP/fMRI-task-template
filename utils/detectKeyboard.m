@@ -50,10 +50,10 @@ while ~stopScript
             % Save the working keyboard
             keyboardID = keyboardsIDs(iiD);
             % Print some feedback on the detection
-            fprintf('keyisdown detected with keyboardID # %d\n Press ''a'' to stop', keyboardsIDs(iiD));
+            fprintf('keyisdown detected with keyboardID # %d\n', keyboardsIDs(iiD));
             % Report the ID of the key that was pressed
             keyID = find(firstPress);
-            disp(keyID);
+            fprintf('Key ID: %d\n Press ''a'' to stop\n', keyID);
             if any(keyID == 20), stopScript =1; end
         end
     end
