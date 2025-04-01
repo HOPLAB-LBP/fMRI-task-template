@@ -212,17 +212,39 @@ An important aspect of this template is that it pays attention to the **timing o
 1. When started, the script will create a list of **ideal onsets** for all the trials to happen. These ideal onsets are zero-aligned, i.e. the ideal onset of the pre-fixation is `0.0`s, the ideal onset of the first image presentation is `0.0` + `params.prePost` (i.e. `10.0` with default values), the idea onset of the first fixation cross is `0.0 + params.prePost + params.fixDur`, etc.
 2. As soon as logging begins, a time stamp is created to record the *script start* (stored in `in.scriptStart`).
 3. Once the starting trigger is received from the scanner, the pre-run fixation begins, and the `runStart` time stamp is taken to mark the beginning of the actual task.
-4. From `runStart`, the `idealOnset` is re-calculated for each successive event. For instance, if `runStart` is `15.3` (i.e. 15.3 seconds elapsed before the task actually began), then the ideal stimulus onset of the first image presentation will become `0.0 + params.prePost + 15.3`.
-5. For each trial, a time stamp if taken when the stimulus is _actually_ shown on the screen, which it records as its `actualOnset`. The script will then calculate a delta between the re-calculated *ideal* and the *actual* onset of the stimulus presentation, and adjust the duration of the subsequent fixation cross duration to compensate. For instance, if a stimulus has an `actualOnset` of `25.56` but an `idealOnset` of `25.55`, the subsequent fixation cross will stay on screen for `params.fixDur - 0.01`. This adjustment is done by the `adjustFixationDuration` function.
+4. From the `runStart` time stamp, a `preRunTime` is calculated that reflects how much time has passed since logging started. The `idealStimOnset` is re-calculated baed on this value for each successive event. For instance, if an event had an `idealStimOnset` of `45.0` but `13.2` seconds have already passed since the start of logging, then its `idealStimOnset` will be re-calculated and `58.2` will be written instead. This overwriting is done on line 290:
+`runTrials(i).idealStimOnset = idealStimOnset;`
+5. For each trial, a time stamp if taken when the stimulus is _actually_ shown on the screen, which it records as its `actualOnset`. The script will then calculate a delta between the re-calculated *ideal* and the *actual* onset of the stimulus presentation, and adjust the duration of the subsequent fixation cross duration to compensate. For instance, if a stimulus has an `actualOnset` of `25.56` but an `idealStimOnset` of `25.55`, the subsequent fixation cross will stay on screen for `params.fixDur - 0.01`. This adjustment is done by the `adjustFixationDuration` function.
 
-This procedure is reflected in the log files, which contain a `EXP_ONSET` and a `ACTUAL_ONSET` column, containing the `idealOnset` and the `actualOnset` values, respectively. The `DELTA` column shows the difference between the two. It's worth noting that the onsets logged in these columns are *aligned to the start of the script* (`in.scriptStart`). This is useful from a logging perspective, as it allows to keep track of _all events_, including instruction display, pre-fixation, etc. However, this is not the format expected by BIDS. According to BIDS convention, onset values must be aligned to the start of the run (`runStart`), i.e. when the recording starts. To be able to use log files as event files, it is essential then to re-align the `ACTUAL_ONSET` column to create the final `onset` column. 
+This procedure is reflected in the log files, which contain a `EXP_ONSET` and a `ACTUAL_ONSET` column for all `Stim` and `Fix` events, containing the `idealStimOnset` and the `actualOnset` values, respectively. The `DELTA` column shows the difference between the two. It's worth noting that the onsets logged in these columns are *aligned to the start of the script* (`in.scriptStart`). This is useful from a logging perspective, as it allows to keep track of _all events_, including instruction display, pre-fixation, etc. However, this is not the format expected by BIDS. According to BIDS convention, onset values must be aligned to the start of the run (`runStart`), i.e. when the recording starts. To be able to use log files as event files, it is essential then to re-align the `ACTUAL_ONSET` column to create the final `onset` column. 
 
 ![timing_adjustment_logic](./src/readme_files/timing_adjustment_logic.png)
 
-### response keys
+### Response keys
 
-talk here about the way we bring the keys to be logged, from parameters, to parse param, to log key pres
-mention that response keys are stored in the params structure at the start of the run
+Registering responses correctly is key. Here is how the script handles this aspect of the task:
+- In `parameters.txt`, declare all the response keys **explicitely**. For instance, if you want to use the `J` key, write: `params.respKeyPC1 = 'j'`.
+- After `parseParameterFile` is executed, response keys are be stored as strings in `params`. 
+  Here is an example, in which `fmriMode` is `true`:
+  ```
+  parameters.txt            params
+  params.respKey1 = 3       params.respKey1 = '3'
+  params.respKey2 = 4       params.respKey2 = '4'
+  params.triggerKey = 5     params.triggerKey = '5'
+  ```
+- When an input is detected, `logKeyPress` (or `macLogKeyPress` if `macMode` is `true`) detects it, find its associated `keyCode`, and compares it to the `KbName` of our keys of interest (trigger key, response key, escape key). It then logs it and, if necessary, takes further action (e.g. close the script if `escape` was pressed).
+
+A few more remarks:
+- We turn response keys into strings in `params` because the `keyCodes` we detect correspond to the `KbNames` of the _string_ versions of response keys.
+- Response keys are stored in the params structure at the start of each run as a list. 
+  ```
+  % Based on the run number find the response buttons
+  respKey1 = unique([runTrials.respKey1]);
+  respKey2 = unique([runTrials.respKey2]);
+  % List all the response keys and append them to the parameters
+  params.respKeys = [respKey1, respKey2]; % add any value needed in here
+  ```
+  This list is used by `logKeyPress` to compare the received input, and return it only if it is part of the expected response keys. This has the advantage of only returning _one_ behavioural response to the `runTrials` structure that is part of the instructed response buttons (all responses are logged regardless). The list format allows for more response keys to easily be fitted into this logic, which we repeat for every run as the arrangement of keys might change (e.g. left and right button switching across runs).
 
 ### Trouble shooting notes
 
