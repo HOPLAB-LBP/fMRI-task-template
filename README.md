@@ -57,7 +57,7 @@ Make sure the following exist in your root directory:
 Before starting your experiment, make sure you set the flags `debugMode`, `macMode` and `fmriMode`. These will determine a number of things:
 
 - `debugMode` should be turned on if you are still developing. It will make your experiment run in a window instead of full screen, and will prevent data from being saved. Switching it off will make the cursor disappear for the time of the experiment, have it run in full screen, and save all result and log all the data.
-- `macMode` should be turned on if you are developing on a mac. Its purpose is to make the logging of key presses work reliably on mac systems. 
+- `macMode` should be turned on if you are developing on a mac. Its purpose is to make the logging of key presses work reliably on mac systems.
 - `fmriMode` will have the fMRI screen properties, response & trigger buttons, and response instruction values used. Switching it off will turn these parameters to their PC values.
 
 About the `macMode`: note that Psychtoolbox is not optimised for Mac systems, and surely isn't maintained anymore on macOS in newest versions (as of early 2025). Remember to always try out your script on a Windows machine, or best on the fMRI computer itself, before scanning. The `macMode` flag will have the following effects:
@@ -68,7 +68,7 @@ About the `macMode`: note that Psychtoolbox is not optimised for Mac systems, an
 
 ### Parameters
 
-Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailled description of all the parameters you will find in `parameters.txt` and what they do.
+Most of your experiment parameters will be read externally from the `parameters.txt` file. When you conceive your own task, use this document as a checklist for the elements you need to set. Here is a detailed description of all the parameters you will find in `parameters.txt` and what they do.
 
 
 | Parameter name | Default value | Description |
@@ -106,7 +106,7 @@ Most of your experiment parameters will be read externally from the `parameters.
 
 ### Trial list
 
-The trials of your task will be executed based on the **parameters** and **list of stimuli** file that you input. Upon execution, a list of trials is created that contains all the information about the trials to be played in the experiment. 
+The trials of your task will be executed based on the **parameters** and **list of stimuli** file that you input. Upon execution, a list of trials is created that contains all the information about the trials to be played in the experiment.
 
 
 #### How to write your list of stimuli
@@ -122,7 +122,7 @@ image4.png  animate     outside
 image5.png  animate     inside
 ```
 
-Note that the `list_of_stimuli.tsv` is taken as a base to create the output `data/sub-xx/sub-xx_trial-list.tsv`, which merges the input list of stimuli with the output participant responses and any other variables created during the task. As such, make sure you don't enter column names in the `list_of_stimuli.tsv` that will interfere with the writing of these new variables (see below for a breakdown of the columns that will be created). 
+Note that the `list_of_stimuli.tsv` is taken as a base to create the output `data/sub-xx/sub-xx_trial-list.tsv`, which merges the input list of stimuli with the output participant responses and any other variables created during the task. As such, make sure you don't enter column names in the `list_of_stimuli.tsv` that will interfere with the writing of these new variables (see below for a breakdown of the columns that will be created).
 
 A special case is that of **`run`**: in the absence of it, a `run` column will be created based on the input parameters. However, if you do include a `run` column in your `list_of_stimuli.tsv` file, it will be considered correct and used as it is in the `trial_list`.
 
@@ -143,13 +143,13 @@ The resulting trial list gets enhanced of several extra variables (trial number,
 
 Here are the variables that will be created in the `trialList` structure, on top of `stimuli` and any extra variable you have entered in your `list_of_stimuli.tsv`:
 
-- `run` 
-- `trialNb` 
-- `butMap` 
-- `respKey..` 
-- `respInst..` 
-- `subNum..` 
-- `idealStimOnset` 
+- `run`
+- `trialNb`
+- `butMap`
+- `respKey..`
+- `respInst..`
+- `subNum..`
+- `idealStimOnset`
 - `response`
 
 These variables will also end up in the `runTrials` structure, which constitutes the behavioural output that is saved eventually as a `.mat` file.
@@ -203,7 +203,7 @@ Upon completion and given the `debugMode` flag is off, your `data` folder should
 In this output are the following files:
 
 - **log files** are created for each run (i.e. each time you run the script). They contain information about every event in the script, including screen flips, key presses, errors, etc. They are meant to keep track of everything, and to be easily turned into event files later on. By default, they are named *time tag*-*subject number*-*run number*-*experiment name*-*log***.tsv**.
-- **`.mat` files** are created for each run and contain every variable created by MatLab during the run, including the `params` and `in` structures, the `runImMat` structure which ontains the images themselves, and the `runTrials` strcuture which contains all the trial-by-trial behavioural output of the task. By default, they are named *time tag*-*subject number*-*run number*-*experiment name***.mat**.
+- **`.mat` files** are created for each run and contain every variable created by MatLab during the run, including the `params` and `in` structures, the `runImMat` structure which contains the images themselves, and the `runTrials` structure which contains all the trial-by-trial behavioural output of the task. By default, they are named *time tag*-*subject number*-*run number*-*experiment name***.mat**.
 
 ### Timing
 
@@ -212,11 +212,11 @@ An important aspect of this template is that it pays attention to the **timing o
 1. When started, the script will create a list of **ideal onsets** for all the trials to happen. These ideal onsets are zero-aligned, i.e. the ideal onset of the pre-fixation is `0.0`s, the ideal onset of the first image presentation is `0.0` + `params.prePost` (i.e. `10.0` with default values), the idea onset of the first fixation cross is `0.0 + params.prePost + params.fixDur`, etc.
 2. As soon as logging begins, a time stamp is created to record the *script start* (stored in `in.scriptStart`).
 3. Once the starting trigger is received from the scanner, the pre-run fixation begins, and the `runStart` time stamp is taken to mark the beginning of the actual task.
-4. From the `runStart` time stamp, a `preRunTime` is calculated that reflects how much time has passed since logging started. The `idealStimOnset` is re-calculated baed on this value for each successive event. For instance, if an event had an `idealStimOnset` of `45.0` but `13.2` seconds have already passed since the start of logging, then its `idealStimOnset` will be re-calculated and `58.2` will be written instead. This overwriting is done on line 290:
+4. From the `runStart` time stamp, a `preRunTime` is calculated that reflects how much time has passed since logging started. The `idealStimOnset` is re-calculated based on this value for each successive event. For instance, if an event had an `idealStimOnset` of `45.0` but `13.2` seconds have already passed since the start of logging, then its `idealStimOnset` will be re-calculated and `58.2` will be written instead. This overwriting is done on line 290:
 `runTrials(i).idealStimOnset = idealStimOnset;`
 5. For each trial, a time stamp if taken when the stimulus is _actually_ shown on the screen, which it records as its `actualOnset`. The script will then calculate a delta between the re-calculated *ideal* and the *actual* onset of the stimulus presentation, and adjust the duration of the subsequent fixation cross duration to compensate. For instance, if a stimulus has an `actualOnset` of `25.56` but an `idealStimOnset` of `25.55`, the subsequent fixation cross will stay on screen for `params.fixDur - 0.01`. This adjustment is done by the `adjustFixationDuration` function.
 
-This procedure is reflected in the log files, which contain a `EXP_ONSET` and a `ACTUAL_ONSET` column for all `Stim` and `Fix` events, containing the `idealStimOnset` and the `actualOnset` values, respectively. The `DELTA` column shows the difference between the two. It's worth noting that the onsets logged in these columns are *aligned to the start of the script* (`in.scriptStart`). This is useful from a logging perspective, as it allows to keep track of _all events_, including instruction display, pre-fixation, etc. However, this is not the format expected by BIDS. According to BIDS convention, onset values must be aligned to the start of the run (`runStart`), i.e. when the recording starts. To be able to use log files as event files, it is essential then to re-align the `ACTUAL_ONSET` column to create the final `onset` column. 
+This procedure is reflected in the log files, which contain a `EXP_ONSET` and a `ACTUAL_ONSET` column for all `Stim` and `Fix` events, containing the `idealStimOnset` and the `actualOnset` values, respectively. The `DELTA` column shows the difference between the two. It's worth noting that the onsets logged in these columns are *aligned to the start of the script* (`in.scriptStart`). This is useful from a logging perspective, as it allows to keep track of _all events_, including instruction display, pre-fixation, etc. However, this is not the format expected by BIDS. According to BIDS convention, onset values must be aligned to the start of the run (`runStart`), i.e. when the recording starts. To be able to use log files as event files, it is essential then to re-align the `ACTUAL_ONSET` column to create the final `onset` column.
 
 ![timing_adjustment_logic](./src/readme_files/timing_adjustment_logic.png)
 
@@ -224,7 +224,7 @@ This procedure is reflected in the log files, which contain a `EXP_ONSET` and a 
 
 Registering responses correctly is key. Here is how the script handles this aspect of the task:
 - In `parameters.txt`, declare all the response keys **explicitely**. For instance, if you want to use the `J` key, write: `params.respKeyPC1 = 'j'`.
-- After `parseParameterFile` is executed, response keys are be stored as strings in `params`. 
+- After `parseParameterFile` is executed, response keys are be stored as strings in `params`.
   Here is an example, in which `fmriMode` is `true`:
   ```
   parameters.txt            params
@@ -236,7 +236,7 @@ Registering responses correctly is key. Here is how the script handles this aspe
 
 A few more remarks:
 - We turn response keys into strings in `params` because the `keyCodes` we detect correspond to the `KbNames` of the _string_ versions of response keys.
-- Response keys are stored in the params structure at the start of each run as a list. 
+- Response keys are stored in the params structure at the start of each run as a list.
   ```
   % Based on the run number find the response buttons
   respKey1 = unique([runTrials.respKey1]);
