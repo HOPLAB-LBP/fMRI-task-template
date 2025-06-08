@@ -3,7 +3,7 @@
 % This file contains the parameters to be used in your experiment matlab script.
 % It will be parsed by evaluating its contents exactly like matlab code.
 % Follow the matlab syntax to declare your parameters in the structure 'params'.
-% 
+%
 % Write whatever you want in this file. As long as it is preceded by a '%' sign at the beginning of the line, it won't be read by MatLab.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -41,7 +41,7 @@ params.taskName = 'myexp';
 params.resize = true;
 
 % If you set 'resize' to 'true', choose a resize mode below by declaring the variable 'resizeMode'.
-% The possible resizing modes are: 'visualUnits' and 'pixelSize'. 
+% The possible resizing modes are: 'visualUnits' and 'pixelSize'.
 % Give your output size by specifying the 'outWidth' and/or 'outHeight' parameters. Giving only one of them will adaptively resize the other proportionately, which you should probably do if you use non-square images.
 % For each mode, give two values: one for the width, one for the height of the resized image.
 %  - In the 'visualUnits' mode, you convert your stimulus size from visual degrees to pixels. Give your input in degrees of visual angle.
@@ -125,7 +125,7 @@ params.triggerWaitText = 'Experiment loading ...';
 %% SCREEN DISTANCE
 
 % Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC).
-% The MRI values have distance of 630 and width of 340 at default. 
+% The MRI values have distance of 630 and width of 340 at default.
 params.scrDistMRI = 630;
 params.scrWidthMRI = 340;
 
