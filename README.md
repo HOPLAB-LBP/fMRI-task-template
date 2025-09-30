@@ -129,13 +129,19 @@ A special case is that of **`run`**: in the absence of it, a `run` column will b
 
 Your list of trials will be built from the list of stimuli provided in the `stimuli` column of your `list_of_stimuli.tsv` file. Here is how the script will proceed:
 
-1. Based on the length of your stimuli column and the number of repetitions (`numRepetitions`), a total number of trials is calculated (stimuli list length * number of repetitions). The list of stimuli is duplicated to match this length.
-2. Based on the number of runs, each entry in the list of stimuli gets assigned a run number, considering evenly long runs and starting from 1.
+1. The script reads your stimulus list and determines the total number of trials needed based on the number of runs.
+2. The script handles three different scenarios intelligently:
+   - **EXACT MATCH**: If `numStimuli × numRepetitions` equals the total trials needed, it simply replicates your list.
+   - **FEWER STIMULI**: If you have fewer unique stimuli than trials needed, it applies **balanced repetition**. For example, with 10 stimuli needing 48 trials, each stimulus will appear 4-5 times (8 stimuli appear 4 times, 2 stimuli appear 5 times). This ensures no stimulus is overrepresented.
+   - **MORE STIMULI**: If you have more unique stimuli than trials needed, it applies **balanced selection**. For example, with 50 stimuli needing 24 trials, it selects 24 unique stimuli, ensuring each stimulus has approximately equal probability of being selected across runs.
+3. Run numbers are assigned to trials, and randomization is applied if requested (see [Trial randomization](#trial-randomization)).
 
-There are two possible ways of writing this list:
+There are multiple ways of configuring your stimulus list:
 
-- Provide a **full stimuli list**, with one line for each trial of *the whole* experiment, and set the number of repetitions to 1. This is the way to go if you want to control exactly the whole sequence of action.
-- Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment, but not for the whole experiment. In this case, set the number of repetitions to >1. This is the way to go if you are repeating the same set of stimuli several times across the experiment.
+- Provide a **full stimuli list**, with one line for each trial of *the whole* experiment, and set the number of repetitions to 1. This is the way to go if you want to control exactly the whole sequence of trials.
+- Provide a **partial stimuli list**, with one line for each trial of *one/several run(s)* of the experiment. In this case, set the number of repetitions appropriately. This is the way to go if you are repeating the same set of stimuli across the experiment.
+- Provide a **stimulus pool** that is larger than what you need, and let the script select a balanced subset. This is useful when you want to randomize which stimuli are shown while maintaining balance.
+- Provide a **pre-assigned run structure** by including a `run` column in your file. The script will respect these assignments and only randomize within runs (if randomization is enabled).
 
 ![trial_list](./src/readme_files/trial_list.png)
 
@@ -154,6 +160,29 @@ Here are the variables that will be created in the `trialList` structure, on top
 
 These variables will also end up in the `runTrials` structure, which constitutes the behavioural output that is saved eventually as a `.mat` file.
 
+#### Balanced stimulus presentation
+
+For scientific rigor, the script ensures balanced stimulus presentation across different scenarios:
+
+**When you have fewer stimuli than trials needed** (e.g., 10 stimuli, 48 trials):
+- Each stimulus is shown a base number of times (e.g., 4 times)
+- Some stimuli are shown one additional time to reach the total (e.g., 8 stimuli shown 5 times)
+- The selection of which stimuli get the extra presentation is randomized
+- Result: Maximum difference in presentation count is 1 (e.g., 4 vs 5 times, never 4 vs 6)
+
+**When you have more stimuli than trials needed** (e.g., 50 stimuli, 24 trials):
+- The script selects a subset of stimuli for use in the experiment
+- Selection is balanced across runs to prevent overrepresentation
+- Each stimulus in the pool has approximately equal probability of selection
+- Result: Selected stimuli are used approximately equally (typically once each)
+
+**Logging**: The script provides detailed logging showing:
+- Which scenario is being used (exact match, fewer stimuli, or more stimuli)
+- How many times each stimulus will be presented
+- Final statistics on stimulus usage (min, max, mean presentations)
+
+This ensures your experimental design is reproducible and unbiased.
+
 #### Monitoring accuracy
 
 You might wish to monitor the accuracy of your participants online, to have an idea of how the task is going or to give feedback. This can be achieved by playing with extra variables in your `list_of_stimuli.tsv` file. These variables will automatically be indexed in your trial list and can hence be accessed during/right after trial presentation. The script contains a section showing how to use such variables for accuracy monitoring (see the `%% monitoring accuracy` section, l.290).
@@ -162,9 +191,11 @@ You might wish to monitor the accuracy of your participants online, to have an i
 
 You can ask the script to randomize your trials by playing with the `stimRandomization` parameter.
 
-- Comment out the `stimRandomization` parameter in your parameters file if you don't need any randomization from your list of stimuli.
-- Set the `stimRandomization` parameter to _'run'_ to randomize your trials within each run.
-- Set the `stimRandomization` parameter to _'all'_ to randomize your trials across all runs.
+- Comment out the `stimRandomization` parameter in your parameters file if you don't need any randomization from your list of stimuli. The order will be kept as specified in your input file.
+- Set the `stimRandomization` parameter to _'run'_ to randomize your trials **within each run**. This preserves which stimuli belong to which run but shuffles the order within each run. This is recommended for most experiments.
+- Set the `stimRandomization` parameter to _'all'_ to randomize your trials **across all runs**. This completely shuffles all trials and then redistributes them across runs. Use this if you want maximum randomization.
+
+**Important**: Randomization always respects the total number of trials per run (all runs will have equal length). When using pre-defined run assignments in your input file, only 'run' mode randomization is recommended to preserve the intended run structure.
 
 ![trial_randomization](./src/readme_files/trial_randomization.png)
 

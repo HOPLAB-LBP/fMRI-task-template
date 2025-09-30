@@ -62,23 +62,32 @@ params.outWidth = 8;
 
 params.numRuns = 2;
 
-% Give the path to your trials stimulus list file here, where you made a sequential list of the stimuli you will present. This list can be partial or full (see the Readme file for full explanations on how full and partial lists will be processed).
+% Give the path to your trials stimulus list file here, where you made a sequential list of the stimuli you will present.
 % The stimulus list file should be a .tsv file, with its first column named 'stimuli'.
-% - A full list has one line for each and every trial of the whole experiment.
-% - A partial list only has a list of trials for a part of the experiment, e.g. for one run.
+% The script intelligently handles different list configurations:
+% - A full list has one line for each and every trial of the whole experiment (set numRepetitions = 1).
+% - A partial list has trials for one/several run(s), not the whole experiment (set numRepetitions > 1).
+% - A large stimulus pool can be provided, and the script will select a balanced subset.
+% - You can include a 'run' column to pre-assign trials to specific runs.
+% See the README for detailed explanations on balanced stimulus selection and repetition.
 
 params.stimListFile = 'list_of_stimuli.tsv';
 
-% Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated. If you gave a full list, set this number to 1. If you gave a partial list, make sure to include as many repetitions as necessary to fill in your experiment.
+% Number of repetitions: declare how many times the stimuli in your stimulus list should be repeated.
+% - If you gave a full list, set this number to 1.
+% - If you gave a partial list, set this to the appropriate number of repetitions.
+% The script will handle cases where the total doesn't match perfectly by applying balanced repetition or selection.
+% See README for details on how balanced stimulus presentation works.
 
 params.numRepetitions = 2;
 
 
 % Your trial list will be created based on the list of stimuli and number of repetitions you gave above. It will also be divided into runs based on the number of runs you declared.
-% The order of your stimulus list is kept intact by default. Decide below if you want to randomise it or not, and how (see the Readme file for a detailed explanation of how randomisation is operated).
+% The order of your stimulus list is kept intact by default. Decide below if you want to randomise it or not, and how (see the README file for a detailed explanation of how randomisation is operated).
 % - comment out 'stimRandomization' to keep the order intact;
-% - set 'stimRandomization' to 'run' to randomise trials within run;
+% - set 'stimRandomization' to 'run' to randomise trials within each run (RECOMMENDED for most experiments);
 % - set 'stimRandomization' to 'all' to randomise trials across the whole experiment.
+% Note: Randomization always preserves run structure (equal trials per run). With pre-defined runs in your input file, 'run' mode is recommended.
 
 params.stimRandomization = 'run';
 
