@@ -139,12 +139,23 @@ else
         % SCENARIO 2: FEWER STIMULI - Need balanced repetition
         fprintf('makeTrialList: FEWER STIMULI - Applying balanced repetition\n');
         
+        % Note: In this scenario, numRepetitions parameter is used to calculate
+        % totalTrialsNeeded, but actual repetitions per stimulus will be balanced
+        % to reach the target, which may differ from numRepetitions
+        
         % Calculate how many times each stimulus should appear (base + extra)
         baseRepetitions = floor(totalTrialsNeeded / numUniqueStimuli);
         extraRepetitions = mod(totalTrialsNeeded, numUniqueStimuli);
         
         fprintf('makeTrialList: Each stimulus will appear %d times, with %d stimuli appearing %d times\n', ...
             baseRepetitions, extraRepetitions, baseRepetitions + 1);
+        
+        % Warn if this differs significantly from numRepetitions
+        if abs(baseRepetitions - params.numRepetitions) > 1
+            fprintf('makeTrialList: WARNING: Actual repetitions per stimulus (%d-%d) differs from numRepetitions parameter (%d)\n', ...
+                baseRepetitions, baseRepetitions + 1, params.numRepetitions);
+            fprintf('makeTrialList:          This is expected when total trials need balancing across runs.\n');
+        end
         
         % Create base repetitions for all stimuli
         stimList = repmat(stimListTable, baseRepetitions, 1);
@@ -161,6 +172,14 @@ else
         % SCENARIO 3: MORE STIMULI - Need balanced selection
         fprintf('makeTrialList: MORE STIMULI - Applying balanced selection across runs\n');
         
+        % Note: When we have more stimuli than needed, numRepetitions parameter
+        % is used to calculate totalAvailable, but we select a balanced subset
+        % from the pool to reach exactly totalTrialsNeeded
+        
+        if params.numRepetitions > 1
+            fprintf('makeTrialList: Note: numRepetitions > 1, but selecting subset from full pool\n');
+        end
+        
         % For balanced selection across runs, we select a subset for each run
         % ensuring each stimulus is selected approximately equally often
         
@@ -172,8 +191,12 @@ else
         extraSelections = mod(totalTrialsNeeded, numUniqueStimuli);
         
         fprintf('makeTrialList: Selecting %d stimuli per run\n', stimuliPerRun);
-        fprintf('makeTrialList: Target: each stimulus used %d times, %d stimuli used %d times\n', ...
-            timesEachStimulusUsed, extraSelections, timesEachStimulusUsed + 1);
+        if timesEachStimulusUsed == 0
+            fprintf('makeTrialList: Target: selecting %d unique stimuli (each used once)\n', totalTrialsNeeded);
+        else
+            fprintf('makeTrialList: Target: each stimulus used %d times, %d stimuli used %d times\n', ...
+                timesEachStimulusUsed, extraSelections, timesEachStimulusUsed + 1);
+        end
         
         % Create a usage counter for each stimulus
         usageCount = zeros(numUniqueStimuli, 1);
