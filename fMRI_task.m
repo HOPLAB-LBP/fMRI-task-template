@@ -152,6 +152,21 @@ try
     % Turn the screen to gray
     Screen(win, 'fillrect', gray);
     
+    % Check that the screen runs at the resolution given in the parameters:
+    % every size in degrees of visual angle is converted with it.
+    scrRect = Screen('Rect', screen);
+    if ~isequal(scrRect(3:4), [params.scrResX params.scrResY])
+        resMsg = sprintf(['The screen runs at %d x %d pixels, but the parameters say %d x %d. ' ...
+            'Set the display resolution, or change scrResX/scrResY in parameters.txt: ' ...
+            'otherwise all visual angles are wrong.'], ...
+            scrRect(3), scrRect(4), params.scrResX, params.scrResY);
+        if fmriMode
+            error('fMRI_task:resolutionMismatch', '%s', resMsg);
+        else
+            warning('fMRI_task:resolutionMismatch', '%s', resMsg);
+        end
+    end
+
     % Store the pixels per degree value for use in the setup
     in.PPD = degToPix(1, params);
    
@@ -207,14 +222,14 @@ try
     % Anonymous function that always returns true
     conditionFunc = @(x) true;
 
-    % Record the trigger signal
-    % ** We record the trigger twice because of a bug where MR8 sends 2 triggers **
-    if macMode == true
-        macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % First call to wait for and log the trigger signal.
-        macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID); % Second call, if needed, based on your setup.
-    else
-        logKeyPress(params, in, logFile, true, false, conditionFunc); % First call to wait for and log the trigger signal.
-        logKeyPress(params, in, logFile, true, false, conditionFunc); % Second call, if needed, based on your setup.
+    % Wait for and log the scanner trigger(s): params.numTriggers of them
+    % (1 at MR11, which sends one trigger at the start of the run).
+    for triggerCount = 1:params.numTriggers
+        if macMode == true
+            macLogKeyPress(params, in, logFile, true, false, conditionFunc, keyboardID);
+        else
+            logKeyPress(params, in, logFile, true, false, conditionFunc);
+        end
     end
     
     %% PRE-FIXATION
@@ -223,14 +238,22 @@ try
     Screen('FillRect', win, gray); % Fill the screen with gray
     displayFixation(win, winRect, params, in); % Draw the fixation element
     
-    % Display the fixation cross and log it
+    % Display the fixation cross
     [VBLTimestamp, ~, ~, ~] = Screen('Flip', win);
-    % Log this fixation display event, marking the onset of the fixation period in the experiment log file.
+
+    % This flip is the first frame of the task, right after the scanner
+    % trigger. From here on, onsets are logged relative to it (t = 0), so that
+    % they line up with the start of the scan. This is done live, so the times
+    % stay correct even if the run is interrupted. Events logged before this
+    % point (set-up, trigger) keep the set-up time as their reference.
+    in.scriptStart = VBLTimestamp;
+
+    % Log the fixation onset (t = 0)
     logEvent(logFile, 'FLIP','Pre-fix', dateTimeStr,'-',VBLTimestamp - in.scriptStart,'-','-');
-    
-    % Record the trial sequence official starts, immediately after fixation
+
+    % Record the trial sequence official start (t = 0), immediately after fixation
     runStart = VBLTimestamp;
-    % Calculate the time elapsed since the script started
+    % Time elapsed since the (re-baselined) start is now zero
     preRunTime = runStart - in.scriptStart;
     
     % Anonymous function to wait for the duration of the pre-trial fixation

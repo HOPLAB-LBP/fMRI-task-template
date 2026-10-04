@@ -5,7 +5,7 @@ function resizedImage = resizeStim(image, params)
 %   width/height parameters. If mode is 'visualUnits', the width and height
 %   parameters are treated as visual degrees of visual angle. If mode is
 %   'pixelSize', the width and height parameters are treated as pixels.
-%   The function uses the convertVisualUnits function to convert between
+%   The function uses the degToPix function to convert between
 %   degrees of visual angle and pixels.
 %
 %   Parameters:
@@ -25,8 +25,12 @@ function resizedImage = resizeStim(image, params)
 %   Tim Maniquet [28/2/24]
 
 % Check which dimensions have been specified and calculate AR accordingly
+% If no dimension has been provided, raise an error
+if ~isfield(params, 'outWidth') && ~isfield(params, 'outHeight')
+    error('Neither ''outWidth'' nor ''outHeight'' are specified in params.');
+
 % If both width and height are specified, go ahead
-if isfield(params, 'outWidth') && isfield(params, 'outHeight')
+elseif isfield(params, 'outWidth') && isfield(params, 'outHeight')
     % Report the values accordingly
     width = params.outWidth;
     height = params.outHeight;
@@ -38,16 +42,12 @@ elseif ~isfield(params, 'outWidth')
     height = params.outHeight;
     width = height * aspect_ratio;
 
-% If no height has been provided
-elseif ~isfield(params, 'outHeight')
+% Otherwise no height has been provided
+else
     % Calculate height proportionally
     aspect_ratio = size(image, 1) / size(image, 2);
     width = params.outWidth;
     height = width * aspect_ratio;
-
-% If no dimension has been provided, raise an error
-elseif ~isfield(params, 'outHeight') && ~isfield(params, 'outWidth')
-   error('Neither ''outWidth'' nor ''outHeight'' are specified in params.'); 
 
 end
 

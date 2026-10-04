@@ -48,9 +48,9 @@ end
 
 % Check if the relevant key and screen settings are present
 if fmriMode == 1
-    requiredFields = {'scrDistMRI','scrWidthMRI','respKeyMRI1','respKeyMRI2','triggerKeyMRI','escapeKey'};
+    requiredFields = {'scrDistMRI','scrWidthMRI','scrResXMRI','scrResYMRI','respKeyMRI1','respKeyMRI2','triggerKeyMRI','escapeKey','numTriggers'};
 elseif fmriMode == 0
-    requiredFields = {'scrDistPC','scrWidthPC','respKeyPC1','respKeyPC2','triggerKeyPC','escapeKey'};
+    requiredFields = {'scrDistPC','scrWidthPC','scrResXPC','scrResYPC','respKeyPC1','respKeyPC2','triggerKeyPC','escapeKey','numTriggers'};
 end
 
 % Check if fields are missing
@@ -64,6 +64,8 @@ if fmriMode == true
     % Extract the mri screen settings
     params.scrDist = params.scrDistMRI; % screen distance
     params.scrWidth = params.scrWidthMRI; % screen width
+    params.scrResX = params.scrResXMRI; % screen resolution, horizontal (pixels)
+    params.scrResY = params.scrResYMRI; % screen resolution, vertical (pixels)
     % Extract the mri response key settings, make sure they are strings
     params.respKey1 = num2str(params.respKeyMRI1); % response key 1
     params.respKey2 = num2str(params.respKeyMRI2); % response key 2
@@ -75,6 +77,8 @@ elseif fmriMode == false
     % Extract computer screen settings
     params.scrDist = params.scrDistPC; % screen distance
     params.scrWidth = params.scrWidthPC; % screen width
+    params.scrResX = params.scrResXPC; % screen resolution, horizontal (pixels)
+    params.scrResY = params.scrResYPC; % screen resolution, vertical (pixels)
     % Extract computer response key settings, make sure they are strings
     params.respKey1 = num2str(params.respKeyPC1); % response key 1
     params.respKey2 = num2str(params.respKeyPC2); % response key 2
