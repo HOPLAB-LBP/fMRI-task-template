@@ -52,10 +52,9 @@ if strcmp(params.fixType, 'round')
     % For each dimension specified in fixSize, calculate the rectangle's coordinates.
     % This loop allows for the creation of a composite fixation symbol, potentially consisting of multiple elements.
     for i = 1:length(fixSize)
-        % Calculate the rectangle for the fixation component.
-        % The CenterRect function creates a rectangle of the specified size, centered within the window.
-        % Dividing FixSize by 2 ensures the dimensions are correctly centered around the fixation point.
-        fixRect(:,i) = CenterRect([0 0 fixSize(i)/2 fixSize(i)/2], winRect); 
+        % Calculate the rectangle for the fixation component: a square of
+        % fixSize(i) pixels (the circle's diameter), centred in the window.
+        fixRect(:,i) = CenterRect([0 0 fixSize(i) fixSize(i)], winRect);
     end
     
     % Define the colors for the fixation point. This matrix specifies colors 
@@ -75,8 +74,9 @@ elseif strcmp(params.fixType, 'cross')
     fixCol = in.black;
     
     % Define the size and position of the fixation cross (in pixels)
-    crossLength = round(degToPix(params.fixSize, params)); % Length of each arm of the cross
-    crossWidth = round(crossLength/10); % Width of the cross lines
+    crossSize = degToPix(params.fixSize, params); % Full length of each line of the cross (= fixSize)
+    crossLength = round(crossSize / 2); % Length of each arm, from the centre
+    crossWidth = round(crossSize / 10); % Width of the cross lines
     centerX = winRect(3) / 2;
     centerY = winRect(4) / 2;
     

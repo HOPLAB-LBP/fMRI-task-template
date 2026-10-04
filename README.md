@@ -22,9 +22,9 @@ The structure & most of the ideas for this repo come from work by [@costantinoai
 └── utils
     ├── adjustFixationDuration.m
     ├── configScreenCol.m
-    ├── convertVisualUnits.m
     ├── createLogFile.m
     ├── dateTimeStr.m
+    ├── degToPix.m
     ├── detectKeyboard.m
     ├── determineButtonMapping.m
     ├── displayFixation.m
@@ -85,19 +85,22 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `stimListFile` | *'list_of_stimuli.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
 | `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). |
 | `stimRandomization` | _'run'_ | How to randomize the stimuli in your trial list. Comment out if you don't need any randomisation. Other possible values are 'run' and 'all' (see [Trial randomization](#trial-randomization)). |
-| `fixSize` | `.6` | Size of your fixation element (in degrees of visual angle).|
+| `fixSize` | `.6` | Size of your fixation element, in degrees of visual angle: the diameter of the outer circle ('round') or the full length of each line ('cross').|
 | `fixType` | _'round'_ | Type of fixation element you wish to use (see `displayFixation.m`). Possible values include 'round' and 'cross'.|
 | `textSize` | `30` | Size of your text on screen. |
 | `textFont` | _'Helvetica'_ | Font of your text on screen. |
 | `instructionsText1`, `instructionsText2`, ... | *'On each trial..'* | Line-by-line elements of instruction to give at the beginning of each run. |
 | `triggerWaitText` | *'Experiment loading ...'* | Message to display while the script waits for a trigger to begin the task. |
-| `scrDistMRI` | `630` | Distance to the screen in the MRI scanner (in mm). |
-| `scrWidthMRI` | `340` | Width of the screen in the MRI scanner (in mm). |
+| `scrDistMRI` | `1850` | Viewing distance at the scanner (in mm). Default: MR11 (BOLDscreen 32 UHD). |
+| `scrWidthMRI` | `698.4` | Width of the image on the screen at the scanner (in mm). Default: active area of the MR11 BOLDscreen 32 UHD. |
+| `scrResXMRI`, `scrResYMRI` | `1920`, `1080` | Resolution of the screen at the scanner (in pixels). It must be the resolution the screen actually runs at: in fMRI mode the script stops if it differs. |
 | `scrDistPC` | `520` | Estimated distance to the PC screen in debug mode (in mm).  |
 | `scrWidthPC` | `510` | Estimated width of the PC screen in debug mode (in mm).|
-| `respKeyMRI1`, `respKeyMRI2` | `3`, `4` | Key codes of the response buttons at the scanner (2-button right & red response box).|
-| `triggerKeyMRI` | `5` | Key code of the MRI trigger.|
-| `respInstMRI1`, `respInstMRI2` | _'left/green'_, _'right/red'_ | Names to display for each key in the instructions at the scanner.|
+| `scrResXPC`, `scrResYPC` | `1920`, `1080` | Resolution of the PC screen in debug mode (in pixels). The script warns if it differs from the real one. |
+| `respKeyMRI1`, `respKeyMRI2` | _'b'_, _'y'_ | Keys sent by the response buttons at the scanner (MR11: right-hand pad, blue and yellow).|
+| `triggerKeyMRI` | _'t'_ | Key sent by the scanner trigger (MR11).|
+| `numTriggers` | `1` | Number of scanner triggers to wait for before the run starts. MR11 sends one trigger at the start of the run. |
+| `respInst1`, `respInst2` | _'blue'_, _'yellow'_ | Names to display for each key in the instructions at the scanner.|
 | `respKeyPC1`, `respKeyPC2` | _'f'_, _'j'_ | Keyboard response keys in debug mode (will also be used in the instructions). |
 | `triggerKeyPC` | _'t'_ | Mock trigger keyboard key to use in debug mode.|
 | `escapeKey` | _'ESCAPE'_ | Keyboard key to use to abort the experiment.|
@@ -253,6 +256,6 @@ This section lists the most often encountered bugs and their solution.
 | Problem | Resolution |
 | :------ | :--------- |
 | **Screen Setup** | If you get an error from the `screen setup` section, it might be a problem with the system frame rate and the frame rate detected by PTB. Perhaps you are using an external monitor? If so, try disconnecting the external monitor, or set `SkipSyncTests` to 1 (ATTENTION: DON`T DO THIS IF YOU ARE RUNNING THE REAL EXPERIMENT! ONLY FOR DEBUG PURPOSES). |
-| **Trigger Wait** | There is a known bug currently (as of the 21st of March 2024) where the MRI scanner sends two triggers before beginning. As a result, two keys presses are logged in the trigger wait section, with the start of each run actually taking place after the **second** trigger.|
+| **Trigger Wait** | The script waits for `numTriggers` scanner triggers before the run starts (default 1, for MR11). The old MR8 scanner sent two triggers at the start, so tasks written for MR8 waited for two. Onsets in the log are relative to the first frame after the trigger(s) (t = 0).|
 | **Keyboard silent** | Did your script crash, and now you cannot write anything in Matlab anymore? Maybe your keyboard is still silent. You need to enable input listening again by running `ListenChar(0)`. Find a way to run that segment, for instance by finding it in `saveAndClose`, highlighting and evaluating it.|
 

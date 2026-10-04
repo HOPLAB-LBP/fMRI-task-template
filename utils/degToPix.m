@@ -1,37 +1,40 @@
 function px = degToPix(deg, params)
-% DEGTOPIX Convert a size in degrees of visual angle to pixels using the screen
-% geometry declared in params, instead of convertVisualUnits' hardcoded defaults.
+% DEGTOPIX Convert a size in degrees of visual angle to pixels, using the screen
+% geometry in params (selected for the current mode, MRI or PC, by
+% parseParameterFile).
 %
-%   This is the single place that maps visual degrees to pixels, so the
-%   conversion follows the actual screen distance and width selected for the
-%   current mode (MRI vs PC) rather than always assuming the scanner values.
+%   This is the single place that maps degrees to pixels.
 %
-%   Notes:
-%   - Presentation resolution defaults to 1920x1080 (the scanner display) and
-%     can be overridden via params.scrResX / params.scrResY. Resize happens
-%     before the window opens, so the resolution is taken from params, not the
-%     live window.
-%   - Square pixels are assumed (physical height derived from width and
-%     resolution); for the reference geometry this yields exactly the same
-%     pixels as the previous hardcoded defaults.
+%   How it works (standard visual-angle geometry, stimulus centred on the
+%   screen, square pixels):
+%     1. A stimulus subtending `deg` degrees at viewing distance scrDist spans
+%            sizeMm = 2 * scrDist * tan(deg / 2)   millimetres on the screen.
+%     2. One pixel is  scrWidth / scrResX  millimetres wide.
+%     3. px = sizeMm / pixelSizeMm.
+%   For a stimulus away from the screen centre the same angle covers more
+%   millimetres; convert such stimuli separately if their exact size matters.
 %
 %   Inputs:
 %   - deg:    size(s) in degrees of visual angle (scalar or array).
-%   - params: must contain scrDist (mm) and scrWidth (mm); optional scrResX/scrResY.
+%   - params: must contain scrDist (mm), scrWidth (mm) and scrResX (pixels).
 %
 %   Author
 %   Andrea Costantino
 
-% Presentation resolution (scanner default; overridable via params)
-resX = 1920;
-resY = 1080;
-if isfield(params, 'scrResX') && ~isempty(params.scrResX), resX = params.scrResX; end
-if isfield(params, 'scrResY') && ~isempty(params.scrResY), resY = params.scrResY; end
+% The resolution must come from the parameters: there is no default, because a
+% wrong resolution makes every size in degrees wrong.
+if ~isfield(params, 'scrResX') || isempty(params.scrResX)
+    error('degToPix:noResolution', ...
+        'params.scrResX must be set (scrResXMRI / scrResXPC in parameters.txt).');
+end
 
-% Physical screen height (mm) from the declared width, assuming square pixels
-sizeYmm = params.scrWidth * resY / resX;
+% (1) Size on the screen in millimetres
+sizeMm = 2 * params.scrDist * tan(deg2rad(deg) / 2);
 
-% Delegate the actual conversion, now driven by params geometry
-px = convertVisualUnits(deg, 'deg', 'px', params.scrDist, resX, resY, params.scrWidth, sizeYmm);
+% (2) Width of one pixel in millimetres
+pixelSizeMm = params.scrWidth / params.scrResX;
+
+% (3) Size in pixels
+px = sizeMm / pixelSizeMm;
 
 end

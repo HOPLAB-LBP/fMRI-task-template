@@ -124,14 +124,23 @@ params.triggerWaitText = 'Experiment loading ...';
 
 %% SCREEN DISTANCE
 
-% Set up the screen distance (in mm) and screen width, at the scanner (MRI) and in debug mode (PC).
-% The MRI values have distance of 630 and width of 340 at default.
-params.scrDistMRI = 630;
-params.scrWidthMRI = 340;
+% Set up the viewing distance (in mm), the screen width (in mm) and the screen resolution (in pixels),
+% at the scanner (MRI) and in debug mode (PC). All sizes in degrees of visual angle are converted to
+% pixels with these values, so they must match the real set-up.
+% The resolution must be the resolution the screen actually runs at: the script stops (fMRI mode) or
+% warns (PC mode) if it differs.
+% MRI defaults: MR11 (Siemens Cima.X 3T, UZ Leuven). BOLDscreen 32 UHD, active area 698.4 x 392.9 mm
+% (BOLDscreen 32 UHD user guide), viewing distance 1850 mm, run at 1920 x 1080 (upscaled by the screen).
+params.scrDistMRI = 1850;
+params.scrWidthMRI = 698.4;
+params.scrResXMRI = 1920;
+params.scrResYMRI = 1080;
 
-% Decide on the PC values. The default are made to reflect the MRI values.
+% Decide on the PC values: measure your own screen and set its resolution.
 params.scrDistPC = 520;
 params.scrWidthPC = 510;
+params.scrResXPC = 1920;
+params.scrResYPC = 1080;
 
 
 
@@ -144,19 +153,22 @@ params.scrWidthPC = 510;
 % Based on the user defined fmriPC mode, either the MRI or the PC settings will be used.
 
 % Give the keys to use at the scanner (most likely, leave these unchanged)
+% At MR11 the trigger box (Current Designs, mode 002 "HID NAR BYGRT") sends key presses: the scanner
+% trigger arrives as 't', and the right-hand button pad sends 'b', 'y', 'g', 'r' (blue, yellow, green, red).
 
-% params.respKeyMRI1 = 51; % this is the double version of '3')
-% params.respKeyMRI2 = 52; % this is the double version of '4')
-% params.triggerKeyMRI = 53; % this is the double version of '5')
-
-params.respKeyMRI1 = '3#';
-params.respKeyMRI2 = '4$';
-params.triggerKeyMRI = '5%';
+params.respKeyMRI1 = 'b';
+params.respKeyMRI2 = 'y';
+params.triggerKeyMRI = 't';
 
 % Give names to the response keys for instruction purposes
 % Make sure the instructions response keys match the order of the actual given response keys
-params.respInst1 = 'left/green';
-params.respInst2 =  'right/red';
+params.respInst1 = 'blue';
+params.respInst2 =  'yellow';
+
+% Number of scanner triggers to wait for before the run starts.
+% MR11 sends one trigger at the start of the run, then one per volume: wait for 1.
+% (The old MR8 scanner sent two triggers at the start; old tasks used 2.)
+params.numTriggers = 1;
 
 
 % Decide on the keyboard responses to give in debugging mode
