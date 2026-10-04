@@ -42,16 +42,15 @@ params.resize = true;
 
 % If you set 'resize' to 'true', choose a resize mode below by declaring the variable 'resizeMode'.
 % The possible resizing modes are: 'visualUnits' and 'pixelSize'.
-% Give your output size by specifying the 'outWidth' and/or 'outHeight' parameters. Giving only one of them will adaptively resize the other proportionately, which you should probably do if you use non-square images.
-% For each mode, give two values: one for the width, one for the height of the resized image.
-%  - In the 'visualUnits' mode, you convert your stimulus size from visual degrees to pixels. Give your input in degrees of visual angle.
-%  - In the 'pixelSize' mode, you resize your image to the desired pixel size. Give your input in pixels.
+% Give your output size with 'outSize': the size of the image's longest side (its width or its height, whichever is longer). The other side follows from the image's aspect ratio, so the image is never stretched.
+%  - In the 'visualUnits' mode, give outSize in degrees of visual angle: the longest side spans that angle at the eye.
+%  - In the 'pixelSize' mode, give outSize in pixels.
+% (Older parameter files may use 'outWidth' and/or 'outHeight' instead; they still work, but giving both can stretch the image.)
 
 % params.resizeMode = 'pixelSize';
 params.resizeMode = 'visualUnits';
 
-params.outWidth = 8;
-% params.outHeight = 8;
+params.outSize = 8;
 
 
 

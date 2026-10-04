@@ -80,8 +80,8 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `taskName` | *'myexp'* | Name of your experiment, useful to identify it in output files. Try to use a single, meaningful word (*expertisetask*, *localiser*, *maintask*, ...). |
 | `resize` | `true` | Resize flag, determines whether your stimuli get resized or not. |
 | `resizeMode` | _'visualUnits'_ | If the resize flag is `true`, determines how to resize the images. Two possible values: _visualUnits_ and _pixelSize_ (see [Trial list](#trial-list)). |
-| `outWidth` | `8` | If the resize flag is `true`, the width of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`. Either one of `outWidth` or `outHeight` has to exist if the `resize` flag is `true`.|
-| `outHeight` | `8` | If the resize flag is `true`, the height of your resized stimuli. |
+| `outSize` | `8` | If the resize flag is `true`, the size of the longest side of your resized stimuli (in pixels or degrees of visual angle, depending on your `resizeMode`). The other side follows from the image's aspect ratio, so images are never stretched. |
+| `outWidth`, `outHeight` | | Older alternative to `outSize`: the width and/or height of your resized stimuli. Giving only one derives the other from the aspect ratio; giving both can stretch the image. |
 | `numRuns` | `2` | Total number of runs in the experiment. |
 | `stimListFile` | *'list_of_stimuli.tsv'* | Name of the file that contains a _partial_ or _full_ list of the experiment trials (see [Trial list](#trial-list)).|
 | `numRepetitions` | `2` | How many times to repeat the trials listed in the `stimListFile`. Set to 1 if it contains a full trial list (see [How to write your list of stimuli](#how-to-write-your-list-of-stimuli)). |
@@ -114,19 +114,19 @@ Give every size and position in degrees of visual angle, and convert them with t
 | Function | Use it for |
 | --- | --- |
 | `degToPix(deg, params)` | The size in pixels of a stimulus centred on the screen. |
-| `degToPix(deg, params, ecc)` | The size of a stimulus whose centre is `ecc` degrees from the screen centre, in any direction. The same angle covers more pixels away from the centre. |
+| `degToPix(deg, params, ecc, phi)` | The size of a stimulus whose centre is `ecc` degrees from the screen centre in the direction `phi` (degrees, counter-clockwise from the right). The same angle covers more pixels away from the centre. Add `'height'` as a fifth argument to measure the vertical side instead of the horizontal one. |
 | `eccToPix(ecc, params)` | The distance in pixels from the screen centre to a point `ecc` degrees away, for example the centre of a peripheral stimulus. |
 
-For example, a 2° stimulus centred 5° from fixation in the direction `phi` (degrees, counter-clockwise from the right):
+A size in degrees is the angle that one side of the stimulus spans at the eye, measured through its centre. For example, a square stimulus whose width spans 2°, centred 5° from fixation in the direction `phi`:
 
 ```matlab
 [xc, yc] = RectCenterd(winRect);
-r = eccToPix(5, params);       % centre of the stimulus, in pixels from the screen centre
-w = degToPix(2, params, 5);    % its size at that distance
+r = eccToPix(5, params);            % centre of the stimulus, in pixels from the screen centre
+w = degToPix(2, params, 5, phi);    % its width at that position
 rect = CenterRectOnPointd([0 0 w w], xc + r * cosd(phi), yc - r * sind(phi));
 ```
 
-Never stretch a stimulus: use one size for the whole image. For a non-square image, convert one side and derive the other from the image's aspect ratio in pixels (`resizeStim` does this when you give only `outWidth` or only `outHeight`). Off centre this is a small approximation: the size from `degToPix(deg, params, ecc)` is exact along the line from the screen centre, while across it the same pixels span up to 1/cos(ecc) times more degrees (+0.4% at 5°, +1.5% at 10°, +6.4% at 20°). Correcting that would mean stretching the image on the screen.
+Never stretch a stimulus: use one size for the whole image. Give the size of its longest side and derive the other side from the image's aspect ratio in pixels; `resizeStim` does this with `outSize`. Off centre, the other side of a square can span a slightly different angle (about 1.5% at 10° from the centre on the horizontal or vertical axis; on a diagonal both sides span the same angle). Correcting that would mean stretching the image on the screen.
 
 Use these functions instead of multiplying degrees by a fixed number of pixels per degree (`in.PPD`): that is exact only for a 1° stimulus at the centre, and the error grows with size and with distance from the centre.
 
