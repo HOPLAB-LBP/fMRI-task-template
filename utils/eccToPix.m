@@ -18,14 +18,15 @@ function px = eccToPix(ecc, params)
 %   ecc is measured from the screen centre in any direction (horizontal,
 %   vertical or diagonal). A negative ecc gives a negative distance.
 %
-%   Example: a stimulus of 2 degrees centred 5 degrees from fixation, in the
-%   direction phi (degrees, counter-clockwise from the right):
+%   Example: a square stimulus whose width spans 2 degrees, centred 5 degrees
+%   from fixation in the direction phi (degrees, counter-clockwise from the
+%   right):
 %       [xc, yc] = RectCenterd(winRect);
 %       r = eccToPix(5, params);                 % centre of the stimulus
-%       w = degToPix(2, params, 5);              % its size at that distance
+%       w = degToPix(2, params, 5, phi);         % its width at that position
 %       rect = CenterRectOnPointd([0 0 w w], xc + r * cosd(phi), yc - r * sind(phi));
-%   The same size w is used for both sides, so the stimulus is not stretched
-%   (see degToPix for the small approximation this implies off centre).
+%   The same size w is used for both sides, so the stimulus is not stretched.
+%   (Psychtoolbox counts y downwards, hence the minus sign.)
 %
 %   Inputs:
 %   - ecc:    distance(s) from the screen centre in degrees of visual angle
