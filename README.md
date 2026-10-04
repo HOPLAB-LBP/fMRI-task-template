@@ -30,6 +30,7 @@ The structure & most of the ideas for this repo come from work by [@costantinoai
     ├── displayFixation.m
     ├── displayInstructions.m
     ├── displayTrial.m
+    ├── eccToPix.m
     ├── initializePTB.m
     ├── loadImages.m
     ├── logEvent.m
@@ -106,6 +107,28 @@ Most of your experiment parameters will be read externally from the `parameters.
 | `escapeKey` | _'ESCAPE'_ | Keyboard key to use to abort the experiment.|
 
 
+### Visual angles
+
+Give every size and position in degrees of visual angle, and convert them with two functions in `utils`. Both use the screen geometry from `parameters.txt` (`scrDist`, `scrWidth` and `scrResX` for the current mode), so the conversion lives in one place.
+
+| Function | Use it for |
+| --- | --- |
+| `degToPix(deg, params)` | The size in pixels of a stimulus centred on the screen. |
+| `degToPix(deg, params, ecc)` | The size of a stimulus whose centre is `ecc` degrees from the screen centre, in any direction. The same angle covers more pixels away from the centre. |
+| `eccToPix(ecc, params)` | The distance in pixels from the screen centre to a point `ecc` degrees away, for example the centre of a peripheral stimulus. |
+
+For example, a 2° stimulus centred 5° from fixation in the direction `phi` (degrees, counter-clockwise from the right):
+
+```matlab
+[xc, yc] = RectCenterd(winRect);
+r = eccToPix(5, params);       % centre of the stimulus, in pixels from the screen centre
+w = degToPix(2, params, 5);    % its size at that distance
+rect = CenterRectOnPointd([0 0 w w], xc + r * cosd(phi), yc - r * sind(phi));
+```
+
+Never stretch a stimulus: use one size for the whole image. For a non-square image, convert one side and derive the other from the image's aspect ratio in pixels (`resizeStim` does this when you give only `outWidth` or only `outHeight`). Off centre this is a small approximation: the size from `degToPix(deg, params, ecc)` is exact along the line from the screen centre, while across it the same pixels span up to 1/cos(ecc) times more degrees (+0.4% at 5°, +1.5% at 10°, +6.4% at 20°). Correcting that would mean stretching the image on the screen.
+
+Use these functions instead of multiplying degrees by a fixed number of pixels per degree (`in.PPD`): that is exact only for a 1° stimulus at the centre, and the error grows with size and with distance from the centre.
 
 ### Trial list
 
